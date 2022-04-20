@@ -1,19 +1,20 @@
 {
-  "name": "lower-case-dashed-name-of-project",
-  "repository": "REPOSITORY-NAME-AS-IT-APPEARS-IN-GITHUB-URL",
+  "name": "byte-heist",
+  "repository": "cos426",
   "version": "0.1.0",
-  "title": "PROJECT TITLE HERE",
-  "description": "SHORT DESCRIPTION OF PROJECT HERE. ONE TO TWO SENTENCES MAX",
+  "title": "Byte Heist",
+  "description": "Steal the bits before time runs out! Don't fall!",
   "keywords": [
     "Princeton",
     "graphics",
     "three.js",
     "COS 426",
     "ivy league",
-    "keyword1",
-    "keyword2",
-    "...",
-    "this last entry CANNOT have a comma after it ->"
+    "game",
+    "bit",
+    "byte",
+    "platform",
+    "marble"
   ],
   "scripts": {
     "start": "webpack-dev-server --mode development --output-public-path \"\"",
@@ -23,6 +24,7 @@
     "deploy": "npm run prebuild && webpack --mode production --progress && gh-pages -d build"
   },
   "dependencies": {
+    "cannon": "^0.6.2",
     "dat.gui": "^0.7.7",
     "three": "^0.116.0",
     "three-obj-loader": "^1.1.3",
