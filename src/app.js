@@ -179,10 +179,24 @@ function animate() {
     // boxMesh.quaternion.copy(boxBody.quaternion);
 
     sphereMesh.position.copy(sphereBody.position);
-    sphereMesh.quaternion.copy(sphereBody.quaternion);
+    // sphereMesh.quaternion.copy(sphereBody.quaternion);
 
     move();
     focusCamera();
+
+    // reset if you fall off
+    if (sphereMesh.position.y < -40) {
+        sphereBody.position = new CANNON.Vec3(0, 10, 0);
+        sphereMesh.position.copy(sphereBody.position);
+        sphereBody.velocity = new CANNON.Vec3(0, 0, 0);
+        // sphereBody.quaternion = sphereBody.initQuaternion;
+        // sphereMesh.quaternion.copy(sphereBody.quaternion);
+        groundBody.position = groundBody.initPosition;
+        groundMesh.position.copy(groundBody.position);
+        sphereBody.angularVelocity = new CANNON.Vec3(0, 0, 0);
+        sphereDir = new THREE.Vector3(0, 0, 1);
+        focusCamera();
+    }
 
     renderer.render(scene, camera);
 }
