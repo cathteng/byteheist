@@ -1,6 +1,11 @@
 import * as CANNON from "cannon-es";
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
+import Bit from "./components/bit/Bit";
+
+export var scene;
+export var bitsCorrupted;
+
 const angle = (3 * Math.PI) / 180;
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -9,7 +14,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 
 document.body.appendChild(renderer.domElement);
 
-const scene = new THREE.Scene();
+scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(
     45,
@@ -23,7 +28,7 @@ const orbit = new OrbitControls(camera, renderer.domElement);
 camera.position.set(0, 20, -30);
 orbit.update();
 
-const boxGeo = new THREE.BoxGeometry(30, 1, 5);
+const boxGeo = new THREE.BoxGeometry(20, 1, 5);
 const boxMat = new THREE.MeshBasicMaterial({
 	color: 0x00ff00,
 	wireframe: true
@@ -36,10 +41,15 @@ const sphereMat = new THREE.MeshBasicMaterial({
 	color: 0xff0000, 
 	wireframe: true,
  });
+
 const sphereMesh = new THREE.Mesh( sphereGeo, sphereMat);
 scene.add(sphereMesh);
 
-const groundGeo = new THREE.PlaneGeometry(30, 30);
+/////////////
+bitsCorrupted = 0;
+/////////////
+
+const groundGeo = new THREE.PlaneGeometry(100, 40);
 const groundMat = new THREE.MeshBasicMaterial({ 
 	color: 0xffffff,
 	side: THREE.DoubleSide,
@@ -53,29 +63,16 @@ const world = new CANNON.World({
 });
 
 const groundPhysMat = new CANNON.Material();
-
 const groundBody = new CANNON.Body({
     //shape: new CANNON.Plane(),
     //mass: 10
-    shape: new CANNON.Box(new CANNON.Vec3(15, 15, 0.1)),
+    // change for length allong with groundGeo
+    shape: new CANNON.Box(new CANNON.Vec3(50, 20, 0.1)),
     type: CANNON.Body.STATIC,
     material: groundPhysMat
 });
 world.addBody(groundBody);
 groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
-
-
-// const collisionPhysMat = new CANNON.Material();
-
-// const box = new CANNON.Box({
-//     shape: new CANNON.Box(new CANNON.Vec3(1, 1, 1)),
-//     type: CANNON.Body.STATIC,
-//     material: collisionPhysMat
-// });
-
-// world.addBody(box);
-// box.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
-
 
 const boxPhysMat = new CANNON.Material();
 
@@ -87,6 +84,9 @@ const boxBody = new CANNON.Body({
 });
 world.addBody(boxBody);
 boxBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
+
+let bit = new Bit(new THREE.Vector3(40, 2, 10));
+// scene.add(bit);
 
 // boxBody.angularVelocity.set(0, 10, 0);
 // boxBody.angularDamping = 0.5;
@@ -204,6 +204,8 @@ function animate() {
 
     sphereMesh.position.copy(sphereBody.position);
     // sphereMesh.quaternion.copy(sphereBody.quaternion);
+
+    bit.handleCollisions(sphereMesh.position);
 
     move();
     focusCamera();
