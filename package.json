@@ -24,7 +24,7 @@
     "deploy": "npm run prebuild && webpack --mode production --progress && gh-pages -d build"
   },
   "dependencies": {
-    "cannon": "^0.6.2",
+    "cannon-es": "^0.19.0",
     "dat.gui": "^0.7.7",
     "three": "^0.116.0",
     "three-obj-loader": "^1.1.3",
