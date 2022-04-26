@@ -1,7 +1,7 @@
 import * as CANNON from "cannon-es";
 import * as THREE from 'three';
 import { ObjectSpaceNormalMap } from "three";
-import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
+import {PointerLockControls} from 'three/examples/jsm/controls/PointerLockControls.js';
 import Bit from "./components/bit/Bit";
 import { Ball } from './components/objects';
 
@@ -9,6 +9,9 @@ export var scene;
 export var bitsCorrupted;
 const angle = (3 * Math.PI) / 180;
 const renderer = new THREE.WebGLRenderer({ antialias: true });
+export var world;
+const viewOffset = new CANNON.Vec3(0, 6, 0);
+var controls;
 
 // set up renderer
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -17,6 +20,9 @@ document.body.style.margin = 0;
 document.body.style.overflow = 'hidden';
 
 scene = new THREE.Scene();
+world = new CANNON.World({
+  gravity: new CANNON.Vec3(0, -20, 0)
+});
 
 // lights
 const dir = new THREE.SpotLight(0xffffff, 1.6, 7, 0.8, 1, 1);
@@ -34,28 +40,13 @@ const camera = new THREE.PerspectiveCamera(
     1000
 );
 
+// https://github.com/mrdoob/three.js/blob/dev/examples/misc_controls_pointerlock.html
+controls = new PointerLockControls( camera, document.body );
+scene.add(controls.getObject());
+
 // const orbit = new OrbitControls(camera, renderer.domElement);
 // orbit.update();
 camera.position.set(0, 20, -30);
-
-const boxGeo = new THREE.BoxGeometry(20, 1, 5);
-const boxMat = new THREE.MeshBasicMaterial({
-	color: 0x00ff00,
-	wireframe: true
-});
-const boxMesh = new THREE.Mesh(boxGeo, boxMat);
-scene.add(boxMesh);
-
-// const sphereGeo = new THREE.SphereGeometry(2);
-// const sphereMat = new THREE.MeshBasicMaterial({ 
-// 	color: 0xff0000, 
-// 	wireframe: true,
-//  });
-
-// const sphereMesh = new THREE.Mesh( sphereGeo, sphereMat);
-// scene.add(sphereMesh);
-const sphereMesh = new Ball();
-scene.add(sphereMesh);
 
 /////////////
 bitsCorrupted = {
@@ -66,6 +57,7 @@ bitsCorrupted = {
 };
 //////////////
 
+// ground
 const groundGeo = new THREE.PlaneGeometry(100, 40);
 const groundMat = new THREE.MeshBasicMaterial({ 
 	color: 0xffffff,
@@ -75,24 +67,43 @@ const groundMat = new THREE.MeshBasicMaterial({
 const groundMesh = new THREE.Mesh(groundGeo, groundMat);
 scene.add(groundMesh);
 
-const world = new CANNON.World({
-    gravity: new CANNON.Vec3(0, -20, 0)
-});
-
-const groundPhysMat = new CANNON.Material();
+const groundPhysMat = new CANNON.Material('ground');
 const groundBody = new CANNON.Body({
-    //shape: new CANNON.Plane(),
+    // shape: new CANNON.Plane(), // use this for an infinite plane
     //mass: 10
-    // change for length allong with groundGeo
-    shape: new CANNON.Box(new CANNON.Vec3(50, 20, 0.1)),
+    // change for length along with groundGeo
+    shape: new CANNON.Box(new CANNON.Vec3(50, 20, 0.1)), // use this for a finite plane
     type: CANNON.Body.STATIC,
     material: groundPhysMat
 });
-world.addBody(groundBody);
 groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
+world.addBody(groundBody);
 
-const boxPhysMat = new CANNON.Material();
+// add another platform
+const groundMesh2 = new THREE.Mesh(groundGeo, groundMat);
+scene.add(groundMesh2);
+const groundBody2 = new CANNON.Body({
+  // shape: new CANNON.Plane(), // use this for an infinite plane
+  //mass: 10
+  // change for length along with groundGeo
+  shape: new CANNON.Box(new CANNON.Vec3(50, 20, 0.1)), // use this for a finite plane
+  type: CANNON.Body.STATIC,
+  material: groundPhysMat,
+  position: new CANNON.Vec3(0, 0, 50)
+});
+world.addBody(groundBody2);
+groundBody2.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
 
+// box
+const boxGeo = new THREE.BoxGeometry(20, 1, 5);
+const boxMat = new THREE.MeshBasicMaterial({
+	color: 0x00ff00,
+	wireframe: true
+});
+const boxMesh = new THREE.Mesh(boxGeo, boxMat);
+scene.add(boxMesh);
+
+const boxPhysMat = new CANNON.Material('box');
 const boxBody = new CANNON.Body({
     mass: 1500,
     shape: new CANNON.Box(new CANNON.Vec3(10, 0.5, 2.5)),
@@ -101,6 +112,31 @@ const boxBody = new CANNON.Body({
 });
 world.addBody(boxBody);
 boxBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
+
+// sphere
+// const sphereGeo = new THREE.SphereGeometry(2);
+// const sphereMat = new THREE.MeshBasicMaterial({ 
+// 	color: 0xff0000, 
+// 	wireframe: true,
+//  });
+
+// const sphereMesh = new THREE.Mesh( sphereGeo, sphereMat);
+// scene.add(sphereMesh);
+
+const sphereMesh = new Ball();
+scene.add(sphereMesh);
+
+const spherePhysMat = new CANNON.Material('virus');
+
+const sphereBody = new CANNON.Body({
+    mass: 2,
+    shape: new CANNON.Sphere(2),
+    position: new CANNON.Vec3(0, 10, 0),
+    material: spherePhysMat,
+    linearDamping: 0.5,
+    angularDamping: 0.5
+});
+world.addBody(sphereBody);
 
 let bit = new Bit(new THREE.Vector3(40, 2, 10));
 // scene.add(bit);
@@ -116,18 +152,7 @@ let bit = new Bit(new THREE.Vector3(40, 2, 10));
 
 // world.addContactMaterial(groundBoxContactMat);
 
-const spherePhysMat = new CANNON.Material();
-
-const sphereBody = new CANNON.Body({
-    mass: 2,
-    shape: new CANNON.Sphere(2),
-    position: new CANNON.Vec3(0, 10, 0),
-    material: spherePhysMat,
-    linearDamping: 0.5,
-    angularDamping: 0.5
-});
-world.addBody(sphereBody);
-
+// contact materials
 const groundSphereContactMat = new CANNON.ContactMaterial(
     groundPhysMat,
     spherePhysMat,
@@ -136,22 +161,23 @@ const groundSphereContactMat = new CANNON.ContactMaterial(
 
 world.addContactMaterial(groundSphereContactMat);
 
-// const boxSphereContactMat = new CANNON.ContactMaterial(
-//     boxPhysMat,
-//     spherePhysMat,
-//     {restitution: 0.3, friction: 0.5} // bounce factor
-// );
+const boxSphereContactMat = new CANNON.ContactMaterial(
+    boxPhysMat,
+    spherePhysMat,
+    {restitution: 0.1, friction: 0.7} // bounce factor
+);
 
-// world.addContactMaterial(boxSphereContactMat);
+world.addContactMaterial(boxSphereContactMat);
 
 const timeStep = 1 / 60;
-
 
 let sphereDir = new THREE.Vector3(0, 0, 1);
 var keyPress = {"w": 0, "a": 0, "s": 0, "d": 0, " ": 0};
 var keys = ["w", "a", "s", "d", " "];
 
 function keyDown(event) {
+    if (event.key == "l" && controls.isLocked) controls.unlock();
+    else if (event.key == "l" && !controls.isLocked) controls.lock();
     for (var key in keyPress) {
         if (event.key == key) keyPress[key] = 1;
     }
@@ -172,7 +198,7 @@ function focusCamera() {
       sphereMesh.position.y + 20,
       destination.z
     );
-    camera.lookAt(sphereMesh.position);
+    camera.lookAt(sphereMesh.position.clone().add(viewOffset));
   }
 
 function move() {
@@ -201,7 +227,7 @@ function move() {
               //console.log('space')
                 if (sphereBody.position.y <= sphereRestHeight + 0.1) {
                   sphereBody.applyImpulse(
-                    new CANNON.Vec3(0, 50, 0),
+                    new CANNON.Vec3(0, 40, 0),
                   );
                 }
             break;
@@ -216,6 +242,9 @@ function animate() {
     groundMesh.position.copy(groundBody.position);
     groundMesh.quaternion.copy(groundBody.quaternion);
 
+    groundMesh2.position.copy(groundBody2.position);
+    groundMesh2.quaternion.copy(groundBody2.quaternion);
+
     boxMesh.position.copy(boxBody.position);
     boxMesh.quaternion.copy(boxBody.quaternion);
 
@@ -224,7 +253,9 @@ function animate() {
 
     bit.handleCollisions(sphereMesh.position);
 
-    move();
+    if (controls.isLocked) {
+      move();
+    }
     focusCamera();
 
     // reset if you fall off
