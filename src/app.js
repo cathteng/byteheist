@@ -2,20 +2,30 @@ import * as CANNON from "cannon-es";
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import Bit from "./components/bit/Bit";
+import { Ball } from './components/objects';
 
 export var scene;
 export var bitsCorrupted;
-
 const angle = (3 * Math.PI) / 180;
-
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 
+// set up renderer
 renderer.setSize(window.innerWidth, window.innerHeight);
-
 document.body.appendChild(renderer.domElement);
+document.body.style.margin = 0;
+document.body.style.overflow = 'hidden';
 
 scene = new THREE.Scene();
 
+// lights
+const dir = new THREE.SpotLight(0xffffff, 1.6, 7, 0.8, 1, 1);
+const ambi = new THREE.AmbientLight(0x404040, 1);
+const hemi = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
+dir.position.set(5, 1, 2);
+dir.target.position.set(0, 0, 0);
+scene.add(ambi, hemi, dir);
+
+// camera
 const camera = new THREE.PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
@@ -23,10 +33,9 @@ const camera = new THREE.PerspectiveCamera(
     1000
 );
 
-const orbit = new OrbitControls(camera, renderer.domElement);
-
+// const orbit = new OrbitControls(camera, renderer.domElement);
+// orbit.update();
 camera.position.set(0, 20, -30);
-orbit.update();
 
 const boxGeo = new THREE.BoxGeometry(20, 1, 5);
 const boxMat = new THREE.MeshBasicMaterial({
@@ -36,13 +45,15 @@ const boxMat = new THREE.MeshBasicMaterial({
 const boxMesh = new THREE.Mesh(boxGeo, boxMat);
 scene.add(boxMesh);
 
-const sphereGeo = new THREE.SphereGeometry(2);
-const sphereMat = new THREE.MeshBasicMaterial({ 
-	color: 0xff0000, 
-	wireframe: true,
- });
+// const sphereGeo = new THREE.SphereGeometry(2);
+// const sphereMat = new THREE.MeshBasicMaterial({ 
+// 	color: 0xff0000, 
+// 	wireframe: true,
+//  });
 
-const sphereMesh = new THREE.Mesh( sphereGeo, sphereMat);
+// const sphereMesh = new THREE.Mesh( sphereGeo, sphereMat);
+// scene.add(sphereMesh);
+const sphereMesh = new Ball();
 scene.add(sphereMesh);
 
 /////////////
@@ -78,8 +89,8 @@ const boxPhysMat = new CANNON.Material();
 
 const boxBody = new CANNON.Body({
     mass: 1500,
-    shape: new CANNON.Box(new CANNON.Vec3(1, 1, 1)),
-    position: new CANNON.Vec3(0, 1, 0),
+    shape: new CANNON.Box(new CANNON.Vec3(10, 0.5, 2.5)),
+    position: new CANNON.Vec3(0, 2.5, 0),
     material: boxPhysMat
 });
 world.addBody(boxBody);
@@ -102,30 +113,30 @@ let bit = new Bit(new THREE.Vector3(40, 2, 10));
 const spherePhysMat = new CANNON.Material();
 
 const sphereBody = new CANNON.Body({
-    mass: 10,
+    mass: 2,
     shape: new CANNON.Sphere(2),
     position: new CANNON.Vec3(0, 10, 0),
-    material: spherePhysMat
+    material: spherePhysMat,
+    linearDamping: 0.5,
+    angularDamping: 0.5
 });
 world.addBody(sphereBody);
-
-sphereBody.linearDamping = 0.21
 
 const groundSphereContactMat = new CANNON.ContactMaterial(
     groundPhysMat,
     spherePhysMat,
-    {restitution: 0.3} // bounce factor
+    {restitution: 0.1, friction: 0.7} // bounce factor
 );
 
 world.addContactMaterial(groundSphereContactMat);
 
-const boxSphereContactMat = new CANNON.ContactMaterial(
-    boxPhysMat,
-    spherePhysMat,
-    {restitution: 0.0, friction:1.0} // bounce factor
-);
+// const boxSphereContactMat = new CANNON.ContactMaterial(
+//     boxPhysMat,
+//     spherePhysMat,
+//     {restitution: 0.3, friction: 0.5} // bounce factor
+// );
 
-world.addContactMaterial(boxSphereContactMat);
+// world.addContactMaterial(boxSphereContactMat);
 
 const timeStep = 1 / 60;
 
@@ -160,16 +171,17 @@ function focusCamera() {
 
 function move() {
     let impulseVec = new CANNON.Vec3(sphereDir.x, 0, sphereDir.z);
-    let sphereRestHeight = 2.0 ;
+    impulseVec.scale(10);
+    let sphereRestHeight = 2.0;
 
     for (const key in keyPress) {
         if (keyPress[key] == 1) {
             switch (key) {
               case "w": // Apply forward impulse if ArrowUp
-                sphereBody.applyImpulse(impulseVec, sphereBody.position);
+                sphereBody.applyImpulse(impulseVec);
                 break;
               case "s": // Apply backward impulse if ArrowDown
-                sphereBody.applyImpulse(impulseVec.negate(), sphereBody.position);
+                sphereBody.applyImpulse(impulseVec.negate());
                 break;
               case "d": // Change the ball's direction, update camera if ArrowRight
                 sphereDir.applyEuler(new THREE.Euler(0, -angle, 0));
@@ -183,8 +195,7 @@ function move() {
               //console.log('space')
                 if (sphereBody.position.y <= sphereRestHeight + 0.1) {
                   sphereBody.applyImpulse(
-                    new CANNON.Vec3(0, 100, 0),
-                    sphereBody.position
+                    new CANNON.Vec3(0, 50, 0),
                   );
                 }
             break;
@@ -209,6 +220,20 @@ function animate() {
 
     move();
     focusCamera();
+
+    // reset if you fall off
+    if (sphereMesh.position.y < -40) {
+        sphereBody.position = new CANNON.Vec3(0, 10, 0);
+        sphereMesh.position.copy(sphereBody.position);
+        sphereBody.velocity = new CANNON.Vec3(0, 0, 0);
+        sphereBody.quaternion = sphereBody.initQuaternion;
+        sphereMesh.quaternion.copy(sphereBody.quaternion);
+        groundBody.position = groundBody.initPosition;
+        groundMesh.position.copy(groundBody.position);
+        sphereBody.angularVelocity = new CANNON.Vec3(0, 0, 0);
+        sphereDir = new THREE.Vector3(0, 0, 1);
+        focusCamera();
+    }
 
     renderer.render(scene, camera);
 }
