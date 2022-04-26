@@ -1,5 +1,6 @@
 import * as CANNON from "cannon-es";
 import * as THREE from 'three';
+import { ObjectSpaceNormalMap } from "three";
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import Bit from "./components/bit/Bit";
 import { Ball } from './components/objects';
@@ -57,8 +58,13 @@ const sphereMesh = new Ball();
 scene.add(sphereMesh);
 
 /////////////
-bitsCorrupted = 0;
-/////////////
+bitsCorrupted = {
+  value: 0,
+  set collect(val) {
+    this.value = val;
+  }
+};
+//////////////
 
 const groundGeo = new THREE.PlaneGeometry(100, 40);
 const groundMat = new THREE.MeshBasicMaterial({ 

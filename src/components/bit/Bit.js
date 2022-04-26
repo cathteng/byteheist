@@ -6,14 +6,12 @@ class Bit {
     constructor(position) {
         this.position = position.clone();
         this.corrupted = false;
-        // this.app = APP;
 
         const bitCollectGeo = new THREE.SphereGeometry(1);
         const bitCollectMat = new THREE.MeshBasicMaterial({
             color: 0x0000ff,
             wireframe: true,
         });
-        // debugger;
         const bitCollectMesh = new THREE.Mesh(bitCollectGeo, bitCollectMat);
         bitCollectMesh.position.copy(position);
         this.mesh = bitCollectMesh;
@@ -22,7 +20,7 @@ class Bit {
     // like going viral
     handleCollisions(spherePosition) {
         let EPS = 3;
-        if (this.consumed) return;
+        if (this.corrupted) return;
         let dist = Math.sqrt(
             (spherePosition.x - this.position.x) ** 2 +
             (spherePosition.y - this.position.y) ** 2 +
@@ -30,7 +28,7 @@ class Bit {
         if (dist < EPS) {
             this.mesh.visible = false;
             this.corrupted = true;
-            // this.app.bitsCorrupted++;
+            APP.bitsCorrupted.collect = APP.bitsCorrupted.value + 1;
         }
     }
 }
