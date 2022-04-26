@@ -2,11 +2,10 @@ import * as CANNON from "cannon-es";
 import * as THREE from 'three';
 import { ObjectSpaceNormalMap } from "three";
 import {PointerLockControls} from 'three/examples/jsm/controls/PointerLockControls.js';
-import Bit from "./components/bit/Bit";
-import { Ball } from './components/objects';
+import { Ball, Bit } from './components/objects';
 
 export var scene;
-export var bitsCorrupted;
+export var bitsCorrupted = 0;
 const angle = (3 * Math.PI) / 180;
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 export var world;
@@ -47,15 +46,6 @@ scene.add(controls.getObject());
 // const orbit = new OrbitControls(camera, renderer.domElement);
 // orbit.update();
 camera.position.set(0, 20, -30);
-
-/////////////
-bitsCorrupted = {
-  value: 0,
-  set collect(val) {
-    this.value = val;
-  }
-};
-//////////////
 
 // ground
 const groundGeo = new THREE.PlaneGeometry(100, 40);
@@ -179,10 +169,6 @@ world.addContactMaterial(boxSphereContactMat);
 world.addContactMaterial(boxSphereContactMat);
 
 var bounding_boxes = Array();
-
-console.log('bounding')
-console.log(boxBody.aabb.upperBound.y + 0.2);
-console.log(groundBody.aabb.upperBound.y + 0.2)
 bounding_boxes.push(boxBody.aabb.upperBound.y + 0.2);
 bounding_boxes.push(groundBody.aabb.upperBound.y + 0.2)
 
@@ -230,7 +216,6 @@ function move() {
         if (keyPress[key] == 1) {
             switch (key) {
               case "w": // Apply forward impulse if ArrowUp
-                console.log(sphereBody.position.y)
                 sphereBody.applyImpulse(impulseVec);
                 break;
               case "s": // Apply backward impulse if ArrowDown
@@ -245,11 +230,7 @@ function move() {
                 focusCamera();
                 break;
               case " ": // Jump! (only if not in the air) if Spacebar
-              console.log('space')
-              //console.log(sphereBody.position.y)
                 if (Math.abs(sphereBody.velocity.y) <= 0.001){
-                    // console.log(sphereBody.position.y)
-                    // console.log(bounding_boxes[i])
                     sphereBody.applyImpulse(
                         new CANNON.Vec3(0, 40, 0),
                         );
@@ -268,14 +249,6 @@ function move() {
 }
 
 function animate() {
-    // console.log(sphereBody.material)
-    // console.log(world.getContactMaterial(sphereBody.material,groundBody.material));
-    // console.log(world.contacts)
-    // console.log(world.contactMaterialTable)
-    // console.log(sphereBody.force)
-    // console.log(sphereBody.position)
-    // console.log(boxBody.aabb)
-    prev_y_vel = sphereBody.velocity.y;
     world.step(timeStep);
 
     groundMesh.position.copy(groundBody.position);
@@ -290,7 +263,8 @@ function animate() {
     sphereMesh.position.copy(sphereBody.position);
     sphereMesh.quaternion.copy(sphereBody.quaternion);
 
-    bit.handleCollisions(sphereMesh.position);
+    bitsCorrupted += bit.handleCollisions(sphereMesh.position);
+    console.log(bitsCorrupted);
 
     if (controls.isLocked) {
       move();

@@ -1,6 +1,5 @@
 import * as THREE from "three";
-import * as CANNON from "cannon";
-import * as APP from "../../app.js";
+import * as APP from "../../../app.js";
 
 class Bit {
     constructor(position) {
@@ -20,7 +19,7 @@ class Bit {
     // like going viral
     handleCollisions(spherePosition) {
         let EPS = 3;
-        if (this.corrupted) return;
+        if (this.corrupted) return 0;
         let dist = Math.sqrt(
             (spherePosition.x - this.position.x) ** 2 +
             (spherePosition.y - this.position.y) ** 2 +
@@ -28,8 +27,9 @@ class Bit {
         if (dist < EPS) {
             this.mesh.visible = false;
             this.corrupted = true;
-            APP.bitsCorrupted.collect = APP.bitsCorrupted.value + 1;
+            return 1;
         }
+        return 0;
     }
 }
 
