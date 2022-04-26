@@ -67,6 +67,10 @@ const groundMat = new THREE.MeshBasicMaterial({
 const groundMesh = new THREE.Mesh(groundGeo, groundMat);
 scene.add(groundMesh);
 
+// const world = new CANNON.World({
+//     gravity: new CANNON.Vec3(0, -20, 0)
+// });
+
 const groundPhysMat = new CANNON.Material('ground');
 const groundBody = new CANNON.Body({
     // shape: new CANNON.Plane(), // use this for an infinite plane
@@ -93,6 +97,7 @@ const groundBody2 = new CANNON.Body({
 });
 world.addBody(groundBody2);
 groundBody2.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
+const boxPhysMat = new CANNON.Material('box');
 
 // box
 const boxGeo = new THREE.BoxGeometry(20, 1, 5);
@@ -103,7 +108,7 @@ const boxMat = new THREE.MeshBasicMaterial({
 const boxMesh = new THREE.Mesh(boxGeo, boxMat);
 scene.add(boxMesh);
 
-const boxPhysMat = new CANNON.Material('box');
+//const boxPhysMat = new CANNON.Material('box');
 const boxBody = new CANNON.Body({
     mass: 1500,
     shape: new CANNON.Box(new CANNON.Vec3(10, 0.5, 2.5)),
@@ -128,9 +133,10 @@ scene.add(sphereMesh);
 
 const spherePhysMat = new CANNON.Material('virus');
 
+const radius = 2;
 const sphereBody = new CANNON.Body({
     mass: 2,
-    shape: new CANNON.Sphere(2),
+    shape: new CANNON.Sphere(radius),
     position: new CANNON.Vec3(0, 10, 0),
     material: spherePhysMat,
     linearDamping: 0.5,
@@ -168,6 +174,20 @@ const boxSphereContactMat = new CANNON.ContactMaterial(
 );
 
 world.addContactMaterial(boxSphereContactMat);
+
+
+world.addContactMaterial(boxSphereContactMat);
+
+var bounding_boxes = Array();
+
+console.log('bounding')
+console.log(boxBody.aabb.upperBound.y + 0.2);
+console.log(groundBody.aabb.upperBound.y + 0.2)
+bounding_boxes.push(boxBody.aabb.upperBound.y + 0.2);
+bounding_boxes.push(groundBody.aabb.upperBound.y + 0.2)
+
+
+
 
 const timeStep = 1 / 60;
 
@@ -210,6 +230,7 @@ function move() {
         if (keyPress[key] == 1) {
             switch (key) {
               case "w": // Apply forward impulse if ArrowUp
+                console.log(sphereBody.position.y)
                 sphereBody.applyImpulse(impulseVec);
                 break;
               case "s": // Apply backward impulse if ArrowDown
@@ -224,12 +245,22 @@ function move() {
                 focusCamera();
                 break;
               case " ": // Jump! (only if not in the air) if Spacebar
-              //console.log('space')
-                if (sphereBody.position.y <= sphereRestHeight + 0.1) {
-                  sphereBody.applyImpulse(
-                    new CANNON.Vec3(0, 40, 0),
-                  );
+              console.log('space')
+              //console.log(sphereBody.position.y)
+                if (Math.abs(sphereBody.velocity.y) <= 0.001){
+                    // console.log(sphereBody.position.y)
+                    // console.log(bounding_boxes[i])
+                    sphereBody.applyImpulse(
+                        new CANNON.Vec3(0, 40, 0),
+                        );
+                    break;
                 }
+                
+                // if (sphereBody.position.y <= sphereRestHeight + 0.1) {
+                //   sphereBody.applyImpulse(
+                //     new CANNON.Vec3(0, 30, 0),
+                //   );
+                // }
             break;
             }
         }
@@ -237,6 +268,14 @@ function move() {
 }
 
 function animate() {
+    // console.log(sphereBody.material)
+    // console.log(world.getContactMaterial(sphereBody.material,groundBody.material));
+    // console.log(world.contacts)
+    // console.log(world.contactMaterialTable)
+    // console.log(sphereBody.force)
+    // console.log(sphereBody.position)
+    // console.log(boxBody.aabb)
+    prev_y_vel = sphereBody.velocity.y;
     world.step(timeStep);
 
     groundMesh.position.copy(groundBody.position);
