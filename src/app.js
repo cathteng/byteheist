@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { ObjectSpaceNormalMap } from "three";
 import {PointerLockControls} from 'three/examples/jsm/controls/PointerLockControls.js';
 import { Ball, Bit } from './components/objects';
+import { Stats } from './components/stats';
 
 export var scene;
 export var bitsCorrupted = 0;
@@ -14,9 +15,11 @@ var controls;
 
 // set up renderer
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+const canvas = renderer.domElement;
+canvas.setAttribute("display", "block");
 document.body.style.margin = 0;
 document.body.style.overflow = 'hidden';
+document.body.appendChild(canvas);
 
 scene = new THREE.Scene();
 world = new CANNON.World({
@@ -38,6 +41,9 @@ const camera = new THREE.PerspectiveCamera(
     0.1,
     1000
 );
+
+// stats
+const stats = new Stats();
 
 // https://github.com/mrdoob/three.js/blob/dev/examples/misc_controls_pointerlock.html
 controls = new PointerLockControls( camera, document.body );
@@ -264,7 +270,7 @@ function animate() {
     sphereMesh.quaternion.copy(sphereBody.quaternion);
 
     bitsCorrupted += bit.handleCollisions(sphereMesh.position);
-    console.log(bitsCorrupted);
+    stats.update(bitsCorrupted);
 
     if (controls.isLocked) {
       move();
