@@ -1,16 +1,22 @@
 import * as CANNON from "cannon-es";
 import * as THREE from 'three';
-import { ObjectSpaceNormalMap } from "three";
 import {PointerLockControls} from 'three/examples/jsm/controls/PointerLockControls.js';
 import { Ball, Bit } from './components/objects';
-import { Stats } from './components/stats';
+import { Countdown, Stats } from './components/stats';
+import $ from "jquery";
 
+// EXPORTS
 export var scene;
 export var bitsCorrupted = 0;
+export var world;
+
+// CONSTS
 const angle = (3 * Math.PI) / 180;
 const renderer = new THREE.WebGLRenderer({ antialias: true });
-export var world;
+const timeStep = 1 / 60;
 const viewOffset = new CANNON.Vec3(0, 6, 0);
+
+// VARS
 var controls;
 
 // set up renderer
@@ -20,6 +26,9 @@ canvas.setAttribute("display", "block");
 document.body.style.margin = 0;
 document.body.style.overflow = 'hidden';
 document.body.appendChild(canvas);
+
+// jquery
+$('body').css('font-family',"monospace");
 
 scene = new THREE.Scene();
 world = new CANNON.World({
@@ -44,6 +53,8 @@ const camera = new THREE.PerspectiveCamera(
 
 // stats
 const stats = new Stats();
+// timer
+const timer = new Countdown(20*1000);
 
 // https://github.com/mrdoob/three.js/blob/dev/examples/misc_controls_pointerlock.html
 controls = new PointerLockControls( camera, document.body );
@@ -62,10 +73,6 @@ const groundMat = new THREE.MeshBasicMaterial({
  });
 const groundMesh = new THREE.Mesh(groundGeo, groundMat);
 scene.add(groundMesh);
-
-// const world = new CANNON.World({
-//     gravity: new CANNON.Vec3(0, -20, 0)
-// });
 
 const groundPhysMat = new CANNON.Material('ground');
 const groundBody = new CANNON.Body({
@@ -114,16 +121,7 @@ const boxBody = new CANNON.Body({
 world.addBody(boxBody);
 boxBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
 
-// sphere
-// const sphereGeo = new THREE.SphereGeometry(2);
-// const sphereMat = new THREE.MeshBasicMaterial({ 
-// 	color: 0xff0000, 
-// 	wireframe: true,
-//  });
-
-// const sphereMesh = new THREE.Mesh( sphereGeo, sphereMat);
-// scene.add(sphereMesh);
-
+// VIRUS
 const sphereMesh = new Ball();
 scene.add(sphereMesh);
 
@@ -141,18 +139,6 @@ const sphereBody = new CANNON.Body({
 world.addBody(sphereBody);
 
 let bit = new Bit(new THREE.Vector3(40, 2, 10));
-// scene.add(bit);
-
-// boxBody.angularVelocity.set(0, 10, 0);
-// boxBody.angularDamping = 0.5;
-
-// const groundBoxContactMat = new CANNON.ContactMaterial(
-//     groundPhysMat,
-//     boxPhysMat,
-//     {friction: 0.04}
-// );
-
-// world.addContactMaterial(groundBoxContactMat);
 
 // contact materials
 const groundSphereContactMat = new CANNON.ContactMaterial(
@@ -160,7 +146,6 @@ const groundSphereContactMat = new CANNON.ContactMaterial(
     spherePhysMat,
     {restitution: 0.1, friction: 0.7} // bounce factor
 );
-
 world.addContactMaterial(groundSphereContactMat);
 
 const boxSphereContactMat = new CANNON.ContactMaterial(
@@ -168,24 +153,15 @@ const boxSphereContactMat = new CANNON.ContactMaterial(
     spherePhysMat,
     {restitution: 0.1, friction: 0.7} // bounce factor
 );
-
 world.addContactMaterial(boxSphereContactMat);
 
-
-world.addContactMaterial(boxSphereContactMat);
-
+// bounding boxes for jumping on objects
 var bounding_boxes = Array();
 bounding_boxes.push(boxBody.aabb.upperBound.y + 0.2);
 bounding_boxes.push(groundBody.aabb.upperBound.y + 0.2)
 
-
-
-
-const timeStep = 1 / 60;
-
 let sphereDir = new THREE.Vector3(0, 0, 1);
 var keyPress = {"w": 0, "a": 0, "s": 0, "d": 0, " ": 0};
-var keys = ["w", "a", "s", "d", " "];
 
 function keyDown(event) {
     if (event.key == "l" && controls.isLocked) controls.unlock();
@@ -216,7 +192,6 @@ function focusCamera() {
 function move() {
     let impulseVec = new CANNON.Vec3(sphereDir.x, 0, sphereDir.z);
     impulseVec.scale(10);
-    let sphereRestHeight = 2.0;
 
     for (const key in keyPress) {
         if (keyPress[key] == 1) {
@@ -242,12 +217,6 @@ function move() {
                         );
                     break;
                 }
-                
-                // if (sphereBody.position.y <= sphereRestHeight + 0.1) {
-                //   sphereBody.applyImpulse(
-                //     new CANNON.Vec3(0, 30, 0),
-                //   );
-                // }
             break;
             }
         }
@@ -271,6 +240,7 @@ function animate() {
 
     bitsCorrupted += bit.handleCollisions(sphereMesh.position);
     stats.update(bitsCorrupted);
+    timer.update();
 
     if (controls.isLocked) {
       move();

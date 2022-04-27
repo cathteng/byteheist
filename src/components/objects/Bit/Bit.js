@@ -1,5 +1,7 @@
 import * as THREE from "three";
 import * as APP from "../../../app.js";
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import MODEL from './one.gltf';
 
 class Bit {
     constructor(position) {
@@ -7,6 +9,7 @@ class Bit {
         this.position = position.clone();
         this.corrupted = false;
         this.origY = position.clone().y;
+        this.mesh = new THREE.Group();
 
         // const bitCollectGeo = new THREE.SphereGeometry(1);
         const bitCollectGeo = new THREE.BoxGeometry(2, 2, 2);
@@ -14,10 +17,14 @@ class Bit {
             color: 0x0000ff,
             wireframe: true,
         });
-        const bitCollectMesh = new THREE.Mesh(bitCollectGeo, bitCollectMat);
-        bitCollectMesh.position.copy(position);
-        this.mesh = bitCollectMesh;
-        APP.scene.add(bitCollectMesh);
+
+        const loader = new GLTFLoader();
+        loader.load(MODEL, (gltf) => {;
+            gltf.scene.scale.set(2, 2, 2);
+            this.mesh = gltf.scene;
+            this.mesh.position.copy(position);
+            APP.scene.add(gltf.scene);
+        });
     }
     // like going viral
     handleCollisions(spherePosition) {
