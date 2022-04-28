@@ -255,12 +255,12 @@ controls.addEventListener('lock', function () {
     reset();
     stats.timer.start(stats.timeToElapse); // reset timer
     // reset bits TODO
-    for (const bit of bitList) {
-    //   bit.mesh.visible = true;
-    //   bit.mesh.corrupted = false;
-    //   bit.counter = 0;
-    //   bit.position = bit.originalPosition;
+    bitsCorrupted = 0;
+    for (let bit of bitList) {
+      bit.mesh.visible = false;
+      bit = null;
     }
+    bitList = INIT.initBits();
   }
 });
 controls.addEventListener('unlock', function () {
