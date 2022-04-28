@@ -68,8 +68,10 @@ camera.position.set(0, 20, -30);
 const groundGeo = new THREE.PlaneGeometry(100, 40);
 const groundMat = new THREE.MeshBasicMaterial({ 
 	color: 0xffffff,
+  reflectivity: 0.0,
 	side: THREE.DoubleSide,
-	wireframe: true 
+	wireframe: false,
+  color: '#50EE25'
  });
 const groundMesh = new THREE.Mesh(groundGeo, groundMat);
 scene.add(groundMesh);
@@ -105,8 +107,9 @@ const boxPhysMat = new CANNON.Material('box');
 // box
 const boxGeo = new THREE.BoxGeometry(20, 1, 5);
 const boxMat = new THREE.MeshBasicMaterial({
-	color: 0x00ff00,
-	wireframe: true
+	color: '#E5D449',
+  reflectivity: 0.0,
+	wireframe: false
 });
 const boxMesh = new THREE.Mesh(boxGeo, boxMat);
 scene.add(boxMesh);
@@ -138,7 +141,26 @@ const sphereBody = new CANNON.Body({
 });
 world.addBody(sphereBody);
 
-let bit = new Bit(new THREE.Vector3(40, 2, 10));
+
+
+var bit1 = new Bit(0, new THREE.Vector3(40, 10, 10));
+var bitlist = [bit1];
+var bit2 = new Bit(0, new THREE.Vector3(35, 10, 10));
+bitlist.push(bit2);
+var bit3 = new Bit(0, new THREE.Vector3(30, 10, 10));
+bitlist.push(bit3);
+var bit4 = new Bit(0, new THREE.Vector3(25, 10, 10));
+bitlist.push(bit4);
+var bit5 = new Bit(1, new THREE.Vector3(20, 2, 10));
+bitlist.push(bit5);
+var bit6 = new Bit(1, new THREE.Vector3(15, 2, 10));
+bitlist.push(bit6);
+var bit7 = new Bit(1, new THREE.Vector3(10, 2, 10));
+bitlist.push(bit7);
+var bit8 = new Bit(1, new THREE.Vector3(5, 2, 10));
+bitlist.push(bit8);
+
+
 
 // contact materials
 const groundSphereContactMat = new CANNON.ContactMaterial(
@@ -238,7 +260,10 @@ function animate() {
     sphereMesh.position.copy(sphereBody.position);
     sphereMesh.quaternion.copy(sphereBody.quaternion);
 
-    bitsCorrupted += bit.handleCollisions(sphereMesh.position);
+    for (let i = 0; i < bitlist.length; i++){
+      bitsCorrupted += bitlist[i].handleCollisions(sphereMesh.position);
+    }
+
     stats.update(bitsCorrupted);
     timer.update();
 
