@@ -30,7 +30,7 @@ class Screen {
 
     $('body').append($(
       `<div id="end" class="screen mid">
-      <h2>GAME PAUSED</h2>
+      <h2>GAME OVER</h2>
       <div style="text-align: center">
         <p>You were caught by the antivirus!</p>
         <span class="blinking">CLICK TO RESTART</span>

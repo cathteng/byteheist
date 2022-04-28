@@ -1,10 +1,12 @@
 import * as CANNON from "cannon-es";
 import * as THREE from 'three';
-import {PointerLockControls} from 'three/examples/jsm/controls/PointerLockControls.js';
-import { Ball, Bit } from './components/objects';
+import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js';
+import { Ball } from './components/objects';
 import { Stats } from './components/stats';
 import { Screen } from './components/screen';
+import { BasicLights } from './components/lights';
 import $ from "jquery";
+import * as INIT from './init.js';
 
 // EXPORTS
 export var scene;
@@ -16,10 +18,18 @@ const angle = (3 * Math.PI) / 180;
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const timeStep = 1 / 60;
 const viewOffset = new CANNON.Vec3(0, 6, 0);
+const groundMeshes = [];
+const groundBodies = [];
+const boxMeshes = [];
+const boxBodies = [];
+const bitlist = INIT.initBits();
+const bounding_boxes = [];
 
 // VARS
 var controls;
 var state = "start";
+var sphereDir = new THREE.Vector3(0, 0, 1);
+var keyPress = {"w": 0, "a": 0, "s": 0, "d": 0, " ": 0};
 
 // set up renderer
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -42,88 +52,46 @@ world = new CANNON.World({
 });
 
 // lights
-const dir = new THREE.SpotLight(0xffffff, 1.6, 7, 0.8, 1, 1);
-const ambi = new THREE.AmbientLight(0x404040, 1);
-const hemi = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
-dir.position.set(5, 1, 2);
-dir.target.position.set(0, 0, 0);
-scene.add(ambi, hemi, dir);
+const lights = new BasicLights();
+scene.add(lights);
 
-// camera
+// camera & controls
 const camera = new THREE.PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
     0.1,
     1000
 );
-
 // https://github.com/mrdoob/three.js/blob/dev/examples/misc_controls_pointerlock.html
 controls = new PointerLockControls( camera, document.body );
 scene.add(controls.getObject());
-
-// const orbit = new OrbitControls(camera, renderer.domElement);
-// orbit.update();
 camera.position.set(0, 20, -30);
 
 // ground
-const groundGeo = new THREE.PlaneGeometry(100, 40);
-const groundMat = new THREE.MeshBasicMaterial({ 
-	color: 0xffffff,
-  reflectivity: 0.0,
-	side: THREE.DoubleSide,
-	wireframe: false,
-  color: '#50EE25'
- });
-const groundMesh = new THREE.Mesh(groundGeo, groundMat);
-scene.add(groundMesh);
-
 const groundPhysMat = new CANNON.Material('ground');
-const groundBody = new CANNON.Body({
-    // shape: new CANNON.Plane(), // use this for an infinite plane
-    //mass: 10
-    // change for length along with groundGeo
-    shape: new CANNON.Box(new CANNON.Vec3(50, 20, 0.1)), // use this for a finite plane
-    type: CANNON.Body.STATIC,
-    material: groundPhysMat
-});
-groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
-world.addBody(groundBody);
 
-// add another platform
-const groundMesh2 = new THREE.Mesh(groundGeo, groundMat);
-scene.add(groundMesh2);
-const groundBody2 = new CANNON.Body({
-  // shape: new CANNON.Plane(), // use this for an infinite plane
-  //mass: 10
-  // change for length along with groundGeo
-  shape: new CANNON.Box(new CANNON.Vec3(50, 20, 0.1)), // use this for a finite plane
-  type: CANNON.Body.STATIC,
-  material: groundPhysMat,
-  position: new CANNON.Vec3(0, 0, 50)
-});
-world.addBody(groundBody2);
-groundBody2.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
-const boxPhysMat = new CANNON.Material('box');
+const groundObj = INIT.initGround(100, 40, 0.2, new CANNON.Vec3(0, 0, 0));
+groundMeshes.push(groundObj[0]);
+groundBodies.push(groundObj[1]);
+const groundObj2 = INIT.initGround(100, 40, 0.2, new CANNON.Vec3(0, 0, 50));
+groundMeshes.push(groundObj2[0]);
+groundBodies.push(groundObj2[1]);
+
+for (let i = 0; i < groundMeshes.length; i++) {
+  scene.add(groundMeshes[i]);
+  world.addBody(groundBodies[i]);
+}
 
 // box
-const boxGeo = new THREE.BoxGeometry(20, 1, 5);
-const boxMat = new THREE.MeshBasicMaterial({
-	color: '#E5D449',
-  reflectivity: 0.0,
-	wireframe: false
-});
-const boxMesh = new THREE.Mesh(boxGeo, boxMat);
-scene.add(boxMesh);
+const boxPhysMat = new CANNON.Material('box');
+const boxObj = INIT.initBox(20, 1, 5, new CANNON.Vec3(0, 2.5, 0));
+boxMeshes.push(boxObj[0]);
+boxBodies.push(boxObj[1]);
 
-//const boxPhysMat = new CANNON.Material('box');
-const boxBody = new CANNON.Body({
-    mass: 1500,
-    shape: new CANNON.Box(new CANNON.Vec3(10, 0.5, 2.5)),
-    position: new CANNON.Vec3(0, 2.5, 0),
-    material: boxPhysMat
-});
-world.addBody(boxBody);
-boxBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
+for (let i = 0; i < boxMeshes.length; i++) {
+  scene.add(boxMeshes[i]);
+  world.addBody(boxBodies[i]);
+}
 
 // VIRUS
 const sphereMesh = new Ball();
@@ -142,27 +110,6 @@ const sphereBody = new CANNON.Body({
 });
 world.addBody(sphereBody);
 
-
-
-var bit1 = new Bit(0, new THREE.Vector3(40, 10, 10));
-var bitlist = [bit1];
-var bit2 = new Bit(0, new THREE.Vector3(35, 10, 10));
-bitlist.push(bit2);
-var bit3 = new Bit(0, new THREE.Vector3(30, 10, 10));
-bitlist.push(bit3);
-var bit4 = new Bit(0, new THREE.Vector3(25, 10, 10));
-bitlist.push(bit4);
-var bit5 = new Bit(1, new THREE.Vector3(20, 2, 10));
-bitlist.push(bit5);
-var bit6 = new Bit(1, new THREE.Vector3(15, 2, 10));
-bitlist.push(bit6);
-var bit7 = new Bit(1, new THREE.Vector3(10, 2, 10));
-bitlist.push(bit7);
-var bit8 = new Bit(1, new THREE.Vector3(5, 2, 10));
-bitlist.push(bit8);
-
-
-
 // contact materials
 const groundSphereContactMat = new CANNON.ContactMaterial(
     groundPhysMat,
@@ -179,23 +126,11 @@ const boxSphereContactMat = new CANNON.ContactMaterial(
 world.addContactMaterial(boxSphereContactMat);
 
 // bounding boxes for jumping on objects
-var bounding_boxes = Array();
-bounding_boxes.push(boxBody.aabb.upperBound.y + 0.2);
-bounding_boxes.push(groundBody.aabb.upperBound.y + 0.2)
-
-let sphereDir = new THREE.Vector3(0, 0, 1);
-var keyPress = {"w": 0, "a": 0, "s": 0, "d": 0, " ": 0};
-
-function keyDown(event) {
-    for (var key in keyPress) {
-        if (event.key == key) keyPress[key] = 1;
-    }
+for (const body of boxBodies) {
+  bounding_boxes.push(body.aabb.upperBound.y + 0.2)
 }
-
-function keyUp(event) {
-    for (var key in keyPress) {
-        if (event.key == key) keyPress[key] = 0;
-    }
+for (const body of groundBodies) {
+  bounding_boxes.push(body.aabb.upperBound.y + 0.2)
 }
 
 function updateCamera() {
@@ -247,14 +182,15 @@ function move() {
 function animate() {
     world.step(timeStep);
 
-    groundMesh.position.copy(groundBody.position);
-    groundMesh.quaternion.copy(groundBody.quaternion);
+    for (let i = 0; i < groundMeshes.length; i++) {
+      groundMeshes[i].position.copy(groundBodies[i].position);
+      groundMeshes[i].quaternion.copy(groundBodies[i].quaternion);
+    }
 
-    groundMesh2.position.copy(groundBody2.position);
-    groundMesh2.quaternion.copy(groundBody2.quaternion);
-
-    boxMesh.position.copy(boxBody.position);
-    boxMesh.quaternion.copy(boxBody.quaternion);
+    for (let i = 0; i < boxMeshes.length; i++) {
+      boxMeshes[i].position.copy(boxBodies[i].position);
+      boxMeshes[i].quaternion.copy(boxBodies[i].quaternion);
+    }
 
     sphereMesh.position.copy(sphereBody.position);
     sphereMesh.quaternion.copy(sphereBody.quaternion);
@@ -276,8 +212,10 @@ function animate() {
         sphereBody.velocity = new CANNON.Vec3(0, 0, 0);
         sphereBody.quaternion = sphereBody.initQuaternion;
         sphereMesh.quaternion.copy(sphereBody.quaternion);
-        groundBody.position = groundBody.initPosition;
-        groundMesh.position.copy(groundBody.position);
+        for (let i = 0; i < groundMeshes.length; i++) {
+          groundBodies[i].position = groundBodies[i].initPosition;
+          groundMeshes[i].position.copy(groundBodies[i].position);
+        }
         sphereBody.angularVelocity = new CANNON.Vec3(0, 0, 0);
         sphereDir = new THREE.Vector3(0, 0, 1);
         updateCamera();
@@ -294,8 +232,18 @@ window.addEventListener('resize', function() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-window.addEventListener("keydown", keyDown, false);
-window.addEventListener("keyup", keyUp, false);
+window.addEventListener("keydown", function(event) {
+  for (var key in keyPress) {
+    if (event.key == key) keyPress[key] = 1;
+  }
+});
+
+window.addEventListener("keyup", function(event) {
+  for (var key in keyPress) {
+    if (event.key == key) keyPress[key] = 0;
+  }
+});
+
 window.addEventListener("click", function() {
   if (!controls.isLocked) {
     controls.lock();

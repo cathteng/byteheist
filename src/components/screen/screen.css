@@ -28,6 +28,10 @@
     animation: shake 2.5s linear forwards;
 }
 
+#end h2 {
+    color: #E70000;
+    margin-bottom: 0px;
+}
 .mid h2 {
     position: relative;
     font-family: monospace;
@@ -122,6 +126,9 @@ h1::after {
 
  /* ref https://jsfiddle.net/yo5kw3qd/ start */
  
+ #end .blinking {
+     color: #39ff14;
+ }
 .blinking {
     animation: opacity 2s ease-in-out infinite;
     opacity: 1;
