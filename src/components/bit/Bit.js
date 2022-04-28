@@ -26,12 +26,12 @@ class Bit {
         if (this.corrupted) return;
 
         // decrease BASE to spin faster
-        const BASE = 500;
+        const BASE = 250;
         const factor = 2 * Math.PI / BASE;
         this.mesh.rotation.setFromVector3(new THREE.Vector3( 0, factor * this.counter, 0));
 
         // moving up and down
-        const OSC_SPEED = 10; // higher is faster
+        const OSC_SPEED = 5; // higher is faster
         let amp = Math.sin(this.counter * factor * OSC_SPEED);
         const HEIGHT_CHANGE = 1;
         let change = amp * HEIGHT_CHANGE;

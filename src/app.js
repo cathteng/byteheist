@@ -15,6 +15,15 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 document.body.style.margin = 0;
 document.body.style.overflow = 'hidden';
+document.body.appendChild(canvas);
+
+// jquery
+$('body').css('font-family',"monospace");
+// stats
+const seconds = 5;
+const stats = new Stats(seconds*1000);
+// screen
+const screen = new Screen();
 
 scene = new THREE.Scene();
 
@@ -252,5 +261,71 @@ window.addEventListener('resize', function() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-window.addEventListener("keydown", keyDown, false);
-window.addEventListener("keyup", keyUp, false);
+window.addEventListener("keydown", function(event) {
+  for (var key in keyPress) {
+    if (event.key == key) keyPress[key] = 1;
+  }
+});
+
+window.addEventListener("keyup", function(event) {
+  for (var key in keyPress) {
+    if (event.key == key) keyPress[key] = 0;
+  }
+});
+
+window.addEventListener("click", function() {
+  if (!controls.isLocked) {
+    controls.lock();
+  }
+});
+controls.addEventListener('lock', function () {
+  if (state == "start") {
+    stats.timer.start(stats.timeToElapse);
+    state = "play";
+    screen.hidePause();
+    screen.hideTitle();
+  } else if (state == "play") {
+    stats.timer.resume();
+    screen.hidePause();
+  } else if (state == "gameover") {
+    state = "start";
+    screen.hideEnd();
+    reset();
+    stats.timer.start(stats.timeToElapse); // reset timer
+    // reset bits TODO
+    bitsCorrupted = 0;
+    for (let bit of bitList) {
+         bit.mesh.visible = false;
+         bit = null;
+    }
+    bitList = INIT.initBits();
+  }
+});
+controls.addEventListener('unlock', function () {
+  if (state == "play") {
+    screen.showPause();
+    stats.timer.pause();
+  } else if (state == "gameover") {
+    screen.showEnd();
+  }
+} );
+stats.timer.on('done', () => {
+  controls.unlock();
+  state = "gameover";
+  // need to do restart
+});
+
+function reset() {
+  sphereBody.position = new CANNON.Vec3(0, 10, 0);
+  sphereMesh.position.copy(sphereBody.position);
+  sphereBody.velocity = new CANNON.Vec3(0, 0, 0);
+  sphereBody.quaternion = sphereBody.initQuaternion;
+  sphereMesh.quaternion.copy(sphereBody.quaternion);
+  for (let i = 0; i < groundMeshes.length; i++) {
+    groundBodies[i].position = groundBodies[i].initPosition;
+    groundMeshes[i].position.copy(groundBodies[i].position);
+  }
+  sphereBody.angularVelocity = new CANNON.Vec3(0, 0, 0);
+  sphereDir = new THREE.Vector3(0, 0, 1);
+  updateCamera();
+}
