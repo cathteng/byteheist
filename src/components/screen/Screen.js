@@ -1,5 +1,5 @@
 import $ from "jquery";
-import "./screen.css"
+import "./screen.css";
 
 class Screen {
   constructor() {
@@ -18,7 +18,7 @@ class Screen {
     ));
     $("#screen").show();
     $('body').append($(
-      `<div id="pause" class="screen">
+      `<div id="pause" class="screen mid">
       <h2>GAME PAUSED</h2>
       <div style="text-align: center">
         <span class="blinking">CLICK TO RESUME</span>
@@ -27,6 +27,18 @@ class Screen {
       `
     ));
     $("#pause").hide();
+
+    $('body').append($(
+      `<div id="end" class="screen mid">
+      <h2>GAME PAUSED</h2>
+      <div style="text-align: center">
+        <p>You were caught by the antivirus!</p>
+        <span class="blinking">CLICK TO RESTART</span>
+      </div>
+      </div>
+      `
+    ));
+    $("#end").hide();
   }
 
   hideTitle() {
@@ -37,6 +49,9 @@ class Screen {
   }
   showPause() {
     $("#pause").show();
+  }
+  showEnd() {
+    $("#end").show();
   }
 }
 

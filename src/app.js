@@ -2,7 +2,7 @@ import * as CANNON from "cannon-es";
 import * as THREE from 'three';
 import {PointerLockControls} from 'three/examples/jsm/controls/PointerLockControls.js';
 import { Ball, Bit } from './components/objects';
-import { Countdown, Stats } from './components/stats';
+import { Stats } from './components/stats';
 import { Screen } from './components/screen';
 import $ from "jquery";
 
@@ -32,9 +32,7 @@ document.body.appendChild(canvas);
 // jquery
 $('body').css('font-family',"monospace");
 // stats
-const stats = new Stats();
-// timer
-const timer = new Countdown(20*1000);
+const stats = new Stats(20*1000);
 // screen
 const screen = new Screen();
 
@@ -268,7 +266,6 @@ function animate() {
     if (controls.isLocked) {
       move();
       stats.update(bitsCorrupted);
-      timer.update();
     }
     updateCamera();
 
@@ -308,13 +305,24 @@ controls.addEventListener('lock', function () {
   screen.hidePause();
   screen.hideTitle();
   if (state == "start") {
-    timer.timer.start(timer.timeToElapse);
+    stats.timer.start(stats.timeToElapse);
     state = "play";
-  } else {
-    timer.timer.resume();
+  } else if (state == "play") {
+    stats.timer.resume();
+  } else if (state == "gameover") {
+    state = "start";
   }
 });
 controls.addEventListener('unlock', function () {
-  screen.showPause();
-  timer.timer.pause();
+  if (state == "play") {
+    screen.showPause();
+    stats.timer.pause();
+  } else if (state == "gameover") {
+    screen.showEnd();
+  }
 } );
+stats.timer.on('done', () => {
+  controls.unlock();
+  state = "gameover";
+  // need to do restart
+});

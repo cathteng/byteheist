@@ -28,7 +28,7 @@
     animation: shake 2.5s linear forwards;
 }
 
-#pause h2 {
+.mid h2 {
     position: relative;
     font-family: monospace;
     font-size: 96px;
