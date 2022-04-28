@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import {PointerLockControls} from 'three/examples/jsm/controls/PointerLockControls.js';
 import { Ball, Bit } from './components/objects';
 import { Countdown, Stats } from './components/stats';
+import { Screen, Pause } from './components/screen';
 import $ from "jquery";
 
 // EXPORTS
@@ -18,6 +19,7 @@ const viewOffset = new CANNON.Vec3(0, 6, 0);
 
 // VARS
 var controls;
+var state = "start";
 
 // set up renderer
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -29,6 +31,15 @@ document.body.appendChild(canvas);
 
 // jquery
 $('body').css('font-family',"monospace");
+// stats
+const stats = new Stats();
+// timer
+const timer = new Countdown(20*1000);
+// screen
+const pause = new Pause();
+const pauseElem = document.getElementById('pause');
+const screen = new Screen();
+const screenElem = document.getElementById('screen');
 
 scene = new THREE.Scene();
 world = new CANNON.World({
@@ -50,11 +61,6 @@ const camera = new THREE.PerspectiveCamera(
     0.1,
     1000
 );
-
-// stats
-const stats = new Stats();
-// timer
-const timer = new Countdown(20*1000);
 
 // https://github.com/mrdoob/three.js/blob/dev/examples/misc_controls_pointerlock.html
 controls = new PointerLockControls( camera, document.body );
@@ -186,8 +192,6 @@ let sphereDir = new THREE.Vector3(0, 0, 1);
 var keyPress = {"w": 0, "a": 0, "s": 0, "d": 0, " ": 0};
 
 function keyDown(event) {
-    if (event.key == "l" && controls.isLocked) controls.unlock();
-    else if (event.key == "l" && !controls.isLocked) controls.lock();
     for (var key in keyPress) {
         if (event.key == key) keyPress[key] = 1;
     }
@@ -199,7 +203,7 @@ function keyUp(event) {
     }
 }
 
-function focusCamera() {
+function updateCamera() {
     let negDirection = sphereDir.clone().normalize().negate();
     negDirection = negDirection.multiplyScalar(30);
     let destination = sphereMesh.position.clone().add(negDirection);
@@ -218,21 +222,21 @@ function move() {
     for (const key in keyPress) {
         if (keyPress[key] == 1) {
             switch (key) {
-              case "w": // Apply forward impulse if ArrowUp
+              case "w": // forward
                 sphereBody.applyImpulse(impulseVec);
                 break;
-              case "s": // Apply backward impulse if ArrowDown
+              case "s": // backward
                 sphereBody.applyImpulse(impulseVec.negate());
                 break;
-              case "d": // Change the ball's direction, update camera if ArrowRight
+              case "d": // right
                 sphereDir.applyEuler(new THREE.Euler(0, -angle, 0));
-                focusCamera();
+                updateCamera();
                 break;
-              case "a": // Change the ball's direction; update camera if ArrowLeft
+              case "a": // left
                 sphereDir.applyEuler(new THREE.Euler(0, angle, 0));
-                focusCamera();
+                updateCamera();
                 break;
-              case " ": // Jump! (only if not in the air) if Spacebar
+              case " ": // jump
                 if (Math.abs(sphereBody.velocity.y) <= 0.001){
                     sphereBody.applyImpulse(
                         new CANNON.Vec3(0, 40, 0),
@@ -264,13 +268,12 @@ function animate() {
       bitsCorrupted += bitlist[i].handleCollisions(sphereMesh.position);
     }
 
-    stats.update(bitsCorrupted);
-    timer.update();
-
     if (controls.isLocked) {
       move();
+      stats.update(bitsCorrupted);
+      timer.update();
     }
-    focusCamera();
+    updateCamera();
 
     // reset if you fall off
     if (sphereMesh.position.y < -40) {
@@ -283,7 +286,7 @@ function animate() {
         groundMesh.position.copy(groundBody.position);
         sphereBody.angularVelocity = new CANNON.Vec3(0, 0, 0);
         sphereDir = new THREE.Vector3(0, 0, 1);
-        focusCamera();
+        updateCamera();
     }
 
     renderer.render(scene, camera);
@@ -299,3 +302,22 @@ window.addEventListener('resize', function() {
 
 window.addEventListener("keydown", keyDown, false);
 window.addEventListener("keyup", keyUp, false);
+window.addEventListener("click", function() {
+  if (!controls.isLocked) {
+    controls.lock();
+  }
+});
+controls.addEventListener('lock', function () {
+  pauseElem.style.display = "none";
+  screenElem.style.display = "none";
+  if (state == "start") {
+    timer.timer.start(timer.timeToElapse);
+    state = "play";
+  } else {
+    timer.timer.resume();
+  }
+});
+controls.addEventListener('unlock', function () {
+  pauseElem.style.display = "block";
+  timer.timer.pause();
+} );

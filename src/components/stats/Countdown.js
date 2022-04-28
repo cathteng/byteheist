@@ -6,8 +6,6 @@ class Countdown {
     this.timeToElapse = time;
     this.timer = new Timer();
 
-    this.timer.start(this.timeToElapse);
-
     $('body').append($(
       '<div style="position: absolute; color: white; top: 0; right: 0">Time remaining: <span id="time-remaining"></span></div>'
   ));
