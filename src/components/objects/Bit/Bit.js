@@ -2,9 +2,10 @@ import * as THREE from "three";
 import * as APP from "../../../app.js";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import MODEL from './one.gltf';
+import MODEL2 from './bit0.gltf'
 
 class Bit {
-    constructor(position) {
+    constructor(num, position) {
         this.counter = 0;
         this.position = position.clone();
         this.corrupted = false;
@@ -19,12 +20,24 @@ class Bit {
         });
 
         const loader = new GLTFLoader();
-        loader.load(MODEL, (gltf) => {;
+
+        if (num === 1){
+            loader.load(MODEL, (gltf) => {;
             gltf.scene.scale.set(2, 2, 2);
             this.mesh = gltf.scene;
             this.mesh.position.copy(position);
             APP.scene.add(gltf.scene);
-        });
+            });
+        }
+        else if (num === 0){
+            loader.load(MODEL2, (gltf) => {;
+            gltf.scene.scale.set(2, 2, 2);
+            this.mesh = gltf.scene;
+            this.mesh.position.copy(position);
+            APP.scene.add(gltf.scene);
+            });
+        }
+        
     }
     // like going viral
     handleCollisions(spherePosition) {
