@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import {PointerLockControls} from 'three/examples/jsm/controls/PointerLockControls.js';
 import { Ball, Bit } from './components/objects';
 import { Countdown, Stats } from './components/stats';
-import { Screen, Pause } from './components/screen';
+import { Screen } from './components/screen';
 import $ from "jquery";
 
 // EXPORTS
@@ -36,10 +36,7 @@ const stats = new Stats();
 // timer
 const timer = new Countdown(20*1000);
 // screen
-const pause = new Pause();
-const pauseElem = document.getElementById('pause');
 const screen = new Screen();
-const screenElem = document.getElementById('screen');
 
 scene = new THREE.Scene();
 world = new CANNON.World({
@@ -308,8 +305,8 @@ window.addEventListener("click", function() {
   }
 });
 controls.addEventListener('lock', function () {
-  pauseElem.style.display = "none";
-  screenElem.style.display = "none";
+  screen.hidePause();
+  screen.hideTitle();
   if (state == "start") {
     timer.timer.start(timer.timeToElapse);
     state = "play";
@@ -318,6 +315,6 @@ controls.addEventListener('lock', function () {
   }
 });
 controls.addEventListener('unlock', function () {
-  pauseElem.style.display = "block";
+  screen.showPause();
   timer.timer.pause();
 } );
