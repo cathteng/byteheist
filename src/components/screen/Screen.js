@@ -47,6 +47,9 @@ class Screen {
   hidePause() {
     $("#pause").hide();
   }
+  hideEnd() {
+    $("#end").hide();
+  }
   showPause() {
     $("#pause").show();
   }

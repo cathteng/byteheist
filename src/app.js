@@ -22,7 +22,7 @@ const groundMeshes = [];
 const groundBodies = [];
 const boxMeshes = [];
 const boxBodies = [];
-const bitlist = INIT.initBits();
+var bitList = INIT.initBits();
 const bounding_boxes = [];
 
 // VARS
@@ -84,7 +84,7 @@ for (let i = 0; i < groundMeshes.length; i++) {
 
 // box
 const boxPhysMat = new CANNON.Material('box');
-const boxObj = INIT.initBox(20, 1, 5, new CANNON.Vec3(0, 2.5, 0));
+const boxObj = INIT.initBox(20, 1, 4, new CANNON.Vec3(0, 2.5, 0));
 boxMeshes.push(boxObj[0]);
 boxBodies.push(boxObj[1]);
 
@@ -133,6 +133,7 @@ for (const body of groundBodies) {
   bounding_boxes.push(body.aabb.upperBound.y + 0.2)
 }
 
+// ref: https://github.com/oliverschwartz/going-viral/blob/master/src/app.js
 function updateCamera() {
     let negDirection = sphereDir.clone().normalize().negate();
     negDirection = negDirection.multiplyScalar(30);
@@ -145,6 +146,7 @@ function updateCamera() {
     camera.lookAt(sphereMesh.position.clone().add(viewOffset));
   }
 
+// ref: https://github.com/oliverschwartz/going-viral/blob/master/src/app.js
 function move() {
     let impulseVec = new CANNON.Vec3(sphereDir.x, 0, sphereDir.z);
     impulseVec.scale(10);
@@ -195,8 +197,8 @@ function animate() {
     sphereMesh.position.copy(sphereBody.position);
     sphereMesh.quaternion.copy(sphereBody.quaternion);
 
-    for (let i = 0; i < bitlist.length; i++){
-      bitsCorrupted += bitlist[i].handleCollisions(sphereMesh.position);
+    for (let i = 0; i < bitList.length; i++){
+      bitsCorrupted += bitList[i].handleCollisions(sphereMesh.position);
     }
 
     if (controls.isLocked) {
@@ -207,18 +209,7 @@ function animate() {
 
     // reset if you fall off
     if (sphereMesh.position.y < -40) {
-        sphereBody.position = new CANNON.Vec3(0, 10, 0);
-        sphereMesh.position.copy(sphereBody.position);
-        sphereBody.velocity = new CANNON.Vec3(0, 0, 0);
-        sphereBody.quaternion = sphereBody.initQuaternion;
-        sphereMesh.quaternion.copy(sphereBody.quaternion);
-        for (let i = 0; i < groundMeshes.length; i++) {
-          groundBodies[i].position = groundBodies[i].initPosition;
-          groundMeshes[i].position.copy(groundBodies[i].position);
-        }
-        sphereBody.angularVelocity = new CANNON.Vec3(0, 0, 0);
-        sphereDir = new THREE.Vector3(0, 0, 1);
-        updateCamera();
+      reset();
     }
 
     renderer.render(scene, camera);
@@ -250,15 +241,26 @@ window.addEventListener("click", function() {
   }
 });
 controls.addEventListener('lock', function () {
-  screen.hidePause();
-  screen.hideTitle();
   if (state == "start") {
     stats.timer.start(stats.timeToElapse);
     state = "play";
+    screen.hidePause();
+    screen.hideTitle();
   } else if (state == "play") {
     stats.timer.resume();
+    screen.hidePause();
   } else if (state == "gameover") {
     state = "start";
+    screen.hideEnd();
+    reset();
+    stats.timer.start(stats.timeToElapse); // reset timer
+    // reset bits TODO
+    for (const bit of bitList) {
+    //   bit.mesh.visible = true;
+    //   bit.mesh.corrupted = false;
+    //   bit.counter = 0;
+    //   bit.position = bit.originalPosition;
+    }
   }
 });
 controls.addEventListener('unlock', function () {
@@ -274,3 +276,18 @@ stats.timer.on('done', () => {
   state = "gameover";
   // need to do restart
 });
+
+function reset() {
+  sphereBody.position = new CANNON.Vec3(0, 10, 0);
+  sphereMesh.position.copy(sphereBody.position);
+  sphereBody.velocity = new CANNON.Vec3(0, 0, 0);
+  sphereBody.quaternion = sphereBody.initQuaternion;
+  sphereMesh.quaternion.copy(sphereBody.quaternion);
+  for (let i = 0; i < groundMeshes.length; i++) {
+    groundBodies[i].position = groundBodies[i].initPosition;
+    groundMeshes[i].position.copy(groundBodies[i].position);
+  }
+  sphereBody.angularVelocity = new CANNON.Vec3(0, 0, 0);
+  sphereDir = new THREE.Vector3(0, 0, 1);
+  updateCamera();
+}

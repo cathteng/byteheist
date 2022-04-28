@@ -7,17 +7,11 @@ import MODEL2 from './bit0.gltf'
 class Bit {
     constructor(num, position) {
         this.counter = 0;
+        this.originalPosition = position.clone();
         this.position = position.clone();
         this.corrupted = false;
         this.origY = position.clone().y;
         this.mesh = new THREE.Group();
-
-        // const bitCollectGeo = new THREE.SphereGeometry(1);
-        const bitCollectGeo = new THREE.BoxGeometry(2, 2, 2);
-        const bitCollectMat = new THREE.MeshBasicMaterial({
-            color: 0x0000ff,
-            wireframe: true,
-        });
 
         const loader = new GLTFLoader();
 
