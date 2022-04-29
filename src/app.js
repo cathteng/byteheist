@@ -70,12 +70,29 @@ camera.position.set(0, 20, -30);
 // ground
 const groundPhysMat = new CANNON.Material('ground');
 
-const groundObj = INIT.initGround(100, 40, 0.2, new CANNON.Vec3(0, 0, 0));
-groundMeshes.push(groundObj[0]);
-groundBodies.push(groundObj[1]);
+
+const start_width = 100;
+const start_height = 40;
+const start_depth = 0.2;
+const start_x_pos = 0;
+const start_y_pos = 0;
+const start_z_pos = 0;
+const startObj = INIT.initStart(start_width, start_height, start_depth, new CANNON.Vec3(start_x_pos, start_y_pos, start_z_pos));
+groundMeshes.push(startObj[0]);
+groundBodies.push(startObj[1]);
 const groundObj2 = INIT.initGround(100, 40, 0.2, new CANNON.Vec3(0, 0, 50));
 groundMeshes.push(groundObj2[0]);
 groundBodies.push(groundObj2[1]);
+const end_width = 100;
+const end_height = 40;
+const end_depth = 0.2;
+const end_x_pos = 0;
+const end_y_pos = 0;
+const end_z_pos = 100;
+const endObj = INIT.initEnd(end_width, end_height, end_depth, new CANNON.Vec3(end_x_pos, end_y_pos, end_z_pos));
+groundMeshes.push(endObj[0]);
+groundBodies.push(endObj[1]);
+
 
 for (let i = 0; i < groundMeshes.length; i++) {
   scene.add(groundMeshes[i]);
@@ -183,6 +200,7 @@ function move() {
 
 function animate() {
     world.step(timeStep);
+    //console.log(sphereMesh.position);
 
     for (let i = 0; i < groundMeshes.length; i++) {
       groundMeshes[i].position.copy(groundBodies[i].position);
@@ -210,6 +228,19 @@ function animate() {
     // reset if you fall off
     if (sphereMesh.position.y < -40) {
       reset();
+    }
+
+    //(sphereMesh.position.z > z_pos - depth && sphereMesh.position.z < z_pos + depth)
+    //&& 
+    // sphereMesh.position.x > x_pos - width && sphereMesh.position.x < x_pos + width
+    if ((sphereMesh.position.z > start_z_pos - start_height/2 && sphereMesh.position.z < start_z_pos + start_height/2) &&
+        (sphereMesh.position.x > start_x_pos - start_width/2 && sphereMesh.position.x < start_x_pos + start_width/2)){
+        console.log('start');
+    }
+
+    if ((sphereMesh.position.z > end_z_pos - end_height/2 && sphereMesh.position.z < end_z_pos + end_height/2) &&
+        (sphereMesh.position.x > end_x_pos - end_width/2 && sphereMesh.position.x < end_x_pos + end_width/2)){
+      console.log('done');
     }
 
     renderer.render(scene, camera);

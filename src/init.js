@@ -28,6 +28,56 @@ export function initGround(width, height, depth, position) {
     return [groundMesh, groundBody];
 }
 
+export function initStart(width, height, depth, position) {
+    const groundGeo = new THREE.PlaneGeometry(width, height);
+    const groundMat = new THREE.MeshBasicMaterial({ 
+    color: '#0045AD',
+    reflectivity: 0.0,
+        side: THREE.DoubleSide,
+        wireframe: false,
+    });
+    const groundMesh = new THREE.Mesh(groundGeo, groundMat);
+
+    const groundPhysMat = new CANNON.Material('ground');
+    const groundBody = new CANNON.Body({
+        // shape: new CANNON.Plane(), // use this for an infinite plane
+        //mass: 10
+        // change for length along with groundGeo
+        shape: new CANNON.Box(new CANNON.Vec3(width/2, height/2, depth/2)), // use this for a finite plane
+        type: CANNON.Body.STATIC,
+        material: groundPhysMat,
+        position: position
+    });
+    groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
+
+    return [groundMesh, groundBody];
+}
+
+export function initEnd(width, height, depth, position) {
+    const groundGeo = new THREE.PlaneGeometry(width, height);
+    const groundMat = new THREE.MeshBasicMaterial({ 
+    color: '#AD2000',
+    reflectivity: 0.0,
+        side: THREE.DoubleSide,
+        wireframe: false,
+    });
+    const groundMesh = new THREE.Mesh(groundGeo, groundMat);
+
+    const groundPhysMat = new CANNON.Material('ground');
+    const groundBody = new CANNON.Body({
+        // shape: new CANNON.Plane(), // use this for an infinite plane
+        //mass: 10
+        // change for length along with groundGeo
+        shape: new CANNON.Box(new CANNON.Vec3(width/2, height/2, depth/2)), // use this for a finite plane
+        type: CANNON.Body.STATIC,
+        material: groundPhysMat,
+        position: position
+    });
+    groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
+
+    return [groundMesh, groundBody];
+}
+
 export function initBox(width, height, depth, position) {
     const boxGeo = new THREE.BoxGeometry(width, height, depth);
     const boxMat = new THREE.MeshBasicMaterial({
