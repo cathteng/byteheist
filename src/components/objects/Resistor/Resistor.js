@@ -1,19 +1,47 @@
 import { Group } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import MODEL from './virus.gltf';
+import * as CANNON from "cannon-es";
+import MODEL from './resistor.gltf';
 
 class Resistor extends Group {
-    constructor() {
+    constructor(position) {
         // Call parent Group() constructor
         super();
-
         const loader = new GLTFLoader();
+        const SCALE = 50;
 
-        this.name = 'virus';
+        this.name = 'resistor';
         loader.load(MODEL, (gltf) => {
-            gltf.scene.scale.set(2, 2, 2);
-            this.add(gltf.scene);
+            let obj = gltf.scene;
+            obj.scale.set(SCALE, SCALE, SCALE);
+            obj.rotateX(-Math.PI / 2);
+            this.add(obj);
+            this.position.set(position.x, position.y, position.z);
         });
+        let FACTOR = 1 / 50;
+        let resistorWidth = FACTOR * SCALE * 13;
+        let resistorHeight = FACTOR * SCALE * 6;
+        let resistorDepth = FACTOR * SCALE * 2.6;
+        const groundPhysMat = new CANNON.Material('ground');
+        let resistorBody = new CANNON.Body({
+            // change for length along with groundGeo
+        
+            shape: new CANNON.Box(new CANNON.Vec3(resistorWidth, 
+              resistorHeight, resistorDepth)), // use this for a finite plane
+            type: CANNON.Body.STATIC,
+            material: groundPhysMat, //
+            position: position
+          });
+        resistorBody.fixedRotation = true;
+        this.body = resistorBody;
+    }
+
+    // vector3 of axis rotations
+    doRotation(angle) {
+        this.rotateX(angle.x);
+        this.rotateY(angle.y);
+        this.rotateZ(angle.z);
+        this.body.quaternion.setFromEuler(angle.x, angle.y, angle.z);
     }
 }
 

@@ -114,8 +114,12 @@ for (let i = 0; i < boxMeshes.length; i++) {
   world.addBody(boxBodies[i]);
 }
 
-const resistor = new Resistor();
-console.log(resistor);
+const resistor = new Resistor(new THREE.Vector3(15, 0, 0));
+resistor.doRotation(new THREE.Vector3(0, Math.PI / 2, 0));
+scene.add(resistor);
+// debugger;
+world.addBody(resistor.body);
+
 // VIRUS
 const sphereMesh = new Ball();
 scene.add(sphereMesh);
