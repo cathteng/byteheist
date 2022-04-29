@@ -32,6 +32,11 @@
     color: #E70000;
     margin-bottom: 0px;
 }
+
+#win h2 {
+    margin-bottom: 0px;
+}
+
 .mid h2 {
     position: relative;
     font-family: monospace;
@@ -126,7 +131,7 @@ h1::after {
 
  /* ref https://jsfiddle.net/yo5kw3qd/ start */
  
- #end .blinking {
+ #end, #win .blinking {
      color: #39ff14;
  }
 .blinking {

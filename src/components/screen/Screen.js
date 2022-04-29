@@ -39,6 +39,18 @@ class Screen {
       `
     ));
     $("#end").hide();
+    
+    $('body').append($(
+      `<div id="win" class="screen mid">
+      <h2>YOU WON!</h2>
+      <div style="text-align: center">
+        <p>You completely corrupted the computer.</p>
+        <span class="blinking">CLICK TO RESTART</span>
+      </div>
+      </div>
+      `
+    ));
+    $("#win").hide();
   }
 
   hideTitle() {
@@ -50,11 +62,17 @@ class Screen {
   hideEnd() {
     $("#end").hide();
   }
+  hideWin() {
+    $("#win").hide();
+  }
   showPause() {
     $("#pause").show();
   }
   showEnd() {
     $("#end").show();
+  }
+  showWin() {
+    $("#win").show();
   }
 }
 

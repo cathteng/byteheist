@@ -10,6 +10,7 @@ import { BasicLights } from './components/lights';
 import $ from "jquery";
 import * as INIT from './init.js';
 import CannonDebugger from 'cannon-es-debugger'
+import Timer from "tiny-timer";
 
 // EXPORTS
 export var scene;
@@ -248,12 +249,14 @@ function animate() {
       // sphereMesh.position.x > x_pos - width && sphereMesh.position.x < x_pos + width
       if ((sphereMesh.position.z > start_z_pos - start_height/2 && sphereMesh.position.z < start_z_pos + start_height/2) &&
           (sphereMesh.position.x > start_x_pos - start_width/2 && sphereMesh.position.x < start_x_pos + start_width/2)){
-          console.log('start');
+          // console.log('start');
       }
 
       if ((sphereMesh.position.z > end_z_pos - end_height/2 && sphereMesh.position.z < end_z_pos + end_height/2) &&
-          (sphereMesh.position.x > end_x_pos - end_width/2 && sphereMesh.position.x < end_x_pos + end_width/2)){
-        console.log('done');
+          (sphereMesh.position.x > end_x_pos - end_width/2 && sphereMesh.position.x < end_x_pos + end_width/2) &&
+          bitsCorrupted == 8){
+        state = "win";
+        controls.unlock();
       }
     }
     renderer.render(scene, camera);
@@ -290,36 +293,29 @@ controls.addEventListener('lock', function () {
     state = "play";
     screen.hidePause();
     screen.hideTitle();
+    screen.hideWin();
   } else if (state == "play") {
     stats.timer.resume();
     screen.hidePause();
   } else if (state == "gameover") {
-    state = "start";
-    screen.hideEnd();
-    reset();
-    stats.timer.start(stats.timeToElapse); // reset timer
-    // reset bits TODO
-    bitsCorrupted = 0;
-    for (let bit of bitList) {
-      bit.mesh.visible = false;
-      bit = null;
-    }
-    bitList = INIT.initBits();
+    restart();
+  } else if (state == "win") {
+    restart();
   }
 });
 controls.addEventListener('unlock', function () {
   if (state == "play") {
     screen.showPause();
     stats.timer.pause();
-    for (var key in keyPress) keyPress[key] = 0;
   } else if (state == "gameover") {
     screen.showEnd();
+  } else if (state == "win") {
+    screen.showWin();
   }
 } );
 stats.timer.on('done', () => {
   controls.unlock();
   state = "gameover";
-  // need to do restart
 });
 
 function reset() {
@@ -335,4 +331,19 @@ function reset() {
   sphereBody.angularVelocity = new CANNON.Vec3(0, 0, 0);
   sphereDir = new THREE.Vector3(0, 0, 1);
   updateCamera();
+}
+
+function restart() {
+  state = "play";
+  screen.hideEnd();
+  screen.hideWin();
+  reset();
+  stats.timer.stop();
+  stats.timer.start(stats.timeToElapse);
+  bitsCorrupted = 0;
+  for (let bit of bitList) {
+    bit.mesh.visible = false;
+    bit = null;
+  }
+  bitList = INIT.initBits();
 }
