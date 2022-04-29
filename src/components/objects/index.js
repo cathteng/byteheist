@@ -3,3 +3,4 @@ export * from './Land';
 export * from './Ball';
 export * from './Bit';
 export * from './Resistor';
+export * from './Arrow';

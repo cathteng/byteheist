@@ -2,12 +2,11 @@ import * as THREE from "three";
 import * as APP from "../../../app.js";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import MODEL from './one.gltf';
-import MODEL2 from './bit0.gltf'
+import MODEL2 from './zero.gltf'
 
 class Bit {
     constructor(num, position) {
         this.counter = 0;
-        this.originalPosition = position.clone();
         this.position = position.clone();
         this.corrupted = false;
         this.origY = position.clone().y;

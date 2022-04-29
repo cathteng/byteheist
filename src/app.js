@@ -3,14 +3,13 @@
 import * as CANNON from "cannon-es";
 import * as THREE from 'three';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js';
-import { Ball, Resistor } from './components/objects';
+import { Ball, Resistor, Arrow } from './components/objects';
 import { Stats } from './components/stats';
 import { Screen } from './components/screen';
 import { BasicLights } from './components/lights';
 import $ from "jquery";
 import * as INIT from './init.js';
-import CannonDebugger from 'cannon-es-debugger'
-import Timer from "tiny-timer";
+import CannonDebugger from 'cannon-es-debugger';
 
 // EXPORTS
 export var scene;
@@ -28,6 +27,7 @@ const boxMeshes = [];
 const boxBodies = [];
 var bitList = INIT.initBits();
 const bounding_boxes = [];
+const arrow = new Arrow(new CANNON.Vec3(0, 10, 100));
 
 // VARS
 var controls;
@@ -79,22 +79,20 @@ const groundPhysMat = new CANNON.Material('ground');
 const start_width = 100;
 const start_height = 40;
 const start_depth = 0.2;
-const start_x_pos = 0;
-const start_y_pos = 0;
-const start_z_pos = 0;
-const startObj = INIT.initStart(start_width, start_height, start_depth, new CANNON.Vec3(start_x_pos, start_y_pos, start_z_pos));
+const start_pos = new CANNON.Vec3(0, 0, 0);
+const startObj = INIT.initGround(start_width, start_height, start_depth, start_pos, '#0045AD');
 groundMeshes.push(startObj[0]);
 groundBodies.push(startObj[1]);
-const groundObj2 = INIT.initGround(100, 40, 0.2, new CANNON.Vec3(0, 0, 50));
+const groundObj2 = INIT.initGround(100, 40, 0.2, new CANNON.Vec3(0, 0, 50), '#50EE25');
 groundMeshes.push(groundObj2[0]);
 groundBodies.push(groundObj2[1]);
-const end_width = 100;
-const end_height = 40;
+const end_width = 20;
+const end_height = 20;
 const end_depth = 0.2;
-const end_x_pos = 0;
-const end_y_pos = 0;
-const end_z_pos = 100;
-const endObj = INIT.initEnd(end_width, end_height, end_depth, new CANNON.Vec3(end_x_pos, end_y_pos, end_z_pos));
+const end_pos = new CANNON.Vec3(0, 0, 100);
+
+const end_specs = new CANNON.Vec3(end_width, end_height, end_depth);
+const endObj = INIT.initGround(end_width, end_height, end_depth, end_pos, '#FFD700');
 groundMeshes.push(endObj[0]);
 groundBodies.push(endObj[1]);
 
@@ -234,29 +232,36 @@ function animate() {
         bitsCorrupted += bitList[i].handleCollisions(sphereMesh.position);
       }
 
+      arrow.bob();
+
       move();
       stats.update(bitsCorrupted);
-      
       updateCamera();
 
       // reset if you fall off
-      if (sphereMesh.position.y < -40) {
-        reset();
-      }
+      if (sphereMesh.position.y < -40) reset();
 
       //(sphereMesh.position.z > z_pos - depth && sphereMesh.position.z < z_pos + depth)
       //&& 
       // sphereMesh.position.x > x_pos - width && sphereMesh.position.x < x_pos + width
-      if ((sphereMesh.position.z > start_z_pos - start_height/2 && sphereMesh.position.z < start_z_pos + start_height/2) &&
-          (sphereMesh.position.x > start_x_pos - start_width/2 && sphereMesh.position.x < start_x_pos + start_width/2)){
+      // if ((sphereMesh.position.z > start_z_pos - start_height/2 && sphereMesh.position.z < start_z_pos + start_height/2) &&
+          // (sphereMesh.position.x > start_x_pos - start_width/2 && sphereMesh.position.x < start_x_pos + start_width/2)){
           // console.log('start');
-      }
+      // }
 
-      if ((sphereMesh.position.z > end_z_pos - end_height/2 && sphereMesh.position.z < end_z_pos + end_height/2) &&
-          (sphereMesh.position.x > end_x_pos - end_width/2 && sphereMesh.position.x < end_x_pos + end_width/2) &&
-          bitsCorrupted == 8){
-        state = "win";
-        controls.unlock();
+      if (bitsCorrupted > 0) {
+        const white = new THREE.MeshBasicMaterial({ 
+          color: '#ffffff',
+          reflectivity: 0.0,
+          side: THREE.DoubleSide,
+          wireframe: false,
+        });
+        groundMeshes[groundMeshes.length-1].material = white;
+        if ((sphereMesh.position.z > end_pos.z - end_height/2 && sphereMesh.position.z < end_pos.z + end_height/2) &&
+            (sphereMesh.position.x > end_pos.x - end_width/2 && sphereMesh.position.x < end_pos.z + end_width/2)) {
+          state = "win";
+          controls.unlock();
+        }
       }
     }
     renderer.render(scene, camera);

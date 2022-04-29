@@ -3,10 +3,10 @@ import * as THREE from 'three';
 import * as APP from "./app.js";
 import { Bit } from './components/objects';
 
-export function initGround(width, height, depth, position) {
-    const groundGeo = new THREE.PlaneGeometry(width, height);
+export function initGround(width, height, depth, position, color) {
+    const groundGeo = new THREE.PlaneGeometry(width, height, 20, 20);
     const groundMat = new THREE.MeshBasicMaterial({ 
-    color: '#50EE25',
+    color: color,
     reflectivity: 0.0,
         side: THREE.DoubleSide,
         wireframe: false,
@@ -28,71 +28,24 @@ export function initGround(width, height, depth, position) {
     return [groundMesh, groundBody];
 }
 
-export function initStart(width, height, depth, position) {
-    const groundGeo = new THREE.PlaneGeometry(width, height);
-    const groundMat = new THREE.MeshBasicMaterial({ 
-    color: '#0045AD',
-    reflectivity: 0.0,
-        side: THREE.DoubleSide,
-        wireframe: false,
-    });
-    const groundMesh = new THREE.Mesh(groundGeo, groundMat);
-
-    const groundPhysMat = new CANNON.Material('ground');
-    const groundBody = new CANNON.Body({
-        // shape: new CANNON.Plane(), // use this for an infinite plane
-        //mass: 10
-        // change for length along with groundGeo
-        shape: new CANNON.Box(new CANNON.Vec3(width/2, height/2, depth/2)), // use this for a finite plane
-        type: CANNON.Body.STATIC,
-        material: groundPhysMat,
-        position: position
-    });
-    groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
-
-    return [groundMesh, groundBody];
-}
-
-export function initEnd(width, height, depth, position) {
-    const groundGeo = new THREE.PlaneGeometry(width, height);
-    const groundMat = new THREE.MeshBasicMaterial({ 
-    color: '#AD2000',
-    reflectivity: 0.0,
-        side: THREE.DoubleSide,
-        wireframe: false,
-    });
-    const groundMesh = new THREE.Mesh(groundGeo, groundMat);
-
-    const groundPhysMat = new CANNON.Material('ground');
-    const groundBody = new CANNON.Body({
-        // shape: new CANNON.Plane(), // use this for an infinite plane
-        //mass: 10
-        // change for length along with groundGeo
-        shape: new CANNON.Box(new CANNON.Vec3(width/2, height/2, depth/2)), // use this for a finite plane
-        type: CANNON.Body.STATIC,
-        material: groundPhysMat,
-        position: position
-    });
-    groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
-
-    return [groundMesh, groundBody];
-}
+// export function 
 
 export function initBox(width, height, depth, position) {
     const boxGeo = new THREE.BoxGeometry(width, height, depth);
-    const boxMat = new THREE.MeshBasicMaterial({
-        color: '#E5D449',
-    reflectivity: 0.0,
-        wireframe: false
+    const boxMat = new THREE.MeshNormalMaterial({
+    //     color: '#E5D449',
+    // reflectivity: 0.0,
+    //     wireframe: false
     });
     const boxMesh = new THREE.Mesh(boxGeo, boxMat);
 
     const boxPhysMat = new CANNON.Material('box');
     const boxBody = new CANNON.Body({
-        mass: 1500,
+        // mass: 1500,
         shape: new CANNON.Box(new CANNON.Vec3(width/2, height/2, depth/2)),
         position: position,
-        material: boxPhysMat
+        material: boxPhysMat,
+        type: CANNON.Body.STATIC
     });
     boxBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
 
