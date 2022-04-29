@@ -1,12 +1,15 @@
+// starter code also from https://github.com/WaelYasmina/cannontutorial/blob/main/src/js/scripts.js
+
 import * as CANNON from "cannon-es";
 import * as THREE from 'three';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js';
-import { Ball } from './components/objects';
+import { Ball, Resistor } from './components/objects';
 import { Stats } from './components/stats';
 import { Screen } from './components/screen';
 import { BasicLights } from './components/lights';
 import $ from "jquery";
 import * as INIT from './init.js';
+import CannonDebugger from 'cannon-es-debugger'
 
 // EXPORTS
 export var scene;
@@ -30,6 +33,7 @@ var controls;
 var state = "start";
 var sphereDir = new THREE.Vector3(0, 0, 1);
 var keyPress = {"w": 0, "a": 0, "s": 0, "d": 0, " ": 0};
+var cannonDebugger;
 
 // set up renderer
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -110,6 +114,8 @@ for (let i = 0; i < boxMeshes.length; i++) {
   world.addBody(boxBodies[i]);
 }
 
+const resistor = new Resistor();
+console.log(resistor);
 // VIRUS
 const sphereMesh = new Ball();
 scene.add(sphereMesh);
@@ -141,6 +147,8 @@ const boxSphereContactMat = new CANNON.ContactMaterial(
     {restitution: 0.1, friction: 0.7} // bounce factor
 );
 world.addContactMaterial(boxSphereContactMat);
+
+cannonDebugger = new CannonDebugger(scene, world);
 
 // bounding boxes for jumping on objects
 for (const body of boxBodies) {
@@ -199,50 +207,51 @@ function move() {
 }
 
 function animate() {
-    world.step(timeStep);
-    //console.log(sphereMesh.position);
-
-    for (let i = 0; i < groundMeshes.length; i++) {
-      groundMeshes[i].position.copy(groundBodies[i].position);
-      groundMeshes[i].quaternion.copy(groundBodies[i].quaternion);
-    }
-
-    for (let i = 0; i < boxMeshes.length; i++) {
-      boxMeshes[i].position.copy(boxBodies[i].position);
-      boxMeshes[i].quaternion.copy(boxBodies[i].quaternion);
-    }
-
-    sphereMesh.position.copy(sphereBody.position);
-    sphereMesh.quaternion.copy(sphereBody.quaternion);
-
-    for (let i = 0; i < bitList.length; i++){
-      bitsCorrupted += bitList[i].handleCollisions(sphereMesh.position);
-    }
-
     if (controls.isLocked) {
+      world.step(timeStep);
+
+      for (let i = 0; i < groundMeshes.length; i++) {
+        groundMeshes[i].position.copy(groundBodies[i].position);
+        groundMeshes[i].quaternion.copy(groundBodies[i].quaternion);
+      }
+
+      for (let i = 0; i < boxMeshes.length; i++) {
+        boxMeshes[i].position.copy(boxBodies[i].position);
+        boxMeshes[i].quaternion.copy(boxBodies[i].quaternion);
+      }
+
+      sphereMesh.position.copy(sphereBody.position);
+      sphereMesh.quaternion.copy(sphereBody.quaternion);
+
+      cannonDebugger.update();
+
+      for (let i = 0; i < bitList.length; i++){
+        bitsCorrupted += bitList[i].handleCollisions(sphereMesh.position);
+      }
+
       move();
       stats.update(bitsCorrupted);
-    }
-    updateCamera();
+      
+      updateCamera();
 
-    // reset if you fall off
-    if (sphereMesh.position.y < -40) {
-      reset();
-    }
+      // reset if you fall off
+      if (sphereMesh.position.y < -40) {
+        reset();
+      }
 
-    //(sphereMesh.position.z > z_pos - depth && sphereMesh.position.z < z_pos + depth)
-    //&& 
-    // sphereMesh.position.x > x_pos - width && sphereMesh.position.x < x_pos + width
-    if ((sphereMesh.position.z > start_z_pos - start_height/2 && sphereMesh.position.z < start_z_pos + start_height/2) &&
-        (sphereMesh.position.x > start_x_pos - start_width/2 && sphereMesh.position.x < start_x_pos + start_width/2)){
-        console.log('start');
-    }
+      //(sphereMesh.position.z > z_pos - depth && sphereMesh.position.z < z_pos + depth)
+      //&& 
+      // sphereMesh.position.x > x_pos - width && sphereMesh.position.x < x_pos + width
+      if ((sphereMesh.position.z > start_z_pos - start_height/2 && sphereMesh.position.z < start_z_pos + start_height/2) &&
+          (sphereMesh.position.x > start_x_pos - start_width/2 && sphereMesh.position.x < start_x_pos + start_width/2)){
+          console.log('start');
+      }
 
-    if ((sphereMesh.position.z > end_z_pos - end_height/2 && sphereMesh.position.z < end_z_pos + end_height/2) &&
-        (sphereMesh.position.x > end_x_pos - end_width/2 && sphereMesh.position.x < end_x_pos + end_width/2)){
-      console.log('done');
+      if ((sphereMesh.position.z > end_z_pos - end_height/2 && sphereMesh.position.z < end_z_pos + end_height/2) &&
+          (sphereMesh.position.x > end_x_pos - end_width/2 && sphereMesh.position.x < end_x_pos + end_width/2)){
+        console.log('done');
+      }
     }
-
     renderer.render(scene, camera);
 }
 
@@ -298,6 +307,7 @@ controls.addEventListener('unlock', function () {
   if (state == "play") {
     screen.showPause();
     stats.timer.pause();
+    for (var key in keyPress) keyPress[key] = 0;
   } else if (state == "gameover") {
     screen.showEnd();
   }
