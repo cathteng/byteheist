@@ -3,7 +3,6 @@
 import * as CANNON from "cannon-es";
 import * as THREE from 'three';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js';
-import { Ball, Resistor, Arrow, Capacitor } from './components/objects';
 import { Stats } from './components/stats';
 import { Screen } from './components/screen';
 import { BasicLights } from './components/lights';
@@ -22,9 +21,9 @@ const angle = (3 * Math.PI) / 180;
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const timeStep = 1 / 60;
 const viewOffset = new CANNON.Vec3(0, 6, 0);
-var bitList = INIT.initBits();
-const arrow = new Arrow(new CANNON.Vec3(0, 10, 100));
 const totalLevels = 1;
+const gravity = new CANNON.Vec3(0, -20, 0);
+const timePerLevel = [20*1000, 20*1000];
 
 // VARS
 var controls;
@@ -33,6 +32,7 @@ var sphereDir = new THREE.Vector3(0, 0, 1);
 var keyPress = {"w": 0, "a": 0, "s": 0, "d": 0, " ": 0};
 var cannonDebugger;
 var currentLevel = 0;
+var groundMesh, end_width, end_height, end_pos, sphereMesh, sphereBody, arrow, bitList;
 
 // set up renderer
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -45,14 +45,12 @@ document.body.appendChild(canvas);
 // jquery
 $('body').css('font-family',"monospace");
 // stats
-const stats = new Stats(20*1000);
+const stats = new Stats();
 // screen
 const screen = new Screen();
 
 scene = new THREE.Scene();
-world = new CANNON.World({
-  gravity: new CANNON.Vec3(0, -20, 0)
-});
+world = new CANNON.World({gravity: gravity});
 
 // lights
 const lights = new BasicLights();
@@ -70,21 +68,11 @@ controls = new PointerLockControls( camera, document.body );
 scene.add(controls.getObject());
 camera.position.set(0, 20, -30);
 
-const contacts = INIT.initContactMaterials();
-world.addContactMaterial(contacts.groundSphereContactMat);
-world.addContactMaterial(contacts.boxSphereContactMat);
-world.addContactMaterial(contacts.capacitorMat);
-
-const capacitor = INIT.initCapacitor();
-scene.add(capacitor);
-world.addBody(capacitor.body);
-
 
 // ground
 // level start
 var level = new Level(totalLevels);
-var {groundMesh, end_width, end_height, end_pos, sphereMesh, sphereBody} = level.changeLevel(0);
-
+({groundMesh, end_width, end_height, end_pos, sphereMesh, sphereBody, arrow, bitList} = level.changeLevel(0));
 cannonDebugger = new CannonDebugger(scene, world);
 
 // ref: https://github.com/oliverschwartz/going-viral/blob/master/src/app.js
@@ -147,20 +135,30 @@ function reset() {
 }
 
 function restart() {
+  currentLevel = 0;
   state = "play";
   screen.hideEnd();
   screen.hideWin();
-  reset();
-  stats.timer.stop();
-  stats.timer.start(stats.timeToElapse);
-  bitsCorrupted = 0;
-  for (let bit of bitList) {
-    bit.mesh.visible = false;
-    bit = null;
-  }
-  bitList = INIT.initBits();
+  bitsCorrupted = 0; 
+
+  setLevel();
 }
 
+function setLevel() {
+  scene = new THREE.Scene();
+  world = new CANNON.World({gravity: gravity});
+  // lights
+  scene.add(lights);
+  scene.add(controls.getObject());
+  camera.position.set(0, 20, -30);
+  ({groundMesh, end_width, end_height, end_pos, sphereMesh, sphereBody, arrow, bitList} = level.changeLevel(currentLevel));
+  stats.timer.stop();
+  stats.timer.start(timePerLevel[currentLevel]);
+  bitsCorrupted = 0;
+  reset();
+}
+
+console.log(scene);
 function animate() {
     if (controls.isLocked) {
       world.step(timeStep);
@@ -174,10 +172,8 @@ function animate() {
         bitsCorrupted += bitList[i].handleCollisions(sphereMesh.position);
       }
 
-      arrow.bob();
-
       move();
-      stats.update(bitsCorrupted, level);
+      stats.update(bitsCorrupted, currentLevel);
       updateCamera();
 
       // reset if you fall off
@@ -192,6 +188,8 @@ function animate() {
       // }
 
       if (bitsCorrupted > 0) {
+        scene.add(arrow.mesh);
+        arrow.bob();
         const white = new THREE.MeshBasicMaterial({ 
           color: '#ffffff',
           reflectivity: 0.0,
@@ -205,7 +203,8 @@ function animate() {
             state = "win";
             controls.unlock();
           } else if (currentLevel < totalLevels) {
-            
+            currentLevel += 1;
+            setLevel();
           }
         }
       }
@@ -241,7 +240,7 @@ window.addEventListener("click", function() {
 
 controls.addEventListener('lock', function () {
   if (state == "start") {
-    stats.timer.start(stats.timeToElapse);
+    stats.timer.start(timePerLevel[currentLevel]);
     state = "play";
     screen.hidePause();
     screen.hideTitle();

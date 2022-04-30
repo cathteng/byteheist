@@ -44,7 +44,6 @@ export function initBox(width, height, depth, position) {
     const boxMesh = new THREE.Mesh(boxGeo, boxMat);
 
     const boxBody = new CANNON.Body({
-        // mass: 1500,
         shape: new CANNON.Box(new CANNON.Vec3(width/2, height/2, depth/2)),
         position: position,
         material: boxPhysMat,
@@ -70,13 +69,12 @@ export function initSphere() {
 }
 
 export function initResistor() {
-    const resistor = new Resistor(new THREE.Vector3(15, 0, 0));
+    const resistor = new Resistor(new THREE.Vector3(15, 0, 0), groundPhysMat);
     resistor.doRotation(new THREE.Vector3(0, Math.PI / 2, 0));
     return resistor;
 }
 
 export function initCapacitor() {
-    // const capMat = new CANNON.Material('cap');
     const capacitor = new Capacitor(new THREE.Vector3(-15, 2.5, 0), capMat);
     return capacitor;
 }
@@ -86,13 +84,13 @@ export function initContactMaterials() {
     const groundSphereContactMat = new CANNON.ContactMaterial(
         groundPhysMat,
         spherePhysMat,
-        {restitution: 0.1, friction: 0.7} // bounce factor
+        {restitution: 0.1, friction: 0.7}
     );
 
     const boxSphereContactMat = new CANNON.ContactMaterial(
         boxPhysMat,
         spherePhysMat,
-        {restitution: 0.1, friction: 0.7} // bounce factor
+        {restitution: 0.1, friction: 0.7}
     );
 
     const capacitorMat = new CANNON.ContactMaterial(

@@ -4,7 +4,7 @@ import * as CANNON from "cannon-es";
 import MODEL from './resistor.gltf';
 
 class Resistor extends Group {
-    constructor(position) {
+    constructor(position, material) {
         // Call parent Group() constructor
         super();
         const loader = new GLTFLoader();
@@ -22,14 +22,11 @@ class Resistor extends Group {
         let resistorWidth = FACTOR * SCALE * 13;
         let resistorHeight = FACTOR * SCALE * 6;
         let resistorDepth = FACTOR * SCALE * 2.6;
-        const groundPhysMat = new CANNON.Material('ground');
         let resistorBody = new CANNON.Body({
-            // change for length along with groundGeo
-        
             shape: new CANNON.Box(new CANNON.Vec3(resistorWidth, 
               resistorHeight, resistorDepth)), // use this for a finite plane
             type: CANNON.Body.STATIC,
-            material: groundPhysMat, //
+            material: material, //
             position: position
           });
         resistorBody.fixedRotation = true;

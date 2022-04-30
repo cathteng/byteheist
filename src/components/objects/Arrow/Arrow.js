@@ -16,7 +16,6 @@ class Arrow {
             this.mesh = object;
             this.mesh.scale.set(5, 5, 5);
             this.mesh.position.copy(position);
-            APP.scene.add(object);
         });
     }
     // like going viral

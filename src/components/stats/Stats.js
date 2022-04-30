@@ -3,9 +3,8 @@ import Timer from "tiny-timer";
 import "./stats.css";
 
 class Stats {
-  constructor(time) {
+  constructor() {
     this.bits = 0;
-    this.timeToElapse = time;
     this.timer = new Timer();
 
     $('body').append($(
