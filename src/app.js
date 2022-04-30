@@ -3,7 +3,7 @@
 import * as CANNON from "cannon-es";
 import * as THREE from 'three';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js';
-import { Ball, Resistor, Arrow } from './components/objects';
+import { Ball, Resistor, Arrow, Capacitor } from './components/objects';
 import { Stats } from './components/stats';
 import { Screen } from './components/screen';
 import { BasicLights } from './components/lights';
@@ -116,8 +116,13 @@ for (let i = 0; i < boxMeshes.length; i++) {
 const resistor = new Resistor(new THREE.Vector3(15, 0, 0));
 resistor.doRotation(new THREE.Vector3(0, Math.PI / 2, 0));
 scene.add(resistor);
-// debugger;
 world.addBody(resistor.body);
+
+const capMat = new CANNON.Material('cap');
+const capacitor = new Capacitor(new THREE.Vector3(-15, 2.5, 0), capMat);
+scene.add(capacitor);
+// make sure to do world =
+world = capacitor.addBodies(world);
 
 // VIRUS
 const sphereMesh = new Ball();
@@ -150,6 +155,13 @@ const boxSphereContactMat = new CANNON.ContactMaterial(
     {restitution: 0.1, friction: 0.7} // bounce factor
 );
 world.addContactMaterial(boxSphereContactMat);
+
+const capacitorMat = new CANNON.ContactMaterial(
+  capMat,
+  spherePhysMat,
+  {restitution: 3, friction: 0.7}
+);
+world.addContactMaterial(capacitorMat);
 
 cannonDebugger = new CannonDebugger(scene, world);
 
