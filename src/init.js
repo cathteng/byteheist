@@ -1,7 +1,12 @@
 import * as CANNON from "cannon-es";
 import * as THREE from 'three';
 import * as APP from "./app.js";
-import { Bit } from './components/objects';
+import { Bit, Ball, Resistor, Capacitor } from './components/objects';
+
+const groundPhysMat = new CANNON.Material('ground');
+const boxPhysMat = new CANNON.Material('box');
+const spherePhysMat = new CANNON.Material('virus');
+const capMat = new CANNON.Material('cap');
 
 export function initGround(width, height, depth, position, color) {
     const groundGeo = new THREE.PlaneGeometry(width, height, 20, 20);
@@ -13,7 +18,6 @@ export function initGround(width, height, depth, position, color) {
     });
     const groundMesh = new THREE.Mesh(groundGeo, groundMat);
 
-    const groundPhysMat = new CANNON.Material('ground');
     const groundBody = new CANNON.Body({
         // shape: new CANNON.Plane(), // use this for an infinite plane
         //mass: 10
@@ -25,7 +29,7 @@ export function initGround(width, height, depth, position, color) {
     });
     groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
 
-    return [groundMesh, groundBody];
+    return {groundMesh, groundBody};
 }
 
 // export function 
@@ -39,7 +43,6 @@ export function initBox(width, height, depth, position) {
     });
     const boxMesh = new THREE.Mesh(boxGeo, boxMat);
 
-    const boxPhysMat = new CANNON.Material('box');
     const boxBody = new CANNON.Body({
         // mass: 1500,
         shape: new CANNON.Box(new CANNON.Vec3(width/2, height/2, depth/2)),
@@ -49,7 +52,56 @@ export function initBox(width, height, depth, position) {
     });
     boxBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
 
-    return [boxMesh, boxBody];
+    return {boxMesh, boxBody};
+}
+
+export function initSphere() {
+    const sphereMesh = new Ball();
+    const radius = 2;
+    const sphereBody = new CANNON.Body({
+        mass: 2,
+        shape: new CANNON.Sphere(radius),
+        position: new CANNON.Vec3(0, 10, 0),
+        material: spherePhysMat,
+        linearDamping: 0.5,
+        angularDamping: 0.5
+    });
+    return {sphereMesh, sphereBody};
+}
+
+export function initResistor() {
+    const resistor = new Resistor(new THREE.Vector3(15, 0, 0));
+    resistor.doRotation(new THREE.Vector3(0, Math.PI / 2, 0));
+    return resistor;
+}
+
+export function initCapacitor() {
+    const capMat = new CANNON.Material('cap');
+    const capacitor = new Capacitor(new THREE.Vector3(-15, 2.5, 0), capMat);
+    return capacitor;
+}
+
+export function initContactMaterials() {
+    // contact materials
+    const groundSphereContactMat = new CANNON.ContactMaterial(
+        groundPhysMat,
+        spherePhysMat,
+        {restitution: 0.1, friction: 0.7} // bounce factor
+    );
+
+    const boxSphereContactMat = new CANNON.ContactMaterial(
+        boxPhysMat,
+        spherePhysMat,
+        {restitution: 0.1, friction: 0.7} // bounce factor
+    );
+
+    const capacitorMat = new CANNON.ContactMaterial(
+        capMat,
+        spherePhysMat,
+        {restitution: 3, friction: 0.7}
+      );
+
+    return {groundSphereContactMat, boxSphereContactMat, capacitorMat};
 }
 
 export function initBits() {

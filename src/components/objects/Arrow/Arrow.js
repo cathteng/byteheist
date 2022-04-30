@@ -11,6 +11,7 @@ class Arrow {
 
         const loader = new OBJLoader();
 
+        // https://clara.io/view/b8a8fb8d-cfe7-4e5d-a219-e26f862feb42
         loader.load('src/components/objects/Arrow/arrow.obj', (object) => {
             this.mesh = object;
             this.mesh.scale.set(5, 5, 5);

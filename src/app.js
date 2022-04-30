@@ -7,6 +7,7 @@ import { Ball, Resistor, Arrow, Capacitor } from './components/objects';
 import { Stats } from './components/stats';
 import { Screen } from './components/screen';
 import { BasicLights } from './components/lights';
+import { Level } from './components/level';
 import $ from "jquery";
 import * as INIT from './init.js';
 import CannonDebugger from 'cannon-es-debugger';
@@ -21,13 +22,9 @@ const angle = (3 * Math.PI) / 180;
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const timeStep = 1 / 60;
 const viewOffset = new CANNON.Vec3(0, 6, 0);
-const groundMeshes = [];
-const groundBodies = [];
-const boxMeshes = [];
-const boxBodies = [];
 var bitList = INIT.initBits();
-const bounding_boxes = [];
 const arrow = new Arrow(new CANNON.Vec3(0, 10, 100));
+const totalLevels = 1;
 
 // VARS
 var controls;
@@ -35,6 +32,7 @@ var state = "start";
 var sphereDir = new THREE.Vector3(0, 0, 1);
 var keyPress = {"w": 0, "a": 0, "s": 0, "d": 0, " ": 0};
 var cannonDebugger;
+var currentLevel = 0;
 
 // set up renderer
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -72,106 +70,16 @@ controls = new PointerLockControls( camera, document.body );
 scene.add(controls.getObject());
 camera.position.set(0, 20, -30);
 
-// ground
-const groundPhysMat = new CANNON.Material('ground');
-
-
-const start_width = 100;
-const start_height = 40;
-const start_depth = 0.2;
-const start_pos = new CANNON.Vec3(0, 0, 0);
-const startObj = INIT.initGround(start_width, start_height, start_depth, start_pos, '#0045AD');
-groundMeshes.push(startObj[0]);
-groundBodies.push(startObj[1]);
-const groundObj2 = INIT.initGround(100, 40, 0.2, new CANNON.Vec3(0, 0, 50), '#50EE25');
-groundMeshes.push(groundObj2[0]);
-groundBodies.push(groundObj2[1]);
-const end_width = 20;
-const end_height = 20;
-const end_depth = 0.2;
-const end_pos = new CANNON.Vec3(0, 0, 100);
-
-const end_specs = new CANNON.Vec3(end_width, end_height, end_depth);
-const endObj = INIT.initGround(end_width, end_height, end_depth, end_pos, '#FFD700');
-groundMeshes.push(endObj[0]);
-groundBodies.push(endObj[1]);
-
-
-for (let i = 0; i < groundMeshes.length; i++) {
-  scene.add(groundMeshes[i]);
-  world.addBody(groundBodies[i]);
-}
-
-// box
-const boxPhysMat = new CANNON.Material('box');
-const boxObj = INIT.initBox(20, 1, 4, new CANNON.Vec3(0, 2.5, 0));
-boxMeshes.push(boxObj[0]);
-boxBodies.push(boxObj[1]);
-
-for (let i = 0; i < boxMeshes.length; i++) {
-  scene.add(boxMeshes[i]);
-  world.addBody(boxBodies[i]);
-}
-
-const resistor = new Resistor(new THREE.Vector3(15, 0, 0));
-resistor.doRotation(new THREE.Vector3(0, Math.PI / 2, 0));
-scene.add(resistor);
-world.addBody(resistor.body);
-
-const capMat = new CANNON.Material('cap');
-const capacitor = new Capacitor(new THREE.Vector3(-15, 2.5, 0), capMat);
+const capacitor = INIT.initCapacitor();
 scene.add(capacitor);
-// make sure to do world =
 world = capacitor.addBodies(world);
 
-// VIRUS
-const sphereMesh = new Ball();
-scene.add(sphereMesh);
-
-const spherePhysMat = new CANNON.Material('virus');
-
-const radius = 2;
-const sphereBody = new CANNON.Body({
-    mass: 2,
-    shape: new CANNON.Sphere(radius),
-    position: new CANNON.Vec3(0, 10, 0),
-    material: spherePhysMat,
-    linearDamping: 0.5,
-    angularDamping: 0.5
-});
-world.addBody(sphereBody);
-
-// contact materials
-const groundSphereContactMat = new CANNON.ContactMaterial(
-    groundPhysMat,
-    spherePhysMat,
-    {restitution: 0.1, friction: 0.7} // bounce factor
-);
-world.addContactMaterial(groundSphereContactMat);
-
-const boxSphereContactMat = new CANNON.ContactMaterial(
-    boxPhysMat,
-    spherePhysMat,
-    {restitution: 0.1, friction: 0.7} // bounce factor
-);
-world.addContactMaterial(boxSphereContactMat);
-
-const capacitorMat = new CANNON.ContactMaterial(
-  capMat,
-  spherePhysMat,
-  {restitution: 3, friction: 0.7}
-);
-world.addContactMaterial(capacitorMat);
+// ground
+// level start
+var level = new Level(totalLevels);
+var {groundMesh, end_width, end_height, end_pos, sphereMesh, sphereBody} = level.changeLevel(0);
 
 cannonDebugger = new CannonDebugger(scene, world);
-
-// bounding boxes for jumping on objects
-for (const body of boxBodies) {
-  bounding_boxes.push(body.aabb.upperBound.y + 0.2)
-}
-for (const body of groundBodies) {
-  bounding_boxes.push(body.aabb.upperBound.y + 0.2)
-}
 
 // ref: https://github.com/oliverschwartz/going-viral/blob/master/src/app.js
 function updateCamera() {
@@ -221,19 +129,35 @@ function move() {
     }
 }
 
+function reset() {
+  sphereBody.position = new CANNON.Vec3(0, 10, 0);
+  sphereMesh.position.copy(sphereBody.position);
+  sphereBody.velocity = new CANNON.Vec3(0, 0, 0);
+  sphereBody.quaternion = sphereBody.initQuaternion;
+  sphereMesh.quaternion.copy(sphereBody.quaternion);
+  sphereBody.angularVelocity = new CANNON.Vec3(0, 0, 0);
+  sphereDir = new THREE.Vector3(0, 0, 1);
+  updateCamera();
+}
+
+function restart() {
+  state = "play";
+  screen.hideEnd();
+  screen.hideWin();
+  reset();
+  stats.timer.stop();
+  stats.timer.start(stats.timeToElapse);
+  bitsCorrupted = 0;
+  for (let bit of bitList) {
+    bit.mesh.visible = false;
+    bit = null;
+  }
+  bitList = INIT.initBits();
+}
+
 function animate() {
     if (controls.isLocked) {
       world.step(timeStep);
-
-      for (let i = 0; i < groundMeshes.length; i++) {
-        groundMeshes[i].position.copy(groundBodies[i].position);
-        groundMeshes[i].quaternion.copy(groundBodies[i].quaternion);
-      }
-
-      for (let i = 0; i < boxMeshes.length; i++) {
-        boxMeshes[i].position.copy(boxBodies[i].position);
-        boxMeshes[i].quaternion.copy(boxBodies[i].quaternion);
-      }
 
       sphereMesh.position.copy(sphereBody.position);
       sphereMesh.quaternion.copy(sphereBody.quaternion);
@@ -247,7 +171,7 @@ function animate() {
       arrow.bob();
 
       move();
-      stats.update(bitsCorrupted);
+      stats.update(bitsCorrupted, level);
       updateCamera();
 
       // reset if you fall off
@@ -268,11 +192,15 @@ function animate() {
           side: THREE.DoubleSide,
           wireframe: false,
         });
-        groundMeshes[groundMeshes.length-1].material = white;
+        groundMesh.material = white;
         if ((sphereMesh.position.z > end_pos.z - end_height/2 && sphereMesh.position.z < end_pos.z + end_height/2) &&
             (sphereMesh.position.x > end_pos.x - end_width/2 && sphereMesh.position.x < end_pos.z + end_width/2)) {
-          state = "win";
-          controls.unlock();
+          if (currentLevel == totalLevels) {
+            state = "win";
+            controls.unlock();
+          } else if (currentLevel < totalLevels) {
+            
+          }
         }
       }
     }
@@ -304,6 +232,7 @@ window.addEventListener("click", function() {
     controls.lock();
   }
 });
+
 controls.addEventListener('lock', function () {
   if (state == "start") {
     stats.timer.start(stats.timeToElapse);
@@ -320,6 +249,7 @@ controls.addEventListener('lock', function () {
     restart();
   }
 });
+
 controls.addEventListener('unlock', function () {
   if (state == "play") {
     screen.showPause();
@@ -330,37 +260,8 @@ controls.addEventListener('unlock', function () {
     screen.showWin();
   }
 } );
+
 stats.timer.on('done', () => {
   controls.unlock();
   state = "gameover";
 });
-
-function reset() {
-  sphereBody.position = new CANNON.Vec3(0, 10, 0);
-  sphereMesh.position.copy(sphereBody.position);
-  sphereBody.velocity = new CANNON.Vec3(0, 0, 0);
-  sphereBody.quaternion = sphereBody.initQuaternion;
-  sphereMesh.quaternion.copy(sphereBody.quaternion);
-  for (let i = 0; i < groundMeshes.length; i++) {
-    groundBodies[i].position = groundBodies[i].initPosition;
-    groundMeshes[i].position.copy(groundBodies[i].position);
-  }
-  sphereBody.angularVelocity = new CANNON.Vec3(0, 0, 0);
-  sphereDir = new THREE.Vector3(0, 0, 1);
-  updateCamera();
-}
-
-function restart() {
-  state = "play";
-  screen.hideEnd();
-  screen.hideWin();
-  reset();
-  stats.timer.stop();
-  stats.timer.start(stats.timeToElapse);
-  bitsCorrupted = 0;
-  for (let bit of bitList) {
-    bit.mesh.visible = false;
-    bit = null;
-  }
-  bitList = INIT.initBits();
-}
