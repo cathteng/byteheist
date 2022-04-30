@@ -70,9 +70,15 @@ controls = new PointerLockControls( camera, document.body );
 scene.add(controls.getObject());
 camera.position.set(0, 20, -30);
 
+const contacts = INIT.initContactMaterials();
+world.addContactMaterial(contacts.groundSphereContactMat);
+world.addContactMaterial(contacts.boxSphereContactMat);
+world.addContactMaterial(contacts.capacitorMat);
+
 const capacitor = INIT.initCapacitor();
 scene.add(capacitor);
-world = capacitor.addBodies(world);
+world.addBody(capacitor.body);
+
 
 // ground
 // level start

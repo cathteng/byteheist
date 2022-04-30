@@ -76,7 +76,7 @@ export function initResistor() {
 }
 
 export function initCapacitor() {
-    const capMat = new CANNON.Material('cap');
+    // const capMat = new CANNON.Material('cap');
     const capacitor = new Capacitor(new THREE.Vector3(-15, 2.5, 0), capMat);
     return capacitor;
 }
