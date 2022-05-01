@@ -1,0 +1,2 @@
+The model used for the capacitor was found from https://grabcad.com/library/resistor-carbon-film-0w25-1, 
+by singlefonts. The coloration of the model was done by us.

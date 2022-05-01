@@ -7,6 +7,7 @@ import { Stats } from './components/stats';
 import { Screen } from './components/screen';
 import { BasicLights } from './components/lights';
 import { Level } from './components/level';
+import { Copper } from './components/objects';
 import $ from "jquery";
 import * as INIT from './init.js';
 import CannonDebugger from 'cannon-es-debugger';
@@ -15,6 +16,7 @@ import CannonDebugger from 'cannon-es-debugger';
 export var scene;
 export var bitsCorrupted = 0;
 export var world;
+export var state;
 
 // CONSTS
 const angle = (3 * Math.PI) / 180;
@@ -27,12 +29,13 @@ const timePerLevel = [60*1000, 60*1000];
 
 // VARS
 var controls;
-var state = "start";
+state = "start";
 var sphereDir = new THREE.Vector3(0, 0, 1);
 var keyPress = {"w": 0, "a": 0, "s": 0, "d": 0, " ": 0};
 var cannonDebugger;
-var currentLevel = 1;
+var currentLevel = 0;
 var groundMesh, end_width, end_height, end_pos, sphereMesh, sphereBody, arrow, bitList;
+var copperList = [];
 
 // set up renderer
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -173,6 +176,16 @@ function animate() {
       for (let i = 0; i < bitList.length; i++){
         bitsCorrupted += bitList[i].handleCollisions(sphereMesh.position);
       }
+      for (let copper of copperList) {
+        if (copper.handleCollisions(sphereBody.position) == 1) {
+          controls.unlock();
+          state = 'gameover';
+        }
+      }
+
+      // for (let i = 0; i < wireList.length; i++) {
+      //   wireList[i].handleCollisions(sphereBody.position);
+      // }
 
       move();
       stats.update(bitsCorrupted, currentLevel);

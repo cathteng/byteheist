@@ -1,7 +1,7 @@
 import * as CANNON from "cannon-es";
 import * as THREE from 'three';
 import * as APP from "./app.js";
-import { Bit, Ball, Resistor, Capacitor } from './components/objects';
+import { Bit, Ball, Resistor, Capacitor, Copper} from './components/objects';
 
 const groundPhysMat = new CANNON.Material('ground');
 const boxPhysMat = new CANNON.Material('box');
@@ -74,6 +74,11 @@ export function initResistor(postion) {
 export function initCapacitor(position) {
     const capacitor = new Capacitor(position, capMat);
     return capacitor;
+}
+
+export function initCopper(position, width, height, depth) {
+    const copper = new Copper (position, width, height, depth);
+    return copper;
 }
 
 export function initContactMaterials() {

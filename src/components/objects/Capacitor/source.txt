@@ -1,0 +1,2 @@
+The model used for the capacitor was found from https://grabcad.com/library/passive-thd-1, by Alex
+Fedorov. The coloration of the model was done by us.
