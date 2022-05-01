@@ -45,11 +45,15 @@ class Level {
         groundMeshes.push(groundMesh);
         groundBodies.push(groundBody);
 
+        ({groundMesh, groundBody} = INIT.initGround(100, 40, 0.2, new CANNON.Vec3(0, 0, 200), '#006F27'));
+        groundMeshes.push(groundMesh);
+        groundBodies.push(groundBody);
+
 
         const end_width = 20;
         const end_height = 20;
         const end_depth = 0.2;
-        const end_pos = new CANNON.Vec3(0, 0, 200);
+        const end_pos = new CANNON.Vec3(0, 0, 250);
 
         //end platform
         ({groundMesh, groundBody} = INIT.initGround(end_width, end_height, end_depth, end_pos, '#FFD700'));
@@ -113,8 +117,18 @@ class Level {
         APP.scene.add(capacitor3);
         APP.world.addBody(capacitor3.body);
 
+        //copper
+        const copperList = [];
+        const copper1 = INIT.initCopper(new THREE.Vector3(0, 0.5, 200), 1, 20, 1)
+        APP.scene.add(copper1.mesh);
+        copperList.push(copper1);
+
+        const copper2 = INIT.initCopper(new THREE.Vector3(0, 2, 200), 1, 20, 1)
+        APP.scene.add(copper2.mesh);
+        copperList.push(copper2);
+
         // arrow
-        const arrow = new Arrow(new CANNON.Vec3(0, 10, 200));
+        const arrow = new Arrow(new CANNON.Vec3(0, 10, 250));
 
         // bits
         const bitList = INIT.initBits(0);
@@ -125,7 +139,7 @@ class Level {
         APP.world.addContactMaterial(contacts.boxSphereContactMat);
         APP.world.addContactMaterial(contacts.capacitorMat);
 
-        return {groundMesh, end_width, end_height, end_pos, sphereMesh, sphereBody, arrow, bitList};
+        return {groundMesh, end_width, end_height, end_pos, sphereMesh, sphereBody, arrow, bitList, copperList};
     }
     _levelOne() {
  
@@ -173,11 +187,11 @@ class Level {
 
         var resistor1 = INIT.initResistor(new THREE.Vector3(10, 0, 75), 2);
         APP.scene.add(resistor1);
-        APP.world.addBody(resistor1.body);
+        resistor1.addBodies(APP.world);
 
         var resistor2 = INIT.initResistor(new THREE.Vector3(-40, 0, 75), 2);
         APP.scene.add(resistor2);
-        APP.world.addBody(resistor2.body);
+        resistor2.addBodies(APP.world);
 
         const capacitor1 = INIT.initCapacitor(new THREE.Vector3(40, 2.5, 75)); // 
         APP.scene.add(capacitor1);
@@ -211,19 +225,19 @@ class Level {
 
         var resistor3 = INIT.initResistor(new THREE.Vector3(10, 0, 165), 3);
         APP.scene.add(resistor3);
-        APP.world.addBody(resistor3.body);
+        resistor3.addBodies(APP.world);
 
-        var resistor3 = INIT.initResistor(new THREE.Vector3(20, 0, 165), 3);
-        APP.scene.add(resistor3);
-        APP.world.addBody(resistor3.body);
+        var resistor4 = INIT.initResistor(new THREE.Vector3(20, 0, 165), 3);
+        APP.scene.add(resistor4);
+        resistor4.addBodies(APP.world);
 
-        var resistor3 = INIT.initResistor(new THREE.Vector3(30, 0, 165), 3);
-        APP.scene.add(resistor3);
-        APP.world.addBody(resistor3.body);
+        var resistor5 = INIT.initResistor(new THREE.Vector3(30, 0, 165), 3);
+        APP.scene.add(resistor5);
+        resistor5.addBodies(APP.world);
 
-        var resistor3 = INIT.initResistor(new THREE.Vector3(40, 0, 165), 3);
-        APP.scene.add(resistor3);
-        APP.world.addBody(resistor3.body);
+        var resistor6 = INIT.initResistor(new THREE.Vector3(40, 0, 165), 3);
+        APP.scene.add(resistor6);
+        resistor6.addBodies(APP.world);
 
         const capacitor5 = INIT.initCapacitor(new THREE.Vector3(-25, 2.5, 175)); // 
         APP.scene.add(capacitor5);

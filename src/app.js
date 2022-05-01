@@ -33,7 +33,7 @@ state = "start";
 var sphereDir = new THREE.Vector3(0, 0, 1);
 var keyPress = {"w": 0, "a": 0, "s": 0, "d": 0, " ": 0};
 var cannonDebugger;
-var currentLevel = 2;
+var currentLevel = 0;
 var groundMesh, end_width, end_height, end_pos, sphereMesh, sphereBody, arrow, bitList, copperList;
 
 
@@ -152,6 +152,7 @@ function restart() {
 function setLevel() {
   scene = new THREE.Scene();
   world = new CANNON.World({gravity: gravity});
+  scene.background = new THREE.Color( '#404040' );
   cannonDebugger = new CannonDebugger(scene, world);
   // lights
   scene.add(lights);
