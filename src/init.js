@@ -69,8 +69,8 @@ export function initSphere() {
 }
 
 export function initResistor() {
-    const resistor = new Resistor(new THREE.Vector3(15, 0, 0), groundPhysMat);
-    resistor.doRotation(new THREE.Vector3(0, Math.PI / 2, 0));
+    const resistor = new Resistor(new THREE.Vector3(15, 5, 0), 
+        new THREE.Vector3(0, Math.PI / 2, 0), groundPhysMat);
     return resistor;
 }
 

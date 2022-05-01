@@ -1,7 +1,8 @@
 import * as CANNON from "cannon-es";
 import * as INIT from '../../init.js';
 import * as APP from "../../app.js";
-import { Arrow } from "../objects"
+import { Arrow } from "../objects";
+import * as THREE from 'three';
 
 class Level {
     constructor(totalLevels) {
@@ -65,8 +66,12 @@ class Level {
 
         // resistor
         const resistor = INIT.initResistor();
+        // resistor.doRotation(new THREE.Vector3(0, Math.PI/2, 0));
+        resistor.doRotation(new THREE.Vector3(0, Math.PI / 4, 0));
         APP.scene.add(resistor);
-        APP.world.addBody(resistor.body);
+        // didn't work before but works now ig
+        resistor.addBodies(APP.world);
+        // APP.world.addBody(resistor.body);
 
         // capacitor
         const capacitor = INIT.initCapacitor();
