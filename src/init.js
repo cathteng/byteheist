@@ -64,8 +64,9 @@ export function initSphere() {
     return {sphereMesh, sphereBody};
 }
 
+
 export function initResistor(postion) {
-    const resistor = new Resistor(postion, groundPhysMat);
+    const resistor = new Resistor(postion, new THREE.Vector3(0, Math.PI / 2, 0), groundPhysMat);
     resistor.doRotation(new THREE.Vector3(0, Math.PI / 2, 0));
     return resistor;
 }

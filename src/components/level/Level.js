@@ -1,7 +1,7 @@
 import * as CANNON from "cannon-es";
 import * as INIT from '../../init.js';
 import * as APP from "../../app.js";
-import { Arrow } from "../objects"
+import { Arrow } from "../objects";
 import * as THREE from 'three';
 
 class Level {
