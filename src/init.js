@@ -64,14 +64,14 @@ export function initSphere() {
     return {sphereMesh, sphereBody};
 }
 
-export function initResistor() {
-    const resistor = new Resistor(new THREE.Vector3(15, 0, 0), groundPhysMat);
+export function initResistor(postion) {
+    const resistor = new Resistor(postion, groundPhysMat);
     resistor.doRotation(new THREE.Vector3(0, Math.PI / 2, 0));
     return resistor;
 }
 
-export function initCapacitor() {
-    const capacitor = new Capacitor(new THREE.Vector3(-15, 2.5, 0), capMat);
+export function initCapacitor(position) {
+    const capacitor = new Capacitor(position, capMat);
     return capacitor;
 }
 
@@ -98,25 +98,65 @@ export function initContactMaterials() {
     return {groundSphereContactMat, boxSphereContactMat, capacitorMat};
 }
 
-export function initBits() {
+export function initBits(numLevel) {
     const bitlist = [];
 
-    var bit1 = new Bit(0, new THREE.Vector3(40, 2, 10));
-    bitlist.push(bit1)
-    var bit2 = new Bit(0, new THREE.Vector3(35, 2, 10));
-    bitlist.push(bit2);
-    var bit3 = new Bit(0, new THREE.Vector3(30, 2, 10));
-    bitlist.push(bit3);
-    var bit4 = new Bit(0, new THREE.Vector3(25, 2, 10));
-    bitlist.push(bit4);
-    var bit5 = new Bit(1, new THREE.Vector3(20, 2, 10));
-    bitlist.push(bit5);
-    var bit6 = new Bit(1, new THREE.Vector3(15, 2, 10));
-    bitlist.push(bit6);
-    var bit7 = new Bit(1, new THREE.Vector3(10, 2, 10));
-    bitlist.push(bit7);
-    var bit8 = new Bit(1, new THREE.Vector3(5, 2, 10));
-    bitlist.push(bit8);
+    if (numLevel == 0){
+        var bit1 = new Bit(1, new THREE.Vector3(15, 2, 50));
+        bitlist.push(bit1)
+        var bit2 = new Bit(0, new THREE.Vector3(-15, 2, 50));
+        bitlist.push(bit2);
+        var bit3 = new Bit(1, new THREE.Vector3(7.5, 2, 100));
+        bitlist.push(bit3);
+        var bit4 = new Bit(1, new THREE.Vector3(-7.5, 2, 100));
+        bitlist.push(bit4);
+        var bit5 = new Bit(0, new THREE.Vector3(22.5, 2, 100));
+        bitlist.push(bit5);
+        var bit6 = new Bit(0, new THREE.Vector3(-22.5, 2, 100));
+        bitlist.push(bit6);
+        var bit7 = new Bit(1, new THREE.Vector3(15, 2, 150));
+        bitlist.push(bit7);
+        var bit8 = new Bit(0, new THREE.Vector3(-15, 2, 150));
+        bitlist.push(bit8);
+    }
+
+    if (numLevel == 1){
+        var bit1 = new Bit(0, new THREE.Vector3(40, 2, 10));
+        bitlist.push(bit1)
+        var bit2 = new Bit(0, new THREE.Vector3(35, 2, 10));
+        bitlist.push(bit2);
+        var bit3 = new Bit(0, new THREE.Vector3(30, 2, 10));
+        bitlist.push(bit3);
+        var bit4 = new Bit(0, new THREE.Vector3(25, 2, 10));
+        bitlist.push(bit4);
+        var bit5 = new Bit(1, new THREE.Vector3(20, 2, 10));
+        bitlist.push(bit5);
+        var bit6 = new Bit(1, new THREE.Vector3(15, 2, 10));
+        bitlist.push(bit6);
+        var bit7 = new Bit(1, new THREE.Vector3(10, 2, 10));
+        bitlist.push(bit7);
+        var bit8 = new Bit(1, new THREE.Vector3(5, 2, 10));
+        bitlist.push(bit8);
+    }
+
+    if (numLevel == 2){
+        var bit1 = new Bit(0, new THREE.Vector3(40, 2, 10));
+        bitlist.push(bit1)
+        var bit2 = new Bit(0, new THREE.Vector3(35, 2, 10));
+        bitlist.push(bit2);
+        var bit3 = new Bit(0, new THREE.Vector3(30, 2, 10));
+        bitlist.push(bit3);
+        var bit4 = new Bit(0, new THREE.Vector3(25, 2, 10));
+        bitlist.push(bit4);
+        var bit5 = new Bit(1, new THREE.Vector3(20, 2, 10));
+        bitlist.push(bit5);
+        var bit6 = new Bit(1, new THREE.Vector3(15, 2, 10));
+        bitlist.push(bit6);
+        var bit7 = new Bit(1, new THREE.Vector3(10, 2, 10));
+        bitlist.push(bit7);
+        var bit8 = new Bit(1, new THREE.Vector3(5, 2, 10));
+        bitlist.push(bit8);
+    }
 
     return bitlist;
 }
