@@ -43,7 +43,7 @@ class Bit {
         this.mesh.rotation.setFromVector3(new THREE.Vector3( 0, factor * this.counter, 0));
 
         // moving up and down
-        const OSC_SPEED = 10; // higher is faster
+        const OSC_SPEED = 7; // higher is faster
         let amp = Math.sin(this.counter * factor * OSC_SPEED);
         const HEIGHT_CHANGE = 1;
         let change = amp * HEIGHT_CHANGE;

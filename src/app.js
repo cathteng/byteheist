@@ -36,6 +36,7 @@ var groundMesh, end_width, end_height, end_pos, sphereMesh, sphereBody, arrow, b
 
 // set up renderer
 renderer.setSize(window.innerWidth, window.innerHeight);
+// renderer.shadowMap.enabled = true;
 const canvas = renderer.domElement;
 canvas.setAttribute("display", "block");
 document.body.style.margin = 0;
@@ -51,6 +52,7 @@ const screen = new Screen();
 
 scene = new THREE.Scene();
 world = new CANNON.World({gravity: gravity});
+scene.background = new THREE.Color( '#404040' );
 
 // lights
 const lights = new BasicLights();
@@ -166,7 +168,7 @@ function animate() {
       sphereMesh.position.copy(sphereBody.position);
       sphereMesh.quaternion.copy(sphereBody.quaternion);
 
-      cannonDebugger.update();
+      // cannonDebugger.update();
 
       for (let i = 0; i < bitList.length; i++){
         bitsCorrupted += bitList[i].handleCollisions(sphereMesh.position);
@@ -190,11 +192,9 @@ function animate() {
       if (bitsCorrupted > 0) {
         scene.add(arrow.mesh);
         arrow.bob();
-        const white = new THREE.MeshBasicMaterial({ 
+        const white = new THREE.MeshPhongMaterial({ 
           color: '#ffffff',
-          reflectivity: 0.0,
           side: THREE.DoubleSide,
-          wireframe: false,
         });
         groundMesh.material = white;
         if ((sphereMesh.position.z > end_pos.z - end_height/2 && sphereMesh.position.z < end_pos.z + end_height/2) &&

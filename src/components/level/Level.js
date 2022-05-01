@@ -49,7 +49,7 @@ class Level {
         }
 
         // box
-        const {boxMesh, boxBody} = INIT.initBox(20, 1, 4, new CANNON.Vec3(0, 2.5, 0));
+        const {boxMesh, boxBody} = INIT.initBox(20, 1, 4, new CANNON.Vec3(0, 2.5, 0), '#E5D449');
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
         for (let i = 0; i < boxMeshes.length; i++) {
@@ -135,7 +135,7 @@ class Level {
         }
 
         // box
-        const {boxMesh, boxBody} = INIT.initBox(20, 1, 4, new CANNON.Vec3(0, 2.5, 0));
+        const {boxMesh, boxBody} = INIT.initBox(20, 1, 4, new CANNON.Vec3(0, 2.5, 0), '#E5D449');
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
         for (let i = 0; i < boxMeshes.length; i++) {

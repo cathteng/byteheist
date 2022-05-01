@@ -1,10 +1,12 @@
-import { Group } from 'three';
+import { Group, MeshPhongMaterial } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as CANNON from "cannon-es";
-import MODEL from './resistor.gltf';
+// import MODEL from './resistor.gltf';
 import * as THREE from 'three';
 
 const SCALE = 50;
+import MODEL from './resistor-colored.gltf';
+// >>>>>>> ac1f943fa38f3e7966b6b36df9447402b5cdbc12
 
 class Resistor extends Group {
     constructor(position, angle, material) {
@@ -19,6 +21,10 @@ class Resistor extends Group {
             let obj = gltf.scene;
             obj.scale.set(SCALE, SCALE, SCALE);
             obj.rotateX(-Math.PI / 2);
+            for (const child of obj.children[0].children) {
+                const color = child.material.color;
+                child.material = new MeshPhongMaterial({color: color});
+            }
             this.add(obj);
             this.position.set(position.x, position.y, position.z);
         });
