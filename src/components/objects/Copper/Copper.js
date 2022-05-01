@@ -26,7 +26,10 @@ class Copper extends Group {
                                     position.y + (height / 2),
                                     position.z + (depth / 2)),
         };
+        
+        this.boundingBox = boundingBox;
     }
+
     handleCollisions(spherePos) {
         const FAIL_HEIGHT = 1;
         if (!(this.boundingBox.min.x < spherePos.x && 

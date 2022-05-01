@@ -33,9 +33,9 @@ state = "start";
 var sphereDir = new THREE.Vector3(0, 0, 1);
 var keyPress = {"w": 0, "a": 0, "s": 0, "d": 0, " ": 0};
 var cannonDebugger;
-var currentLevel = 0;
-var groundMesh, end_width, end_height, end_pos, sphereMesh, sphereBody, arrow, bitList;
-var copperList = [];
+var currentLevel = 2;
+var groundMesh, end_width, end_height, end_pos, sphereMesh, sphereBody, arrow, bitList, copperList;
+
 
 // set up renderer
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -77,7 +77,7 @@ camera.position.set(0, 20, -30);
 // ground
 // level start
 var level = new Level(totalLevels);
-({groundMesh, end_width, end_height, end_pos, sphereMesh, sphereBody, arrow, bitList} = level.changeLevel(currentLevel));
+({groundMesh, end_width, end_height, end_pos, sphereMesh, sphereBody, arrow, bitList, copperList} = level.changeLevel(currentLevel));
 cannonDebugger = new CannonDebugger(scene, world);
 
 // ref: https://github.com/oliverschwartz/going-viral/blob/master/src/app.js
@@ -172,7 +172,7 @@ function animate() {
       sphereMesh.position.copy(sphereBody.position);
       sphereMesh.quaternion.copy(sphereBody.quaternion);
 
-      //cannonDebugger.update();
+      cannonDebugger.update();
 
       for (let i = 0; i < bitList.length; i++){
         bitsCorrupted += bitList[i].handleCollisions(sphereMesh.position);

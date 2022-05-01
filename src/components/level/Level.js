@@ -473,6 +473,16 @@ class Level {
         APP.scene.add(capacitor4);
         APP.world.addBody(capacitor4.body);
 
+        //coppper
+        const copperList = [];
+        const copper1 = INIT.initCopper(new THREE.Vector3(50, 0, 50), 10, 10, 10)
+        APP.scene.add(copper1.mesh);
+        copperList.push(copper1);
+        //debugger;
+        // APP.world.addBody(copper1.body);
+        
+
+
         // arrow
         const arrow = new Arrow(new CANNON.Vec3(0, 10, 0));
 
@@ -485,7 +495,7 @@ class Level {
         APP.world.addContactMaterial(contacts.boxSphereContactMat);
         APP.world.addContactMaterial(contacts.capacitorMat);
 
-        return {groundMesh, end_width, end_height, end_pos, sphereMesh, sphereBody, arrow, bitList};
+        return {groundMesh, end_width, end_height, end_pos, sphereMesh, sphereBody, arrow, bitList, copperList};
     }
 }
 
