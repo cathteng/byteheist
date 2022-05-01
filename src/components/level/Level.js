@@ -49,7 +49,7 @@ class Level {
         }
 
         // box
-        const {boxMesh, boxBody} = INIT.initBox(20, 1, 4, new CANNON.Vec3(0, 2.5, 0), '#E5D449');
+        const {boxMesh, boxBody} = INIT.initBox(20, 1, 4, new CANNON.Vec3(0, 2.5, 0));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
         for (let i = 0; i < boxMeshes.length; i++) {
@@ -67,7 +67,7 @@ class Level {
         // resistor
         const resistor = INIT.initResistor();
         // resistor.doRotation(new THREE.Vector3(0, Math.PI/2, 0));
-        resistor.doRotation(new THREE.Vector3(0, Math.PI / 4, 0));
+        resistor.doRotation(new THREE.Vector3(0, Math.PI / 2, 0));
         APP.scene.add(resistor);
         // didn't work before but works now ig
         resistor.addBodies(APP.world);
@@ -135,7 +135,7 @@ class Level {
         }
 
         // box
-        const {boxMesh, boxBody} = INIT.initBox(20, 1, 4, new CANNON.Vec3(0, 2.5, 0), '#E5D449');
+        const {boxMesh, boxBody} = INIT.initBox(20, 1, 4, new CANNON.Vec3(0, 2.5, 0));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
         for (let i = 0; i < boxMeshes.length; i++) {
