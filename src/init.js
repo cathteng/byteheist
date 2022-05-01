@@ -10,11 +10,9 @@ const capMat = new CANNON.Material('cap');
 
 export function initGround(width, height, depth, position, color) {
     const groundGeo = new THREE.PlaneGeometry(width, height, 20, 20);
-    const groundMat = new THREE.MeshBasicMaterial({ 
-    color: color,
-    reflectivity: 0.0,
-        side: THREE.DoubleSide,
-        wireframe: false,
+    const groundMat = new THREE.MeshPhongMaterial({ 
+        color: color,
+        side: THREE.DoubleSide
     });
     const groundMesh = new THREE.Mesh(groundGeo, groundMat);
 
@@ -34,12 +32,10 @@ export function initGround(width, height, depth, position, color) {
 
 // export function 
 
-export function initBox(width, height, depth, position) {
+export function initBox(width, height, depth, position, color) {
     const boxGeo = new THREE.BoxGeometry(width, height, depth);
-    const boxMat = new THREE.MeshNormalMaterial({
-    //     color: '#E5D449',
-    // reflectivity: 0.0,
-    //     wireframe: false
+    const boxMat = new THREE.MeshPhongMaterial({
+        color: color,
     });
     const boxMesh = new THREE.Mesh(boxGeo, boxMat);
 
@@ -105,13 +101,13 @@ export function initContactMaterials() {
 export function initBits() {
     const bitlist = [];
 
-    var bit1 = new Bit(0, new THREE.Vector3(40, 10, 10));
+    var bit1 = new Bit(0, new THREE.Vector3(40, 2, 10));
     bitlist.push(bit1)
-    var bit2 = new Bit(0, new THREE.Vector3(35, 10, 10));
+    var bit2 = new Bit(0, new THREE.Vector3(35, 2, 10));
     bitlist.push(bit2);
-    var bit3 = new Bit(0, new THREE.Vector3(30, 10, 10));
+    var bit3 = new Bit(0, new THREE.Vector3(30, 2, 10));
     bitlist.push(bit3);
-    var bit4 = new Bit(0, new THREE.Vector3(25, 10, 10));
+    var bit4 = new Bit(0, new THREE.Vector3(25, 2, 10));
     bitlist.push(bit4);
     var bit5 = new Bit(1, new THREE.Vector3(20, 2, 10));
     bitlist.push(bit5);

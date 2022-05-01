@@ -1,9 +1,8 @@
-import { Group } from 'three';
+import { Group, Color } from 'three';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as CANNON from "cannon-es";
-import MODEL from './cap.gltf';
-import { scene } from '../../../app';
+import MODEL from './cap-colored.gltf';
 
 class Capacitor extends Group {
     constructor(position, material) {
