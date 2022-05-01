@@ -24,7 +24,7 @@ class Stats {
     this.bits = bits;
     $('#bits-collected').html(this.bits);
     $('#time-remaining').html(this.timer.time / 1000);
-    $('level').html(level);
+    $('#level').html(level);
   }
 
   hide() {

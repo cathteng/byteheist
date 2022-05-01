@@ -10,7 +10,7 @@ const capMat = new CANNON.Material('cap');
 
 export function initGround(width, height, depth, position, color) {
     const groundGeo = new THREE.PlaneGeometry(width, height, 20, 20);
-    const groundMat = new THREE.MeshPhongMaterial({ 
+    const groundMat = new THREE.MeshBasicMaterial({ 
         color: color,
         side: THREE.DoubleSide
     });
@@ -65,8 +65,10 @@ export function initSphere() {
 }
 
 
-export function initResistor(postion) {
-    const resistor = new Resistor(postion, new THREE.Vector3(0, Math.PI / 2, 0), groundPhysMat);
+// rotation should be a number between 1 and 4 inclusively
+// the numbers correspond to the right angles
+export function initResistor(postion, rotation) {
+    const resistor = new Resistor(postion, new THREE.Vector3(0, (rotation * Math.PI) / 2, 0), groundPhysMat);
     resistor.doRotation(new THREE.Vector3(0, Math.PI / 2, 0));
     return resistor;
 }
@@ -122,40 +124,40 @@ export function initBits(numLevel) {
     }
 
     if (numLevel == 1){
-        var bit1 = new Bit(0, new THREE.Vector3(40, 2, 10));
+        var bit1 = new Bit(0, new THREE.Vector3(-45, 2, 75));
         bitlist.push(bit1)
-        var bit2 = new Bit(0, new THREE.Vector3(35, 2, 10));
+        var bit2 = new Bit(0, new THREE.Vector3(-12.5, 2, 125));
         bitlist.push(bit2);
-        var bit3 = new Bit(0, new THREE.Vector3(30, 2, 10));
+        var bit3 = new Bit(0, new THREE.Vector3(35, 2, 170));
         bitlist.push(bit3);
-        var bit4 = new Bit(0, new THREE.Vector3(25, 2, 10));
+        var bit4 = new Bit(0, new THREE.Vector3(25, 2, 225));
         bitlist.push(bit4);
-        var bit5 = new Bit(1, new THREE.Vector3(20, 2, 10));
+        var bit5 = new Bit(1, new THREE.Vector3(20, 2, 275));
         bitlist.push(bit5);
-        var bit6 = new Bit(1, new THREE.Vector3(15, 2, 10));
+        var bit6 = new Bit(1, new THREE.Vector3(15, 2, 325));
         bitlist.push(bit6);
-        var bit7 = new Bit(1, new THREE.Vector3(10, 2, 10));
+        var bit7 = new Bit(1, new THREE.Vector3(10, 2, 375));
         bitlist.push(bit7);
-        var bit8 = new Bit(1, new THREE.Vector3(5, 2, 10));
+        var bit8 = new Bit(1, new THREE.Vector3(5, 2, 425));
         bitlist.push(bit8);
     }
 
     if (numLevel == 2){
-        var bit1 = new Bit(0, new THREE.Vector3(40, 2, 10));
+        var bit1 = new Bit(0, new THREE.Vector3(0, 2, 200));
         bitlist.push(bit1)
-        var bit2 = new Bit(0, new THREE.Vector3(35, 2, 10));
+        var bit2 = new Bit(0, new THREE.Vector3(0, 2, -200));
         bitlist.push(bit2);
-        var bit3 = new Bit(0, new THREE.Vector3(30, 2, 10));
+        var bit3 = new Bit(0, new THREE.Vector3(200, 2, 0));
         bitlist.push(bit3);
-        var bit4 = new Bit(0, new THREE.Vector3(25, 2, 10));
+        var bit4 = new Bit(0, new THREE.Vector3(-200, 2, 0));
         bitlist.push(bit4);
-        var bit5 = new Bit(1, new THREE.Vector3(20, 2, 10));
+        var bit5 = new Bit(1, new THREE.Vector3(200, 2, 200));
         bitlist.push(bit5);
-        var bit6 = new Bit(1, new THREE.Vector3(15, 2, 10));
+        var bit6 = new Bit(1, new THREE.Vector3(200, 2, -200));
         bitlist.push(bit6);
-        var bit7 = new Bit(1, new THREE.Vector3(10, 2, 10));
+        var bit7 = new Bit(1, new THREE.Vector3(-200, 2, 200));
         bitlist.push(bit7);
-        var bit8 = new Bit(1, new THREE.Vector3(5, 2, 10));
+        var bit8 = new Bit(1, new THREE.Vector3(-200, 2, -200));
         bitlist.push(bit8);
     }
 
