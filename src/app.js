@@ -23,7 +23,7 @@ const timeStep = 1 / 60;
 const viewOffset = new CANNON.Vec3(0, 6, 0);
 const totalLevels = 2;
 const gravity = new CANNON.Vec3(0, -20, 0);
-const timePerLevel = [60 * 1000, 120 * 1000, 1000 * 1000];
+const timePerLevel = [60 * 1000, 120 * 1000, 180 * 1000];
 
 // VARS
 var controls;
