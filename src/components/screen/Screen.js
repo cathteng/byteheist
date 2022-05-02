@@ -52,8 +52,8 @@ class Screen {
     $("#end").hide();
     
     $('body').append($(
-      `<div id="win" class="screen mid">
-      <h2>YOU WON!</h2>
+      `<div id="win" class="screen">
+      <h2 class="hero glitch layers" data-text="YOU WON!"><span>YOU WON!</span></h2>
       <div style="text-align: center">
         <p>You completely corrupted the computer.</p>
         <span class="blinking">CLICK TO RESTART</span>

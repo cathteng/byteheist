@@ -149,6 +149,7 @@ function restart() {
 
 function setLevel() {
   screen.showLoading();
+  screen.hideFlashing();
   scene = new THREE.Scene();
   world = new CANNON.World({gravity: gravity});
   scene.background = new THREE.Color( '#404040' );
@@ -161,6 +162,7 @@ function setLevel() {
   stats.timer.stop();
   setTimeout(() => {stats.timer.start(timePerLevel[currentLevel])}, 2000);
   bitsCorrupted = 0;
+  state = "play";
   reset();
 }
 
@@ -258,7 +260,6 @@ window.addEventListener("click", function() {
 
 controls.addEventListener('lock', function () {
   if (state == "start") {
-    
     state = "play";
     screen.hidePause();
     screen.hideTitle();
