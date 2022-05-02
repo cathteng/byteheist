@@ -119,13 +119,37 @@ class Level {
 
         //copper
         const copperList = [];
-        const copper1 = INIT.initCopper(new THREE.Vector3(0, 0.5, 200), 1, 20, 1)
+        const copper1 = INIT.initCopper(new THREE.Vector3(-20, 0.5, 210), 1, 20, 1)
         APP.scene.add(copper1.mesh);
         copperList.push(copper1);
 
-        const copper2 = INIT.initCopper(new THREE.Vector3(0, 2, 200), 1, 20, 1)
+        const copper2 = INIT.initCopper(new THREE.Vector3(-20, 0.5, 205), 1, 20, 1)
         APP.scene.add(copper2.mesh);
         copperList.push(copper2);
+
+        const copper3 = INIT.initCopper(new THREE.Vector3(20, 0.5, 210), 1, 20, 1)
+        APP.scene.add(copper3.mesh);
+        copperList.push(copper3);
+
+        const copper4 = INIT.initCopper(new THREE.Vector3(20, 0.5, 205), 1, 20, 1)
+        APP.scene.add(copper4.mesh);
+        copperList.push(copper4);
+        // 
+        const copper5 = INIT.initCopper(new THREE.Vector3(-20, 0.5, 200), 1, 20, 1)
+        APP.scene.add(copper5.mesh);
+        copperList.push(copper5);
+
+        const copper6 = INIT.initCopper(new THREE.Vector3(-20, 0.5, 195), 1, 20, 1)
+        APP.scene.add(copper6.mesh);
+        copperList.push(copper6);
+
+        const copper7 = INIT.initCopper(new THREE.Vector3(20, 0.5, 200), 1, 20, 1)
+        APP.scene.add(copper7.mesh);
+        copperList.push(copper7);
+
+        const copper8 = INIT.initCopper(new THREE.Vector3(20, 0.5, 195), 1, 20, 1)
+        APP.scene.add(copper8.mesh);
+        copperList.push(copper8);
 
         // arrow
         const arrow = new Arrow(new CANNON.Vec3(0, 10, 250));
