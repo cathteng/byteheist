@@ -69,7 +69,7 @@ export function initSphere(postion) {
 // the numbers correspond to the right angles
 export function initResistor(postion, rotation) {
     const resistor = new Resistor(postion, new THREE.Vector3(0, (rotation * Math.PI) / 2, 0), groundPhysMat);
-    // resistor.doRotation(new THREE.Vector3(0, Math.PI / 2, 0));
+    //resistor.doRotation(new THREE.Vector3(0, Math.PI / 2, 0));
     return resistor;
 }
 

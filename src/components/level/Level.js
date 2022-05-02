@@ -84,25 +84,25 @@ class Level {
         APP.world.addBody(sphereBody);
 
         // resistor
-        var resistor1 = INIT.initResistor(new THREE.Vector3(15, 0, 100), 2);
-        APP.scene.add(resistor1);
-        resistor1.addBodies(APP.world);
+        var resistor = INIT.initResistor(new THREE.Vector3(15, 0, 100), 1);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
 
-        var resistor2 = INIT.initResistor(new THREE.Vector3(0, 0, 100), 1);
-        APP.scene.add(resistor2);
-        resistor2.addBodies(APP.world);
+        var resistor = INIT.initResistor(new THREE.Vector3(0, 0, 100), 1);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
 
-        var resistor3 = INIT.initResistor(new THREE.Vector3(-15, 0, 100), 1);
-        APP.scene.add(resistor3);
-        resistor3.addBodies(APP.world);
+        var resistor = INIT.initResistor(new THREE.Vector3(-15, 0, 100), 1);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
 
-        var resistor4 = INIT.initResistor(new THREE.Vector3(-30, 0, 100), 1);
-        APP.scene.add(resistor4);
-        resistor4.addBodies(APP.world);
+        var resistor = INIT.initResistor(new THREE.Vector3(-30, 0, 100), 1);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
 
-        var resistor5 = INIT.initResistor(new THREE.Vector3(30, 0, 100), 1);
-        APP.scene.add(resistor5);
-        resistor5.addBodies(APP.world);
+        var resistor = INIT.initResistor(new THREE.Vector3(30, 0, 100), 1);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
 
         // capacitor
         const capacitor1 = INIT.initCapacitor(new THREE.Vector3(0, 2.5, 150)); // 
@@ -216,7 +216,7 @@ class Level {
         APP.scene.add(resistor);
         resistor.addBodies(APP.world);
 
-        var resistor = INIT.initResistor(new THREE.Vector3(-40, 0, 75), 2);
+        var resistor = INIT.initResistor(new THREE.Vector3(-40, 0, 75), 1);
         APP.scene.add(resistor);
         resistor.addBodies(APP.world);
 
@@ -604,53 +604,150 @@ class Level {
         APP.world.addBody(sphereBody);
 
         // resistor
-        var resistor = INIT.initResistor(new THREE.Vector3(15, 0, 160), 2);
+        var resistor = INIT.initResistor(new THREE.Vector3(15, 0, 160), 1);
         APP.scene.add(resistor);
         resistor.addBodies(APP.world);
 
-        var resistor = INIT.initResistor(new THREE.Vector3(-15, 0, 160), 2);
+        var resistor = INIT.initResistor(new THREE.Vector3(-15, 0, 160), 1);
         APP.scene.add(resistor);
         resistor.addBodies(APP.world);
 
-        var resistor = INIT.initResistor(new THREE.Vector3(15, 0, 100), 2);
+        var resistor = INIT.initResistor(new THREE.Vector3(15, 0, 100), 1);
         APP.scene.add(resistor);
         resistor.addBodies(APP.world);
 
-        var resistor = INIT.initResistor(new THREE.Vector3(-15, 0, 100), 2);
+        var resistor = INIT.initResistor(new THREE.Vector3(-15, 0, 100), 1);
         APP.scene.add(resistor);
         resistor.addBodies(APP.world);
 
-        var resistor = INIT.initResistor(new THREE.Vector3(15, 0, 40), 2);
+        var resistor = INIT.initResistor(new THREE.Vector3(15, 0, 40), 1);
         APP.scene.add(resistor);
         resistor.addBodies(APP.world);
 
-        var resistor = INIT.initResistor(new THREE.Vector3(-15, 0, 40), 2);
+        var resistor = INIT.initResistor(new THREE.Vector3(-15, 0, 40), 1);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+        //
+        var resistor = INIT.initResistor(new THREE.Vector3(-45, 0, 190), 2);
         APP.scene.add(resistor);
         resistor.addBodies(APP.world);
 
-        var resistor = INIT.initResistor(new THREE.Vector3(15, 0, -160), 2);
+        var resistor = INIT.initResistor(new THREE.Vector3(-45, 0, 220), 2);
         APP.scene.add(resistor);
         resistor.addBodies(APP.world);
 
-        var resistor = INIT.initResistor(new THREE.Vector3(-15, 0, -160), 2);
+        var resistor = INIT.initResistor(new THREE.Vector3(-105, 0, 190), 2);
         APP.scene.add(resistor);
         resistor.addBodies(APP.world);
 
-        var resistor = INIT.initResistor(new THREE.Vector3(15, 0, -100), 2);
+        var resistor = INIT.initResistor(new THREE.Vector3(-105, 0, 220), 2);
         APP.scene.add(resistor);
         resistor.addBodies(APP.world);
 
-        var resistor = INIT.initResistor(new THREE.Vector3(-15, 0, -100), 2);
+        var resistor = INIT.initResistor(new THREE.Vector3(-165, 0, 190), 2);
         APP.scene.add(resistor);
         resistor.addBodies(APP.world);
 
-        var resistor = INIT.initResistor(new THREE.Vector3(15, 0, -40), 2);
+        var resistor = INIT.initResistor(new THREE.Vector3(-165, 0, 220), 2);
         APP.scene.add(resistor);
         resistor.addBodies(APP.world);
 
-        var resistor = INIT.initResistor(new THREE.Vector3(-15, 0, -40), 2);
+        var resistor = INIT.initResistor(new THREE.Vector3(45, 0, 190), 2);
         APP.scene.add(resistor);
         resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(45, 0, 220), 2);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(105, 0, 190), 2);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(105, 0, 220), 2);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(165, 0, 190), 2);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(165, 0, 220), 2);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+        //
+        var resistor = INIT.initResistor(new THREE.Vector3(15, 0, -160), 1);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(-15, 0, -160), 1);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(15, 0, -100), 1);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(-15, 0, -100), 1);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(15, 0, -40), 1);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(-15, 0, -40), 1);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+        //
+        var resistor = INIT.initResistor(new THREE.Vector3(-45, 0, -190), 2);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(-45, 0, -220), 2);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(-105, 0, -190), 2);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(-105, 0, -220), 2);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(-165, 0, -190), 2);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(-165, 0, -220), 2);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(45, 0, -190), 2);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(45, 0, -220), 2);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(105, 0, -190), 2);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(105, 0, -220), 2);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(165, 0, -190), 2);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+
+        var resistor = INIT.initResistor(new THREE.Vector3(165, 0, -220), 2);
+        APP.scene.add(resistor);
+        resistor.addBodies(APP.world);
+        
 
 
         // // capacitor
@@ -670,9 +767,42 @@ class Level {
         APP.scene.add(capacitor);
         APP.world.addBody(capacitor.body);
         //
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(135, 2.5, -205)); // 
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(75, 2.5, -205)); // 
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(135, 2.5, 205)); // 
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(75, 2.5, 205)); // 
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(-135, 2.5, -205)); // 
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(-75, 2.5, -205)); // 
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(-135, 2.5, 205)); // 
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(-75, 2.5, 205)); // 
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        //
         var capacitor = INIT.initCapacitor(new THREE.Vector3(-160, 2.5, 15), 2);
         APP.scene.add(capacitor);
-        resistor.addBodies(APP.world);
+        APP.world.addBody(capacitor.body);
 
         var capacitor = INIT.initCapacitor(new THREE.Vector3(-160, 2.5, -15), 2);
         APP.scene.add(capacitor);
@@ -696,7 +826,7 @@ class Level {
         //
         var capacitor = INIT.initCapacitor(new THREE.Vector3(160, 2.5, 15), 2);
         APP.scene.add(capacitor);
-        resistor.addBodies(APP.world);
+        APP.world.addBody(capacitor.body);
 
         var capacitor = INIT.initCapacitor(new THREE.Vector3(160, 2.5, -15), 2);
         APP.scene.add(capacitor);
@@ -717,6 +847,110 @@ class Level {
         var capacitor = INIT.initCapacitor(new THREE.Vector3(40, 2.5, -15), 2);
         APP.scene.add(capacitor);
         APP.world.addBody(capacitor.body);
+
+        //
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(190, 2.5, 160), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(220, 2.5, 160), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(190, 2.5, 100), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(220, 2.5, 100), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(190, 2.5, 40), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(220, 2.5, 40), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        //
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(190, 2.5, -160), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(220, 2.5, -160), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(190, 2.5, -100), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(220, 2.5, -100), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(190, 2.5, -40), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(220, 2.5, -40), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        //
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(-190, 2.5, 160), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(-220, 2.5, 160), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(-190, 2.5, 100), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(-220, 2.5, 100), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(-190, 2.5, 40), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(-220, 2.5, 40), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        //
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(-190, 2.5, -160), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(-220, 2.5, -160), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(-190, 2.5, -100), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(-220, 2.5, -100), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(-190, 2.5, -40), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
+        var capacitor = INIT.initCapacitor(new THREE.Vector3(-220, 2.5, -40), 2);
+        APP.scene.add(capacitor);
+        APP.world.addBody(capacitor.body);
+
 
         //copper
         const copperList = [];
@@ -743,6 +977,59 @@ class Level {
         var copper = INIT.initCopper(new THREE.Vector3(-160, 0.5, 0), 20, 1, 1)
         APP.scene.add(copper.mesh);
         copperList.push(copper);
+
+        //
+        var copper = INIT.initCopper(new THREE.Vector3(205, 0.5, 40), 1, 20, 1)
+        APP.scene.add(copper.mesh);
+        copperList.push(copper);
+
+        var copper = INIT.initCopper(new THREE.Vector3(205, 0.5, 100), 1, 20, 1)
+        APP.scene.add(copper.mesh);
+        copperList.push(copper);
+
+        var copper = INIT.initCopper(new THREE.Vector3(205, 0.5, 160), 1, 20, 1)
+        APP.scene.add(copper.mesh);
+        copperList.push(copper);
+
+        var copper = INIT.initCopper(new THREE.Vector3(205, 0.5, -40), 1, 20, 1)
+        APP.scene.add(copper.mesh);
+        copperList.push(copper);
+
+        var copper = INIT.initCopper(new THREE.Vector3(205, 0.5, -100), 1, 20, 1)
+        APP.scene.add(copper.mesh);
+        copperList.push(copper);
+
+        var copper = INIT.initCopper(new THREE.Vector3(205, 0.5, -160), 1, 20, 1)
+        APP.scene.add(copper.mesh);
+        copperList.push(copper);
+
+        //
+
+        var copper = INIT.initCopper(new THREE.Vector3(-205, 0.5, 40), 1, 20, 1)
+        APP.scene.add(copper.mesh);
+        copperList.push(copper);
+
+        var copper = INIT.initCopper(new THREE.Vector3(-205, 0.5, 100), 1, 20, 1)
+        APP.scene.add(copper.mesh);
+        copperList.push(copper);
+
+        var copper = INIT.initCopper(new THREE.Vector3(-205, 0.5, 160), 1, 20, 1)
+        APP.scene.add(copper.mesh);
+        copperList.push(copper);
+
+        var copper = INIT.initCopper(new THREE.Vector3(-205, 0.5, -40), 1, 20, 1)
+        APP.scene.add(copper.mesh);
+        copperList.push(copper);
+
+        var copper = INIT.initCopper(new THREE.Vector3(-205, 0.5, -100), 1, 20, 1)
+        APP.scene.add(copper.mesh);
+        copperList.push(copper);
+
+        var copper = INIT.initCopper(new THREE.Vector3(-205, 0.5, -160), 1, 20, 1)
+        APP.scene.add(copper.mesh);
+        copperList.push(copper);
+
+
 
         // var copper = INIT.initCopper(new THREE.Vector3(50, 0, -50), 10, 10, 10)
         // APP.scene.add(copper.mesh);
