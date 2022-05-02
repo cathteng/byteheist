@@ -7,7 +7,7 @@ class Screen {
 
     $('body').append($(
       `<div id="screen" class="screen">
-        <h1 data-text="byte heist"><span>byte heist</span></h1>
+        <h2 class="hero glitch layers" data-text="BYTE HEIST"><span>BYTE HEIST</span></h1>
         <div style="text-align: center">
           <p>CONTROLS: WASD to move, SPACE to jump, ESC to pause</p>
           Collect the bits before time runs out!
@@ -40,8 +40,8 @@ class Screen {
     $("#pause").hide();
 
     $('body').append($(
-      `<div id="end" class="screen mid">
-      <h2>GAME OVER</h2>
+      `<div id="end" class="screen">
+      <h1 data-text="GAME OVER"><span>GAME OVER</span></h1>
       <div style="text-align: center">
         <p id="endText">You were caught by the antivirus!</p>
         <span class="blinking">CLICK TO RESTART</span>

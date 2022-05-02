@@ -13,12 +13,12 @@
 
 
  /* ref https://codepen.io/GeorgePark/pen/jeBbGN start */
-#screen h1 {
+#end h1 {
     position: relative;
     font-family: monospace;
     font-size: 96px;
     font-weight: 700;
-    color: #39ff14;
+    color: #E70000;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     text-shadow: 0 0 0.15em #1da9cc;
@@ -37,6 +37,10 @@
     margin-bottom: 0px;
 }
 
+#screen h2 {
+  margin-bottom: 20px;
+}
+
 .mid h2 {
     position: relative;
     font-family: monospace;
@@ -52,7 +56,7 @@
     margin: 0px 0px 20px 0px;
 }
 
-#screen h1 span {
+#end h1 span {
     position: absolute;
     top: 0;
     left: 0;
@@ -61,7 +65,7 @@
             clip-path: polygon(10% 0%, 44% 0%, 70% 100%, 55% 100%);
 }
 
-#screen h1::before,
+#end h1::before,
 h1::after {
     content: attr(data-text);
     position: absolute;
@@ -69,13 +73,13 @@ h1::after {
     left: 0;
 }
 
-#screen h1::before {
+#end h1::before {
     animation: crack1 2.5s linear forwards;
     -webkit-clip-path: polygon(0% 0%, 10% 0%, 55% 100%, 0% 100%);
             clip-path: polygon(0% 0%, 10% 0%, 55% 100%, 0% 100%);
 }
 
-#screen h1::after {
+#end h1::after {
     animation: crack2 2.5s linear forwards;
     -webkit-clip-path: polygon(44% 0%, 100% 0%, 100% 100%, 70% 100%);
             clip-path: polygon(44% 0%, 100% 0%, 100% 100%, 70% 100%);
@@ -201,8 +205,8 @@ h1::after {
     --charge: hsl(var(--h, 0), 80%, 50%);
     -o-border-image: conic-gradient(var(--charge) var(--a), transparent calc(var(--a) + 0.5deg)) 30;
        border-image: conic-gradient(var(--charge) var(--a), transparent calc(var(--a) + 0.5deg)) 30;
-    -webkit-animation: load 2s 1 ease-in-out;
-            animation: load 2s 1 ease-in-out;
+    -webkit-animation: load 2s 2 ease-in-out;
+            animation: load 2s 2 ease-in-out;
   }
   @-webkit-keyframes load {
     0%, 10% {
