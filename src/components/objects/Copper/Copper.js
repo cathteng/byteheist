@@ -39,7 +39,7 @@ class Copper extends Group {
                 spherePos.z < this.boundingBox.max.z))
             return 0;
         if (!(this.boundingBox.min.y < spherePos.y && 
-                spherePos.y < this.boundingBox.max.z + FAIL_HEIGHT))
+                spherePos.y < this.boundingBox.max.y + FAIL_HEIGHT))
             return 0;
         // gameover state
         return 1;
