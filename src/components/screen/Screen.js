@@ -17,6 +17,17 @@ class Screen {
       `
     ));
     $("#screen").show();
+
+    $('body').append($(
+      `<div id="flashing" class="screen flashing mid">
+        <h2>VIRUS DETECTED</h2>
+        <h2>CLEAN UP BEGINNING IN</h2>
+        <h2 id="time"></h2>
+      </div>
+      `
+    ));
+    $("#flashing").hide();
+    
     $('body').append($(
       `<div id="pause" class="screen mid">
       <h2>GAME PAUSED</h2>
@@ -51,6 +62,16 @@ class Screen {
       `
     ));
     $("#win").hide();
+
+    $('body').append($(
+      `<div id="loading" class="screen">
+      <div class="loader">
+        Loading
+      </div>
+      </div>
+      `
+    ));
+    $("#loading").hide();
   }
 
   hideTitle() {
@@ -73,6 +94,22 @@ class Screen {
   }
   showWin() {
     $("#win").show();
+  }
+
+  showLoading() {
+    $("#loading").show();
+    $("#loading").on("animationend webkitAnimationEnd", function() {
+      $("#loading").hide();
+    })
+  }
+  showFlashing() {
+    $("#flashing").show();
+    $("#flashing").on("animationend webkitAnimationEnd", function() {
+      $("#flashing").hide();
+    })
+  }
+  countdown(time) {
+    $("#time").text(time);
   }
 }
 

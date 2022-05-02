@@ -511,13 +511,13 @@ class Level {
         APP.scene.add(capacitor4);
         APP.world.addBody(capacitor4.body);
 
-        //coppper
+        //copper
         const copperList = [];
         const copper1 = INIT.initCopper(new THREE.Vector3(50, 0, 50), 10, 10, 10)
         APP.scene.add(copper1.mesh);
         copperList.push(copper1);
         //debugger;
-        // APP.world.addBody(copper1.body);
+        APP.world.addBody(copper1.body);
         
 
 

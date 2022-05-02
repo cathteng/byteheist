@@ -153,4 +153,75 @@ h1::after {
   }
 }
 
+.flashing {
+   animation: opacity 2s ease-in-out 2.5;
+   opacity: 1;
+   font-size: 36px;
+   background-color: rgba(231, 0, 0, 0.5);
+   color: white;
+}
+
+.flashing h2 {
+    position: relative;
+    font-family: monospace;
+    font-size: 72px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    text-shadow: 0 0 0.15em #1da9cc;
+    user-select: none;
+    white-space: nowrap;
+    filter: blur(0.007em);
+    margin: 0px 0px 20px 0px;
+}
+
 /* https://jsfiddle.net/yo5kw3qd/ end */
+
+/* ref https://codepen.io/jh3y/pen/jOVNOeg start */
+
+  @property --a {
+    initial-value: 0deg;
+    inherits: false;
+    syntax: '<angle>';
+  }
+  @property --h {
+    initial-value: 0;
+    inherits: false;
+    syntax: '<number>';
+  }
+  .loader {
+    padding: 2rem 4rem;
+    font-family: monospace;
+    font-weight: bold;
+    color: #fff;
+    border-style: solid;
+    border-width: 1vmin;
+    font-size: 2rem;
+    --charge: hsl(var(--h, 0), 80%, 50%);
+    -o-border-image: conic-gradient(var(--charge) var(--a), transparent calc(var(--a) + 0.5deg)) 30;
+       border-image: conic-gradient(var(--charge) var(--a), transparent calc(var(--a) + 0.5deg)) 30;
+    -webkit-animation: load 2s 1 ease-in-out;
+            animation: load 2s 1 ease-in-out;
+  }
+  @-webkit-keyframes load {
+    0%, 10% {
+      --a: 0deg;
+      --h: 0;
+    }
+    100% {
+      --a: 360deg;
+      --h: 100;
+    }
+  }
+  @keyframes load {
+    0%, 10% {
+      --a: 0deg;
+      --h: 0;
+    }
+    100% {
+      --a: 360deg;
+      --h: 100;
+    }
+  }
+  

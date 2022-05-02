@@ -25,7 +25,7 @@ const timeStep = 1 / 60;
 const viewOffset = new CANNON.Vec3(0, 6, 0);
 const totalLevels = 2;
 const gravity = new CANNON.Vec3(0, -20, 0);
-const timePerLevel = [60*1000, 60*1000, 120*1000];
+const timePerLevel = [6*1000, 60*1000, 120*1000];
 
 // VARS
 var controls;
@@ -150,6 +150,7 @@ function restart() {
 }
 
 function setLevel() {
+  screen.showLoading();
   scene = new THREE.Scene();
   world = new CANNON.World({gravity: gravity});
   scene.background = new THREE.Color( '#404040' );
@@ -160,14 +161,13 @@ function setLevel() {
   camera.position.set(0, 20, -30);
   ({groundMesh, end_width, end_height, end_pos, sphereMesh, sphereBody, arrow, bitList} = level.changeLevel(currentLevel));
   stats.timer.stop();
-  stats.timer.start(timePerLevel[currentLevel]);
+  setTimeout(() => {stats.timer.start(timePerLevel[currentLevel])}, 2000);
   bitsCorrupted = 0;
   reset();
 }
 
-console.log(scene);
 function animate() {
-    if (controls.isLocked) {
+    if (controls.isLocked && $("#loading").css("display") == "none") {
       world.step(timeStep);
 
       sphereMesh.position.copy(sphereBody.position);
@@ -191,6 +191,10 @@ function animate() {
 
       move();
       stats.update(bitsCorrupted, currentLevel);
+      if (stats.timer.time <= 5*1000) {
+        screen.showFlashing();
+        screen.countdown(Math.max(0, Math.round(stats.timer.time / 1000)));
+      }
       updateCamera();
 
       // reset if you fall off
@@ -255,13 +259,16 @@ window.addEventListener("click", function() {
 
 controls.addEventListener('lock', function () {
   if (state == "start") {
-    stats.timer.start(timePerLevel[currentLevel]);
+    
     state = "play";
     screen.hidePause();
     screen.hideTitle();
     screen.hideWin();
+    screen.showLoading();
+    setTimeout(() => {stats.timer.start(timePerLevel[currentLevel])}, 2000);
   } else if (state == "play") {
     stats.timer.resume();
+    $(".flashing").css("animation-play-state", "running");
     screen.hidePause();
   } else if (state == "gameover") {
     restart();
@@ -274,6 +281,7 @@ controls.addEventListener('unlock', function () {
   if (state == "play") {
     screen.showPause();
     stats.timer.pause();
+    $(".flashing").css("animation-play-state", "paused");
   } else if (state == "gameover") {
     screen.showEnd();
   } else if (state == "win") {
