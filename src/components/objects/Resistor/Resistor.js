@@ -30,7 +30,6 @@ class Resistor extends Group {
         });
 
         this.createBoxes(position, angle, material);
-
         this.rotateX(angle.x);
         this.rotateY(angle.y);
         this.rotateZ(angle.z);
