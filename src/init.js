@@ -148,21 +148,21 @@ export function initBits(numLevel) {
     }
 
     if (numLevel == 2){
-        var bit1 = new Bit(0, new THREE.Vector3(0, 2, 200));
+        var bit1 = new Bit(0, new THREE.Vector3(0, 2, 205));
         bitlist.push(bit1)
-        var bit2 = new Bit(0, new THREE.Vector3(0, 2, -200));
+        var bit2 = new Bit(0, new THREE.Vector3(0, 2, -205));
         bitlist.push(bit2);
-        var bit3 = new Bit(0, new THREE.Vector3(200, 2, 0));
+        var bit3 = new Bit(0, new THREE.Vector3(205, 2, 0));
         bitlist.push(bit3);
-        var bit4 = new Bit(0, new THREE.Vector3(-200, 2, 0));
+        var bit4 = new Bit(0, new THREE.Vector3(-205, 2, 0));
         bitlist.push(bit4);
-        var bit5 = new Bit(1, new THREE.Vector3(200, 2, 200));
+        var bit5 = new Bit(1, new THREE.Vector3(205, 2, 205));
         bitlist.push(bit5);
-        var bit6 = new Bit(1, new THREE.Vector3(200, 2, -200));
+        var bit6 = new Bit(1, new THREE.Vector3(205, 2, -205));
         bitlist.push(bit6);
-        var bit7 = new Bit(1, new THREE.Vector3(-200, 2, 200));
+        var bit7 = new Bit(1, new THREE.Vector3(-205, 2, 205));
         bitlist.push(bit7);
-        var bit8 = new Bit(1, new THREE.Vector3(-200, 2, -200));
+        var bit8 = new Bit(1, new THREE.Vector3(-205, 2, -205));
         bitlist.push(bit8);
     }
 

@@ -23,7 +23,7 @@ const timeStep = 1 / 60;
 const viewOffset = new CANNON.Vec3(0, 6, 0);
 const totalLevels = 2;
 const gravity = new CANNON.Vec3(0, -20, 0);
-const timePerLevel = [60*1000, 60*1000, 120*1000];
+const timePerLevel = [60*1000, 120*1000, 1000*1000];
 
 // VARS
 var controls;
@@ -32,7 +32,7 @@ var endText = "";
 var sphereDir = new THREE.Vector3(0, 0, 1);
 var keyPress = {"w": 0, "a": 0, "s": 0, "d": 0, " ": 0};
 var cannonDebugger;
-var currentLevel = 1;
+var currentLevel = 2;
 var groundMesh, end_width, end_height, end_pos, sphereMesh, sphereBody, arrow, bitList, copperList;
 
 
