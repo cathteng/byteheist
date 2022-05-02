@@ -1,1 +1,1 @@
-export { default as Resistor } from './Resistor.js';
+export { default as Resistor } from "./Resistor.js";

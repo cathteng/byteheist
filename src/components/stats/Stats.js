@@ -7,28 +7,30 @@ class Stats {
     this.bits = 0;
     this.timer = new Timer();
 
-    $('body').append($(
-      `<div class="stats">
+    $("body").append(
+      $(
+        `<div class="stats">
         <p>> Current level: <span id="level"></span></p>
         <p>> Bits collected: <span id="bits-collected">0</span>/8</p>
         <p>> Time remaining: <span id="time-remaining"></span>s</p>
       </div>
       `
-    ));
-    $('#bits-collected').html(this.bits);
-    $('#time-remaining').html(this.timer.time / 1000);
-    $('#level').html(0);
+      )
+    );
+    $("#bits-collected").html(this.bits);
+    $("#time-remaining").html(this.timer.time / 1000);
+    $("#level").html(0);
   }
 
   update(bits, level) {
     this.bits = bits;
-    $('#bits-collected').html(this.bits);
-    $('#time-remaining').html(this.timer.time / 1000);
-    $('#level').html(level);
+    $("#bits-collected").html(this.bits);
+    $("#time-remaining").html(this.timer.time / 1000);
+    $("#level").html(level);
   }
 
   hide() {
-    $('.stats').hide();
+    $(".stats").hide();
   }
 }
 

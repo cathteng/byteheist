@@ -1,1 +1,1 @@
-export { default as Capacitor } from './Capacitor.js';
+export { default as Capacitor } from "./Capacitor.js";

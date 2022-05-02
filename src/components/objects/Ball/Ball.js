@@ -1,21 +1,21 @@
-import { Group } from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import MODEL from './virus.gltf';
+import { Group } from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import MODEL from "./virus.gltf";
 
 class Ball extends Group {
-    constructor() {
-        // Call parent Group() constructor
-        super();
+  constructor() {
+    // Call parent Group() constructor
+    super();
 
-        const loader = new GLTFLoader();
+    const loader = new GLTFLoader();
 
-        this.name = 'virus';
+    this.name = "virus";
 
-        loader.load(MODEL, (gltf) => {
-            gltf.scene.scale.set(2, 2, 2);
-            this.add(gltf.scene);
-        });
-    }
+    loader.load(MODEL, (gltf) => {
+      gltf.scene.scale.set(2, 2, 2);
+      this.add(gltf.scene);
+    });
+  }
 }
 
 export default Ball;

@@ -1,9 +1,9 @@
 {
   "name": "byte-heist",
-  "repository": "cos426",
+  "repository": "byteheist",
   "version": "0.1.0",
   "title": "Byte Heist",
-  "description": "Steal the bits before time runs out! Don't fall!",
+  "description": "Steal the bits before time runs out!",
   "keywords": [
     "Princeton",
     "graphics",
