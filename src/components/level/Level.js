@@ -204,11 +204,11 @@ class Level {
 
         // box
         // wall 1
-        var {boxMesh, boxBody} = INIT.initBox(50, 1, 15, new CANNON.Vec3(25, 7.5, 50), '#E5D449');
+        var {boxMesh, boxBody} = INIT.initBox(50, 1, 15, new CANNON.Vec3(25, 7.5, 50), '#E70000');
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
-        ({boxMesh, boxBody} = INIT.initBox(30, 1, 15, new CANNON.Vec3(-25, 7.5, 50), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(30, 1, 15, new CANNON.Vec3(-25, 7.5, 50), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
@@ -225,11 +225,11 @@ class Level {
         APP.world.addBody(capacitor1.body);
 
         // wall 2
-        ({boxMesh, boxBody} = INIT.initBox(80, 1, 15, new CANNON.Vec3(-10, 7.5, 100), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(80, 1, 15, new CANNON.Vec3(-10, 7.5, 100), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
-        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(45, 7.5, 100), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(45, 7.5, 100), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
@@ -246,7 +246,7 @@ class Level {
         APP.world.addBody(capacitor4.body);
 
         // wall 3
-        ({boxMesh, boxBody} = INIT.initBox(60, 1, 15, new CANNON.Vec3(20, 7.5, 150), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(60, 1, 15, new CANNON.Vec3(20, 7.5, 150), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
@@ -271,24 +271,24 @@ class Level {
         APP.world.addBody(capacitor5.body);
 
 
-        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(-25, 7.5, 150), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(-25, 7.5, 150), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
-        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(-45, 7.5, 150), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(-45, 7.5, 150), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
         // wall 4
-        ({boxMesh, boxBody} = INIT.initBox(70, 1, 15, new CANNON.Vec3(0, 7.5, 200), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(70, 1, 15, new CANNON.Vec3(0, 7.5, 200), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
-        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(45, 7.5, 200), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(45, 7.5, 200), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
-        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(-45, 7.5, 200), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(-45, 7.5, 200), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
@@ -328,7 +328,7 @@ class Level {
 
 
         // wall 5
-        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(-45, 7.5, 250), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(-45, 7.5, 250), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
@@ -336,7 +336,7 @@ class Level {
         APP.scene.add(resistor);
         resistor.addBodies(APP.world);
 
-        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(-22.5, 7.5, 250), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(-22.5, 7.5, 250), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
@@ -344,7 +344,7 @@ class Level {
         APP.scene.add(resistor);
         resistor.addBodies(APP.world);
 
-        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(0, 7.5, 250), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(0, 7.5, 250), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
@@ -352,7 +352,7 @@ class Level {
         APP.scene.add(resistor);
         resistor.addBodies(APP.world);
 
-        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(22.5, 7.5, 250), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(22.5, 7.5, 250), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
@@ -360,7 +360,7 @@ class Level {
         APP.scene.add(resistor);
         resistor.addBodies(APP.world);
 
-        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(45, 7.5, 250), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(45, 7.5, 250), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
@@ -371,7 +371,7 @@ class Level {
 
 
         // wall 6
-        ({boxMesh, boxBody} = INIT.initBox(90, 1, 15, new CANNON.Vec3(0, 7.5, 300), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(90, 1, 15, new CANNON.Vec3(0, 7.5, 300), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
@@ -395,15 +395,15 @@ class Level {
 
 
         //wall 7 
-        ({boxMesh, boxBody} = INIT.initBox(40, 1, 15, new CANNON.Vec3(0, 7.5, 350), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(40, 1, 15, new CANNON.Vec3(0, 7.5, 350), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
-        ({boxMesh, boxBody} = INIT.initBox(20, 1, 15, new CANNON.Vec3(-40, 7.5, 350), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(20, 1, 15, new CANNON.Vec3(-40, 7.5, 350), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
-        ({boxMesh, boxBody} = INIT.initBox(20, 1, 15, new CANNON.Vec3(40, 7.5, 350), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(20, 1, 15, new CANNON.Vec3(40, 7.5, 350), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
@@ -422,15 +422,15 @@ class Level {
 
 
         // wall 8
-        ({boxMesh, boxBody} = INIT.initBox(60, 1, 15, new CANNON.Vec3(20, 7.5, 400), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(60, 1, 15, new CANNON.Vec3(20, 7.5, 400), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
-        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(-25, 7.5, 400), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(-25, 7.5, 400), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
-        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(-45, 7.5, 400), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(-45, 7.5, 400), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
@@ -465,11 +465,11 @@ class Level {
 
         
         // wall 9
-        ({boxMesh, boxBody} = INIT.initBox(80, 1, 15, new CANNON.Vec3(-10, 7.5, 450), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(80, 1, 15, new CANNON.Vec3(-10, 7.5, 450), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
-        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(45, 7.5, 450), '#E5D449'));
+        ({boxMesh, boxBody} = INIT.initBox(10, 1, 15, new CANNON.Vec3(45, 7.5, 450), '#E70000'));
         boxMeshes.push(boxMesh);
         boxBodies.push(boxBody);
 
