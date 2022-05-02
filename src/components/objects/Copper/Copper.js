@@ -13,8 +13,6 @@ class Copper extends Group {
         const geom = new THREE.BoxGeometry(width, height, depth);
         const mat = new THREE.MeshBasicMaterial({color: 0xB87333});
         const mesh = new THREE.Mesh(geom, mat);
-        // scene.add(mesh);
-        // this.position.set(position.x, position.y, position.z);
         this.mesh = mesh;
         this.mesh.position.set(position.x, position.y, position.z);
 
@@ -31,12 +29,13 @@ class Copper extends Group {
     }
 
     handleCollisions(spherePos) {
-        const FAIL_HEIGHT = 1;
-        if (!(this.boundingBox.min.x < spherePos.x && 
-                spherePos.x < this.boundingBox.max.x))
+        const FAIL_HEIGHT = 2;
+        const FAIL_FLAT = 1.5;
+        if (!(this.boundingBox.min.x - FAIL_FLAT < spherePos.x && 
+                spherePos.x < this.boundingBox.max.x + FAIL_FLAT))
             return 0;
-        if (!(this.boundingBox.min.z < spherePos.z && 
-                spherePos.z < this.boundingBox.max.z))
+        if (!(this.boundingBox.min.z - FAIL_FLAT < spherePos.z && 
+                spherePos.z < this.boundingBox.max.z + FAIL_FLAT))
             return 0;
         if (!(this.boundingBox.min.y < spherePos.y && 
                 spherePos.y < this.boundingBox.max.y + FAIL_HEIGHT))
