@@ -7,9 +7,7 @@ import { Stats } from './components/stats';
 import { Screen } from './components/screen';
 import { BasicLights } from './components/lights';
 import { Level } from './components/level';
-import { Copper } from './components/objects';
 import $ from "jquery";
-import * as INIT from './init.js';
 import CannonDebugger from 'cannon-es-debugger';
 
 // EXPORTS
@@ -25,11 +23,12 @@ const timeStep = 1 / 60;
 const viewOffset = new CANNON.Vec3(0, 6, 0);
 const totalLevels = 2;
 const gravity = new CANNON.Vec3(0, -20, 0);
-const timePerLevel = [6*1000, 60*1000, 120*1000];
+const timePerLevel = [60*1000, 60*1000, 120*1000];
 
 // VARS
 var controls;
 state = "start";
+var endText = "";
 var sphereDir = new THREE.Vector3(0, 0, 1);
 var keyPress = {"w": 0, "a": 0, "s": 0, "d": 0, " ": 0};
 var cannonDebugger;
@@ -141,7 +140,6 @@ function reset() {
 
 function restart() {
   currentLevel = 0;
-  state = "play";
   screen.hideEnd();
   screen.hideWin();
   bitsCorrupted = 0; 
@@ -182,6 +180,7 @@ function animate() {
         if (copper.handleCollisions(sphereBody.position) == 1) {
           controls.unlock();
           state = 'gameover';
+          endText = "You were shocked into oblivion by copper."
         }
       }
 
@@ -191,7 +190,7 @@ function animate() {
 
       move();
       stats.update(bitsCorrupted, currentLevel);
-      if (stats.timer.time <= 5*1000) {
+      if (stats.timer.time <= 5*1000 && stats.timer.time != 0) {
         screen.showFlashing();
         screen.countdown(Math.max(0, Math.round(stats.timer.time / 1000)));
       }
@@ -283,7 +282,7 @@ controls.addEventListener('unlock', function () {
     stats.timer.pause();
     $(".flashing").css("animation-play-state", "paused");
   } else if (state == "gameover") {
-    screen.showEnd();
+    screen.showEnd(endText);
   } else if (state == "win") {
     screen.showWin();
   }
@@ -292,4 +291,5 @@ controls.addEventListener('unlock', function () {
 stats.timer.on('done', () => {
   controls.unlock();
   state = "gameover";
+  endText = "You were detected by the antivirus."
 });

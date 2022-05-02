@@ -43,7 +43,7 @@ class Screen {
       `<div id="end" class="screen mid">
       <h2>GAME OVER</h2>
       <div style="text-align: center">
-        <p>You were caught by the antivirus!</p>
+        <p id="endText">You were caught by the antivirus!</p>
         <span class="blinking">CLICK TO RESTART</span>
       </div>
       </div>
@@ -86,16 +86,20 @@ class Screen {
   hideWin() {
     $("#win").hide();
   }
+  hideFlashing() {
+    $("#flashing").hide();
+  }
+
   showPause() {
     $("#pause").show();
   }
-  showEnd() {
+  showEnd(endText) {
+    $("#endText").text(endText);
     $("#end").show();
   }
   showWin() {
     $("#win").show();
   }
-
   showLoading() {
     $("#loading").show();
     $("#loading").on("animationend webkitAnimationEnd", function() {
