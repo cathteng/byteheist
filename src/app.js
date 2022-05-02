@@ -158,7 +158,7 @@ function setLevel() {
   scene.add(lights);
   scene.add(controls.getObject());
   camera.position.set(0, 20, -30);
-  ({groundMesh, end_width, end_height, end_pos, sphereMesh, sphereBody, arrow, bitList} = level.changeLevel(currentLevel));
+  ({groundMesh, end_width, end_height, end_pos, sphereMesh, sphereBody, arrow, bitList, copperList} = level.changeLevel(currentLevel));
   stats.timer.stop();
   setTimeout(() => {stats.timer.start(timePerLevel[currentLevel])}, 2000);
   bitsCorrupted = 0;
