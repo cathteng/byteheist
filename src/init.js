@@ -50,13 +50,13 @@ export function initBox(width, height, depth, position, color) {
     return {boxMesh, boxBody};
 }
 
-export function initSphere() {
+export function initSphere(postion) {
     const sphereMesh = new Ball();
     const radius = 2;
     const sphereBody = new CANNON.Body({
         mass: 2,
         shape: new CANNON.Sphere(radius),
-        position: new CANNON.Vec3(0, 10, 0),
+        position: postion,
         material: spherePhysMat,
         linearDamping: 0.5,
         angularDamping: 0.5
@@ -135,15 +135,15 @@ export function initBits(numLevel) {
         bitlist.push(bit2);
         var bit3 = new Bit(0, new THREE.Vector3(35, 2, 170));
         bitlist.push(bit3);
-        var bit4 = new Bit(0, new THREE.Vector3(25, 2, 225));
+        var bit4 = new Bit(0, new THREE.Vector3(0, 2, 225));
         bitlist.push(bit4);
-        var bit5 = new Bit(1, new THREE.Vector3(20, 2, 275));
+        var bit5 = new Bit(1, new THREE.Vector3(0, 2, 255));
         bitlist.push(bit5);
-        var bit6 = new Bit(1, new THREE.Vector3(15, 2, 325));
+        var bit6 = new Bit(1, new THREE.Vector3(0, 2, 325));
         bitlist.push(bit6);
         var bit7 = new Bit(1, new THREE.Vector3(10, 2, 375));
         bitlist.push(bit7);
-        var bit8 = new Bit(1, new THREE.Vector3(5, 2, 425));
+        var bit8 = new Bit(1, new THREE.Vector3(0, 2, 425));
         bitlist.push(bit8);
     }
 
