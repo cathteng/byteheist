@@ -100,7 +100,15 @@ class Screen {
   showWin() {
     $("#win").show();
   }
-  showLoading() {
+  showLoading(level) {
+    if (level == 2) {
+      $("#loading .loader").css("-webkit-animation", "load 2s 4 ease-in-out");
+      $("#loading .loader").css("animation", "load 2s 4 ease-in-out");
+      console.log($("#loading .loader").css("animation"));
+    } else {
+      $("#loading .loader").css("-webkit-animation", "load 2s 1 ease-in-out");
+      $("#loading .loader").css("animation", "load 2s 1 ease-in-out");
+    }
     $("#loading").show();
     $("#loading").on("animationend webkitAnimationEnd", function() {
       $("#loading").hide();

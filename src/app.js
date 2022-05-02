@@ -148,7 +148,7 @@ function restart() {
 }
 
 function setLevel() {
-  screen.showLoading();
+  screen.showLoading(currentLevel);
   screen.hideFlashing();
   scene = new THREE.Scene();
   world = new CANNON.World({gravity: gravity});
@@ -242,13 +242,13 @@ window.addEventListener('resize', function() {
 
 window.addEventListener("keydown", function(event) {
   for (var key in keyPress) {
-    if (event.key == key) keyPress[key] = 1;
+    if (event.key.toLowerCase() == key) keyPress[key] = 1;
   }
 });
 
 window.addEventListener("keyup", function(event) {
   for (var key in keyPress) {
-    if (event.key == key) keyPress[key] = 0;
+    if (event.key.toLowerCase() == key) keyPress[key] = 0;
   }
 });
 
@@ -264,7 +264,7 @@ controls.addEventListener('lock', function () {
     screen.hidePause();
     screen.hideTitle();
     screen.hideWin();
-    screen.showLoading();
+    screen.showLoading(currentLevel);
     setTimeout(() => {stats.timer.start(timePerLevel[currentLevel])}, 2000);
   } else if (state == "play") {
     stats.timer.resume();
