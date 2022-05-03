@@ -12,7 +12,6 @@ import { BasicLights } from "./components/lights";
 import { Level } from "./components/level";
 import $ from "jquery";
 import CannonDebugger from "cannon-es-debugger";
-import { StaticCopyUsage } from "three";
 
 // EXPORTS
 export var scene;
@@ -328,7 +327,7 @@ controls.addEventListener("unlock", function () {
   } else if (state == "gameover") {
     screen.showEnd(endText);
   } else if (state == "win") {
-    screen.showWin();
+    screen.showWin(timeTaken);
   }
 });
 

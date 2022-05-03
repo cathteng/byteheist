@@ -64,7 +64,7 @@ class Screen {
         `<div id="win" class="screen">
       <h2 class="hero glitch layers" data-text="YOU WON!"><span>YOU WON!</span></h2>
       <div style="text-align: center">
-        <p>You completely corrupted the computer.</p>
+        <p>You completely corrupted the computer in <span id="time-taken"></span> seconds.</p>
         <span class="blinking">CLICK TO RESTART</span>
       </div>
       </div>
@@ -111,7 +111,8 @@ class Screen {
     $("#endText").text(endText);
     $("#end").show();
   }
-  showWin() {
+  showWin(timeTaken) {
+    $("#time-taken").text(timeTaken / 1000);
     $("#win").show();
   }
   showLoading(level) {
