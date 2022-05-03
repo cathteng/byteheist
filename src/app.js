@@ -189,7 +189,6 @@ function setLevel() {
   } = level.changeLevel(currentLevel));
   timeTaken += timePerLevel[currentLevel - 1] - stats.timer.time;
   stats.timer.stop();
-  console.log(timeTaken);
   setTimeout(() => {
      stats.timer.start(timePerLevel[currentLevel]);
   }, 6000);
@@ -206,7 +205,7 @@ function animate() {
     sphereMesh.position.copy(sphereBody.position);
     sphereMesh.quaternion.copy(sphereBody.quaternion);
 
-    cannonDebugger.update();
+    // cannonDebugger.update();
 
     for (let i = 0; i < bitList.length; i++) {
       bitsCorrupted += bitList[i].handleCollisions(sphereMesh.position);
@@ -257,7 +256,8 @@ function animate() {
         sphereMesh.position.x < end_pos.z + end_width / 2
       ) {
         if (currentLevel == totalLevels) {
-          state = "win";
+          state = "win"; 
+          timeTaken += timePerLevel[currentLevel - 1] - stats.timer.time;
           controls.unlock();
         } else if (currentLevel < totalLevels) {
           currentLevel += 1;
