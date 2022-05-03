@@ -147,7 +147,7 @@ class Level {
     APP.world.addContactMaterial(contacts.capacitorMat);
 
     var audio = new Audio(
-      "./src/components/music/ambient-cinematic-hip-hop-22168.mp3"
+      "https://raw.githubusercontent.com/cathyteng17/byteheist/master/src/components/music/ambient-cinematic-hip-hop-22168.mp3"
     );
 
     return {
@@ -579,7 +579,7 @@ class Level {
     APP.world.addContactMaterial(contacts.boxSphereContactMat);
     APP.world.addContactMaterial(contacts.capacitorMat);
 
-    var audio = new Audio("./src/components/music/order-99518.mp3");
+    var audio = new Audio("https://raw.githubusercontent.com/cathyteng17/byteheist/master/src/components/music/order-99518.mp3");
 
     return {
       groundMesh,
@@ -964,7 +964,7 @@ class Level {
     APP.world.addContactMaterial(contacts.capacitorMat);
 
     var audio = new Audio(
-      "./src/components/music/electronic-rock-king-around-here-15045.mp3"
+      "https://raw.githubusercontent.com/cathyteng17/byteheist/master/src/components/music/electronic-rock-king-around-here-15045.mp3"
     );
     return {
       groundMesh,
