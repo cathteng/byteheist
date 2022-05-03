@@ -7,12 +7,15 @@ const groundPhysMat = new CANNON.Material("ground");
 const boxPhysMat = new CANNON.Material("box");
 const spherePhysMat = new CANNON.Material("virus");
 const capMat = new CANNON.Material("cap");
+const circuitMap = new THREE.TextureLoader().load('src/components/texture/circuit_texture.jpeg')
+const firewall = new THREE.TextureLoader().load('src/components/texture/firewall_mesh.jpeg')
 
 export function initGround(width, height, depth, position, color) {
   const groundGeo = new THREE.PlaneGeometry(width, height, 20, 20);
   const groundMat = new THREE.MeshBasicMaterial({
     color: color,
     side: THREE.DoubleSide,
+    map:circuitMap,
   });
   const groundMesh = new THREE.Mesh(groundGeo, groundMat);
 
@@ -36,6 +39,7 @@ export function initBox(width, height, depth, position, color) {
   const boxGeo = new THREE.BoxGeometry(width, height, depth);
   const boxMat = new THREE.MeshPhongMaterial({
     color: color,
+    map: firewall,
   });
   const boxMesh = new THREE.Mesh(boxGeo, boxMat);
 

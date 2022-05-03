@@ -46,7 +46,7 @@ class Level {
       new CANNON.Vec3(0, 0, 150),
       new CANNON.Vec3(0, 0, 200),
     ];
-    const platformColor = "#006F27";
+    const platformColor = "#FFD700";
 
     for (const p of middlePlatforms) {
       ({ groundMesh, groundBody } = INIT.initGround(
@@ -77,6 +77,9 @@ class Level {
     groundBodies.push(groundBody);
 
     for (let i = 0; i < groundMeshes.length; i++) {
+      // bloom pass?
+      groundMeshes[i].layers.enable(1);
+      
       APP.scene.add(groundMeshes[i]);
       APP.world.addBody(groundBodies[i]);
       groundMeshes[i].position.copy(groundBodies[i].position);
@@ -193,7 +196,7 @@ class Level {
       500,
       0.2,
       new CANNON.Vec3(0, 0, 275),
-      "#006F27"
+      "#FFD700"
     ));
     groundMeshes.push(groundMesh);
     groundBodies.push(groundBody);
@@ -623,7 +626,7 @@ class Level {
       200,
       0.2,
       new CANNON.Vec3(0, 0, 125),
-      "#006F27"
+      "#FFD700"
     ));
     groundMeshes.push(groundMesh);
     groundBodies.push(groundBody);
@@ -643,7 +646,7 @@ class Level {
       200,
       0.2,
       new CANNON.Vec3(0, 0, -125),
-      "#006F27"
+      "#FFD700"
     ));
     groundMeshes.push(groundMesh);
     groundBodies.push(groundBody);
@@ -653,7 +656,7 @@ class Level {
       40,
       0.2,
       new CANNON.Vec3(125, 0, 0),
-      "#006F27"
+      "#FFD700"
     ));
     groundMeshes.push(groundMesh);
     groundBodies.push(groundBody);
@@ -663,8 +666,8 @@ class Level {
       40,
       200,
       0.2,
-      new CANNON.Vec3(-205, 0, -125),
-      "#006F27"
+      new CANNON.Vec3(-205, 0.01, -125),
+      "#FFD700"
     ));
     groundMeshes.push(groundMesh);
     groundBodies.push(groundBody);
@@ -673,8 +676,8 @@ class Level {
       40,
       200,
       0.2,
-      new CANNON.Vec3(-205, 0, 125),
-      "#006F27"
+      new CANNON.Vec3(-205, 0.01, 125),
+      "#FFD700"
     ));
     groundMeshes.push(groundMesh);
     groundBodies.push(groundBody);
@@ -683,8 +686,8 @@ class Level {
       40,
       200,
       0.2,
-      new CANNON.Vec3(205, 0, -125),
-      "#006F27"
+      new CANNON.Vec3(205, 0.01, -125),
+      "#FFD700"
     ));
     groundMeshes.push(groundMesh);
     groundBodies.push(groundBody);
@@ -693,8 +696,8 @@ class Level {
       40,
       200,
       0.2,
-      new CANNON.Vec3(205, 0, 125),
-      "#006F27"
+      new CANNON.Vec3(205, 0.01, 125),
+      "#FFD700"
     ));
     groundMeshes.push(groundMesh);
     groundBodies.push(groundBody);
@@ -705,7 +708,7 @@ class Level {
       40,
       0.2,
       new CANNON.Vec3(125, 0, -205),
-      "#006F27"
+      "#FFD700"
     ));
     groundMeshes.push(groundMesh);
     groundBodies.push(groundBody);
@@ -715,7 +718,7 @@ class Level {
       40,
       0.2,
       new CANNON.Vec3(-125, 0, -205),
-      "#006F27"
+      "#FFD700"
     ));
     groundMeshes.push(groundMesh);
     groundBodies.push(groundBody);
@@ -725,7 +728,7 @@ class Level {
       40,
       0.2,
       new CANNON.Vec3(125, 0, 205),
-      "#006F27"
+      "#FFD700"
     ));
     groundMeshes.push(groundMesh);
     groundBodies.push(groundBody);
@@ -735,7 +738,7 @@ class Level {
       40,
       0.2,
       new CANNON.Vec3(-125, 0, 205),
-      "#006F27"
+      "#FFD700"
     ));
     groundMeshes.push(groundMesh);
     groundBodies.push(groundBody);

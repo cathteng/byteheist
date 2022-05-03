@@ -202,7 +202,7 @@ function animate() {
     sphereMesh.position.copy(sphereBody.position);
     sphereMesh.quaternion.copy(sphereBody.quaternion);
 
-    cannonDebugger.update();
+    //cannonDebugger.update();
 
     for (let i = 0; i < bitList.length; i++) {
       bitsCorrupted += bitList[i].handleCollisions(sphereMesh.position);
