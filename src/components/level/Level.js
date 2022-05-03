@@ -146,6 +146,9 @@ class Level {
     APP.world.addContactMaterial(contacts.boxSphereContactMat);
     APP.world.addContactMaterial(contacts.capacitorMat);
 
+    var audio = new Audio('src/components/music/ambient-cinematic-hip-hop-22168.mp3');
+
+
     return {
       groundMesh,
       end_width,
@@ -156,6 +159,7 @@ class Level {
       arrow,
       bitList,
       copperList,
+      audio,
     };
   }
   _levelOne() {
@@ -574,6 +578,9 @@ class Level {
     APP.world.addContactMaterial(contacts.boxSphereContactMat);
     APP.world.addContactMaterial(contacts.capacitorMat);
 
+    
+    var audio = new Audio('src/components/music/order-99518.mp3');
+    
     return {
       groundMesh,
       end_width,
@@ -584,6 +591,7 @@ class Level {
       arrow,
       bitList,
       copperList,
+      audio,
     };
   }
 
@@ -955,6 +963,7 @@ class Level {
     APP.world.addContactMaterial(contacts.boxSphereContactMat);
     APP.world.addContactMaterial(contacts.capacitorMat);
 
+    var audio = new Audio('src/components/music/electronic-rock-king-around-here-15045.mp3')
     return {
       groundMesh,
       end_width,
@@ -965,6 +974,7 @@ class Level {
       arrow,
       bitList,
       copperList,
+      audio,
     };
   }
 }

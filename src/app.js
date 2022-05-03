@@ -44,7 +44,8 @@ var groundMesh,
   sphereBody,
   arrow,
   bitList,
-  copperList;
+  copperList,
+  audio;
 
 // set up renderer
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -108,6 +109,7 @@ var level = new Level(totalLevels);
   arrow,
   bitList,
   copperList,
+  audio,
 } = level.changeLevel(currentLevel));
 cannonDebugger = new CannonDebugger(scene, world);
 
@@ -194,6 +196,7 @@ function setLevel() {
     arrow,
     bitList,
     copperList,
+    audio,
   } = level.changeLevel(currentLevel));
   stats.timer.stop();
   setTimeout(() => {
@@ -316,13 +319,16 @@ controls.addEventListener("lock", function () {
     screen.hideTitle();
     screen.hideWin();
     screen.showLoading(currentLevel);
+    audio.play();
     setTimeout(() => {
       stats.timer.start(timePerLevel[currentLevel]);
     }, 2000);
   } else if (state == "play") {
     stats.timer.resume();
+    audio.play();
     $(".flashing").css("animation-play-state", "running");
     screen.hidePause();
+    
   } else if (state == "gameover") {
     restart();
   } else if (state == "win") {
@@ -332,6 +338,7 @@ controls.addEventListener("lock", function () {
 
 controls.addEventListener("unlock", function () {
   if (state == "play") {
+    audio.pause();
     screen.showPause();
     stats.timer.pause();
     $(".flashing").css("animation-play-state", "paused");
