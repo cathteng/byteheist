@@ -79,6 +79,8 @@ class Screen {
       <div class="loader">
         Loading
       </div>
+      <p>
+      <p id="tip"></p>
       </div>
       `
       )
@@ -113,13 +115,12 @@ class Screen {
     $("#win").show();
   }
   showLoading(level) {
-    if (level == 2) {
-      $("#loading .loader").css("-webkit-animation", "load 2s 4 ease-in-out");
-      $("#loading .loader").css("animation", "load 2s 4 ease-in-out");
-      console.log($("#loading .loader").css("animation"));
-    } else {
-      $("#loading .loader").css("-webkit-animation", "load 2s 1 ease-in-out");
-      $("#loading .loader").css("animation", "load 2s 1 ease-in-out");
+    if (level == 0) {
+      $("#tip").html("#1. You can jump on resistors.<br>#2. You will bounce off of capacitors.<br>#3. Don't touch the copper wires.")
+    } else if (level == 1) {
+      $("#tip").html("TIP: There's a bit in every room.")
+    } else if (level == 2) {
+      $("#tip").html("TIP: Look where you begin to end.")
     }
     $("#loading").show();
     $("#loading").on("animationend webkitAnimationEnd", function () {

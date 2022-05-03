@@ -1,3 +1,7 @@
+body {
+  font-size: 16px;
+}
+
 .screen {
     height: 100vh;
     width: 100vw;
@@ -205,8 +209,8 @@ h1::after {
     --charge: hsl(var(--h, 0), 80%, 50%);
     -o-border-image: conic-gradient(var(--charge) var(--a), transparent calc(var(--a) + 0.5deg)) 30;
        border-image: conic-gradient(var(--charge) var(--a), transparent calc(var(--a) + 0.5deg)) 30;
-    -webkit-animation: load 2s 2 ease-in-out;
-            animation: load 2s 2 ease-in-out;
+    -webkit-animation: load 2s 3 ease-in-out;
+            animation: load 2s 3 ease-in-out;
   }
   @-webkit-keyframes load {
     0%, 10% {
@@ -232,6 +236,7 @@ h1::after {
   /* glitch from https://codepen.io/mattgrosswork/pen/VwprebG */
   .hero {
     font-size: clamp(40px, 10vw, 100px);
+    margin-top: 0px;
     line-height: 1;
     display: inline-block;
     color: #fff;

@@ -3,6 +3,9 @@
 import * as CANNON from "cannon-es";
 import * as THREE from "three";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls.js";
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { Stats } from "./components/stats";
 import { Screen } from "./components/screen";
 import { BasicLights } from "./components/lights";
@@ -79,7 +82,20 @@ controls = new PointerLockControls(camera, document.body);
 scene.add(controls.getObject());
 camera.position.set(0, 20, -30);
 
-// ground
+// bloom pass
+camera.layers.enable(1);
+const renderScene = new RenderPass(scene, camera);
+const bloomPass = new UnrealBloomPass( new THREE.Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 );
+bloomPass.threshold = 0.21;
+bloomPass.strength = 1.2;
+bloomPass.radius = 0.55;
+bloomPass.renderToScreen = true;
+
+const composer = new EffectComposer(renderer);
+composer.addPass(renderScene);
+composer.addPass(bloomPass);
+// renderer.toneMappingExposure = Math.pow( 0.9, 4.0 ) ;
+
 // level start
 var level = new Level(totalLevels);
 ({
@@ -255,6 +271,15 @@ function animate() {
       }
     }
   }
+  
+  // bloom pass
+  renderer.autoClear = false;
+  renderer.clear();
+  camera.layers.set(1);
+  composer.render();
+  renderer.clearDepth();
+  camera.layers.set(0);
+
   renderer.render(scene, camera);
 }
 
