@@ -117,11 +117,13 @@ class Screen {
   }
   showLoading(level) {
     if (level == 0) {
-      $("#tip").html("#1. You can jump on resistors.<br>#2. You will bounce off of capacitors.<br>#3. Don't touch the copper wires.")
+      $("#tip").html(
+        "#1. You can jump on resistors.<br>#2. You will bounce off of capacitors.<br>#3. Don't touch the copper wires."
+      );
     } else if (level == 1) {
-      $("#tip").html("TIP: There's a bit in every room.")
+      $("#tip").html("TIP: There's a bit in every room.");
     } else if (level == 2) {
-      $("#tip").html("TIP: Look where you begin to end.")
+      $("#tip").html("TIP: Look where you begin to end.");
     }
     $("#loading").show();
     $("#loading").on("animationend webkitAnimationEnd", function () {

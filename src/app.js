@@ -3,9 +3,9 @@
 import * as CANNON from "cannon-es";
 import * as THREE from "three";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls.js";
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { Stats } from "./components/stats";
 import { Screen } from "./components/screen";
 import { BasicLights } from "./components/lights";
@@ -189,7 +189,7 @@ function setLevel() {
   timeTaken += timePerLevel[currentLevel - 1] - stats.timer.time;
   stats.timer.stop();
   setTimeout(() => {
-     stats.timer.start(timePerLevel[currentLevel]);
+    stats.timer.start(timePerLevel[currentLevel]);
   }, 6000);
   bitsCorrupted = 0;
   state = "play";
@@ -255,7 +255,7 @@ function animate() {
         sphereMesh.position.x < end_pos.z + end_width / 2
       ) {
         if (currentLevel == totalLevels) {
-          state = "win"; 
+          state = "win";
           timeTaken += timePerLevel[currentLevel - 1] - stats.timer.time;
           controls.unlock();
         } else if (currentLevel < totalLevels) {
@@ -310,7 +310,6 @@ controls.addEventListener("lock", function () {
     audio.play();
     $(".flashing").css("animation-play-state", "running");
     screen.hidePause();
-    
   } else if (state == "gameover") {
     restart();
   } else if (state == "win") {

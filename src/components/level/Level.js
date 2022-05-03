@@ -79,7 +79,7 @@ class Level {
     for (let i = 0; i < groundMeshes.length; i++) {
       // bloom pass?
       groundMeshes[i].layers.enable(1);
-      
+
       APP.scene.add(groundMeshes[i]);
       APP.world.addBody(groundBodies[i]);
       groundMeshes[i].position.copy(groundBodies[i].position);
@@ -146,8 +146,9 @@ class Level {
     APP.world.addContactMaterial(contacts.boxSphereContactMat);
     APP.world.addContactMaterial(contacts.capacitorMat);
 
-    var audio = new Audio('src/components/music/ambient-cinematic-hip-hop-22168.mp3');
-
+    var audio = new Audio(
+      "./src/components/music/ambient-cinematic-hip-hop-22168.mp3"
+    );
 
     return {
       groundMesh,
@@ -578,9 +579,8 @@ class Level {
     APP.world.addContactMaterial(contacts.boxSphereContactMat);
     APP.world.addContactMaterial(contacts.capacitorMat);
 
-    
-    var audio = new Audio('src/components/music/order-99518.mp3');
-    
+    var audio = new Audio("./src/components/music/order-99518.mp3");
+
     return {
       groundMesh,
       end_width,
@@ -963,7 +963,9 @@ class Level {
     APP.world.addContactMaterial(contacts.boxSphereContactMat);
     APP.world.addContactMaterial(contacts.capacitorMat);
 
-    var audio = new Audio('src/components/music/electronic-rock-king-around-here-15045.mp3')
+    var audio = new Audio(
+      "./src/components/music/electronic-rock-king-around-here-15045.mp3"
+    );
     return {
       groundMesh,
       end_width,
