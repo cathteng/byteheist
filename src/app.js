@@ -12,6 +12,7 @@ import { BasicLights } from "./components/lights";
 import { Level } from "./components/level";
 import $ from "jquery";
 import CannonDebugger from "cannon-es-debugger";
+import { StaticCopyUsage } from "three";
 
 // EXPORTS
 export var scene;
@@ -27,6 +28,7 @@ const viewOffset = new CANNON.Vec3(0, 6, 0);
 const totalLevels = 2;
 const gravity = new CANNON.Vec3(0, -20, 0);
 const timePerLevel = [60 * 1000, 120 * 1000, 180 * 1000];
+var timeTaken = 0;
 
 // VARS
 var controls;
@@ -185,10 +187,12 @@ function setLevel() {
     copperList,
     audio,
   } = level.changeLevel(currentLevel));
+  timeTaken += timePerLevel[currentLevel - 1] - stats.timer.time;
   stats.timer.stop();
+  console.log(timeTaken);
   setTimeout(() => {
-    stats.timer.start(timePerLevel[currentLevel]);
-  }, 2000);
+     stats.timer.start(timePerLevel[currentLevel]);
+  }, 6000);
   bitsCorrupted = 0;
   state = "play";
   audio.play();
@@ -301,7 +305,7 @@ controls.addEventListener("lock", function () {
     audio.play();
     setTimeout(() => {
       stats.timer.start(timePerLevel[currentLevel]);
-    }, 2000);
+    }, 6000); //for first level
   } else if (state == "play") {
     stats.timer.resume();
     audio.play();
