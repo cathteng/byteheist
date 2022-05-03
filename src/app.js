@@ -83,20 +83,6 @@ controls = new PointerLockControls(camera, document.body);
 scene.add(controls.getObject());
 camera.position.set(0, 20, -30);
 
-// bloom pass
-camera.layers.enable(1);
-const renderScene = new RenderPass(scene, camera);
-const bloomPass = new UnrealBloomPass( new THREE.Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 );
-bloomPass.threshold = 0.21;
-bloomPass.strength = 1.2;
-bloomPass.radius = 0.55;
-bloomPass.renderToScreen = true;
-
-const composer = new EffectComposer(renderer);
-composer.addPass(renderScene);
-composer.addPass(bloomPass);
-// renderer.toneMappingExposure = Math.pow( 0.9, 4.0 ) ;
-
 // level start
 var level = new Level(totalLevels);
 ({
@@ -176,6 +162,7 @@ function restart() {
 }
 
 function setLevel() {
+  audio.pause();
   screen.showLoading(currentLevel);
   screen.hideFlashing();
   scene = new THREE.Scene();
@@ -204,6 +191,7 @@ function setLevel() {
   }, 2000);
   bitsCorrupted = 0;
   state = "play";
+  audio.play();
   reset();
 }
 
@@ -274,15 +262,6 @@ function animate() {
       }
     }
   }
-  
-  // bloom pass
-  renderer.autoClear = false;
-  renderer.clear();
-  camera.layers.set(1);
-  composer.render();
-  renderer.clearDepth();
-  camera.layers.set(0);
-
   renderer.render(scene, camera);
 }
 

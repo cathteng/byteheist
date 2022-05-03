@@ -77,9 +77,6 @@ class Level {
     groundBodies.push(groundBody);
 
     for (let i = 0; i < groundMeshes.length; i++) {
-      // bloom pass?
-      groundMeshes[i].layers.enable(1);
-      
       APP.scene.add(groundMeshes[i]);
       APP.world.addBody(groundBodies[i]);
       groundMeshes[i].position.copy(groundBodies[i].position);
