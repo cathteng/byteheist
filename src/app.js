@@ -3,9 +3,6 @@
 import * as CANNON from "cannon-es";
 import * as THREE from "three";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { Stats } from "./components/stats";
 import { Screen } from "./components/screen";
 import { BasicLights } from "./components/lights";

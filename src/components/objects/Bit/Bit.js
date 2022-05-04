@@ -11,6 +11,7 @@ class Bit {
     this.corrupted = false;
     this.origY = position.clone().y;
     this.mesh = new THREE.Group();
+    this.audio = new Audio("src/components/music/collectcoin-6075.mp3");
 
     const loader = new GLTFLoader();
 
@@ -60,6 +61,7 @@ class Bit {
     if (dist < EPS) {
       this.mesh.visible = false;
       this.corrupted = true;
+      this.audio.play();
       return 1;
     }
     return 0;

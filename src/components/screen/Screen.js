@@ -112,7 +112,8 @@ class Screen {
     $("#end").show();
   }
   showWin(timeTaken) {
-    $("#time-taken").text(timeTaken / 1000);
+    timeTaken /= 1000;
+    $("#time-taken").text(timeTaken);
     $("#win").show();
   }
   showLoading(level) {

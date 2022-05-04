@@ -579,7 +579,9 @@ class Level {
     APP.world.addContactMaterial(contacts.boxSphereContactMat);
     APP.world.addContactMaterial(contacts.capacitorMat);
 
-    var audio = new Audio("https://raw.githubusercontent.com/cathyteng17/byteheist/master/src/components/music/order-99518.mp3");
+    var audio = new Audio(
+      "https://raw.githubusercontent.com/cathyteng17/byteheist/master/src/components/music/order-99518.mp3"
+    );
 
     return {
       groundMesh,
