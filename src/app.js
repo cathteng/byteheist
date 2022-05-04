@@ -183,7 +183,8 @@ function setLevel() {
     copperList,
     audio,
   } = level.changeLevel(currentLevel));
-  timeTaken += timePerLevel[currentLevel - 1] - stats.timer.time;
+  if (currentLevel != 0) timeTaken += timePerLevel[currentLevel - 1] - stats.timer.time;
+  else timeTaken = 0;
   stats.timer.stop();
   setTimeout(() => {
     stats.timer.start(timePerLevel[currentLevel]);
@@ -214,10 +215,6 @@ function animate() {
       }
     }
 
-    // for (let i = 0; i < wireList.length; i++) {
-    //   wireList[i].handleCollisions(sphereBody.position);
-    // }
-
     move();
     stats.update(bitsCorrupted, currentLevel);
     if (stats.timer.time <= 5 * 1000 && stats.timer.time != 0) {
@@ -228,14 +225,6 @@ function animate() {
 
     // reset if you fall off
     if (sphereMesh.position.y < -40) reset();
-
-    //(sphereMesh.position.z > z_pos - depth && sphereMesh.position.z < z_pos + depth)
-    //&&
-    // sphereMesh.position.x > x_pos - width && sphereMesh.position.x < x_pos + width
-    // if ((sphereMesh.position.z > start_z_pos - start_height/2 && sphereMesh.position.z < start_z_pos + start_height/2) &&
-    // (sphereMesh.position.x > start_x_pos - start_width/2 && sphereMesh.position.x < start_x_pos + start_width/2)){
-    // console.log('start');
-    // }
 
     if (bitsCorrupted == 8) {
       scene.add(arrow.mesh);
