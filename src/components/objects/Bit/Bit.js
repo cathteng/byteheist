@@ -11,7 +11,9 @@ class Bit {
     this.corrupted = false;
     this.origY = position.clone().y;
     this.mesh = new THREE.Group();
-    this.audio = new Audio("https://raw.githubusercontent.com/cathyteng17/byteheist/master/src/components/music/collectcoin-6075.mp3");
+    this.audio = new Audio(
+      "https://raw.githubusercontent.com/cathyteng17/byteheist/master/src/components/music/collectcoin-6075.mp3"
+    );
 
     const loader = new GLTFLoader();
 

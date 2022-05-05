@@ -183,7 +183,8 @@ function setLevel() {
     copperList,
     audio,
   } = level.changeLevel(currentLevel));
-  if (currentLevel != 0) timeTaken += timePerLevel[currentLevel - 1] - stats.timer.time;
+  if (currentLevel != 0)
+    timeTaken += timePerLevel[currentLevel - 1] - stats.timer.time;
   else timeTaken = 0;
   stats.timer.stop();
   setTimeout(() => {

@@ -149,6 +149,7 @@ class Level {
     var audio = new Audio(
       "https://raw.githubusercontent.com/cathyteng17/byteheist/master/src/components/music/ambient-cinematic-hip-hop-22168.mp3"
     );
+    audio.loop = true;
 
     return {
       groundMesh,
@@ -582,6 +583,7 @@ class Level {
     var audio = new Audio(
       "https://raw.githubusercontent.com/cathyteng17/byteheist/master/src/components/music/order-99518.mp3"
     );
+    audio.loop = true;
 
     return {
       groundMesh,
@@ -968,6 +970,8 @@ class Level {
     var audio = new Audio(
       "https://raw.githubusercontent.com/cathyteng17/byteheist/master/src/components/music/electronic-rock-king-around-here-15045.mp3"
     );
+    audio.loop = true;
+
     return {
       groundMesh,
       end_width,
