@@ -243,7 +243,7 @@ function animate() {
       ) {
         if (currentLevel == totalLevels) {
           state = "win";
-          timeTaken += timePerLevel[currentLevel - 1] - stats.timer.time;
+          timeTaken += timePerLevel[currentLevel] - stats.timer.time;
           controls.unlock();
         } else if (currentLevel < totalLevels) {
           currentLevel += 1;
